@@ -1,0 +1,10 @@
+{
+    "db":
+    {
+        "host" : "ep-small-band-a10fvigk-pooler.ap-southeast-1.aws.neon.tech",
+        "user" : "default",
+        "password" : "oZUWNIqJr43k",
+        "port" : "5432",
+        "database" : "verceldb"
+    }
+}

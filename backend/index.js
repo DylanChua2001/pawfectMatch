@@ -6,7 +6,7 @@ const port = 3000
 app.use(bodyParser.json());
 
 app.use('/api/pets', require('./routes/petRoute'));
-app.use('/api/petFilter', require('./routes/petFilterRoute'));
+app.use('/api/filterPets', require('./routes/petFilterRoute'));
 app.use('/api/users', require('./routes/userRoute'));
 
 app.get('/', (req, res) => {

@@ -60,6 +60,7 @@ const deleteUserM = async(userID) => {
 
     try{
         await db.query(queryText, [userID])
+    }
     catch{
         throw error
     }

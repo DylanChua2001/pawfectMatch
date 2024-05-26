@@ -45,8 +45,8 @@ const updatePet = async (req, res, next) => {
 const deletePet = async (req, res, next) => {
     try {
         const deletePet = await petModel.deletePet(req.params.id);
-        if (deletePet) {
-            res.status(204).send();
+        if (deletePet) {           
+            res.status(200).send({ message: 'Pet successfully deleted' });
         } else {
             res.status(404).json({ message: 'Pet not found' });
         }

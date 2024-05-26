@@ -1,6 +1,6 @@
 const db = require("../config/db")
 
-const getAllUsersM = async () => {
+const getAllUsers = async () => {
     const queryText = 'SELECT * FROM user_table'
 
     try{
@@ -13,5 +13,5 @@ const getAllUsersM = async () => {
 }
 
 module.exports = {
-    getAllUsersM
+    getAllUsers
 };

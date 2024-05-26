@@ -48,19 +48,18 @@ const updateUserM = async (userID, updateUserData) => {
     try{
         const {rows} = await db.query(queryText,values)
         return rows[0]
-    }
-    catch(error) {
-        throw error
+    } catch (error) {
+        throw error;
     }
 }
 
 const deleteUserM = async (userID) => {
     const queryText = `DELETE FROM user_table WHERE user_id = $1`
 
-    try{
-        await db.query(queryText, [userID])
-    } catch(error) {
-        throw error
+    try {
+        await db.query(queryText, [userID]);
+    } catch (error) {
+        throw error;
     }
 }
 

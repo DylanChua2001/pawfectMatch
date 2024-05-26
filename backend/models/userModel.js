@@ -57,7 +57,8 @@ const deleteUserM = async (userID) => {
     const queryText = `DELETE FROM user_table WHERE user_id = $1`
 
     try {
-        await db.query(queryText, [userID]);
+        await db.query(queryText, [userID])
+        return true;
     } catch (error) {
         throw error;
     }

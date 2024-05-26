@@ -1,20 +1,18 @@
 const petFilterModel = require('../models/petFilterModel');
 
-const getPetByID = async (req, res, next) => {
-    const id = req.params.id; // Get the id from the request parameters
-
+const filterPets = async (req, res, next) => {
     try {
-        const pet = await petFilterModel.getPetByID(id);
-        if (pet) {
-            res.json(pet); // Return the pet data as JSON
+        const pets = await petFilterModel.filterPets(req.query);
+        if (pets.length>0) {
+        res.status(200).json(pets);
         } else {
-            res.status(404).json({ message: 'Pet not found' }); // Pet not found
+            res.status(404).json({ message: 'No such pet, try widening search results' });
         }
     } catch (error) {
-        next(error); // Pass any errors to the error handler middleware
+        next(error);
     }
 };
 
 module.exports = {
-    getPetByID
+    filterPets
 };

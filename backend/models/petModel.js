@@ -60,6 +60,7 @@ const deletePet = async (id) => {
 
     try {
         await db.query(queryText, [id]);
+        return true;
     } catch (error) {
         throw error;
     }

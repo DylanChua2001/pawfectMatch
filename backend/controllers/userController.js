@@ -25,7 +25,7 @@ const createNewUserC = async (req, res, next) => {
 
 const updateUserC = async (req, res, next) => {
     try {
-        const updateUser = await userModel.updateUserM(req.params.id, req.body)
+        const updateUser = await userModel.updateUserM(req.params.userID, req.body)
         if (updateUser) {
             res.status(200).json({
                 message : "User Data Updated Successfully",
@@ -45,13 +45,14 @@ const updateUserC = async (req, res, next) => {
 
 const deleteUserC = async (req, res, next) => {
     try {
-        const deleteUser = await userModel.deleteUserM (req.params.id)
+        const deleteUser = await userModel.deleteUserM (req.params.userID)
+        console.log(deleteUser)
         if (deleteUser){
+            console.log(deleteUser)
             res.status(204).json({
                 message : "User Data Deleted Successfully"
             })
-        }
-        else{
+        } else{
             res.status(404).json({
                 message : "User Data Not Found"
             })

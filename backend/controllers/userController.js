@@ -10,6 +10,16 @@ const getAllUsersC = async(req,res,next) => {
     }
 }
 
+const createNewUserC = async (req, res, next) => {
+    try{
+        const newUser = await userModel.createNewUsersM(req.body)
+        res.status(201).json(newUser)
+    }
+    catch(error){
+        next(error)
+    }
+}
+
 module.exports = {
-    getAllUsersC
+    getAllUsersC,createNewUserC
 }

@@ -1,69 +1,66 @@
-"use client"
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+'use client'
+
 import {
+  Flex,
   Box,
-  Button,
   FormControl,
   FormLabel,
   Input,
+  Checkbox,
+  Stack,
+  Button,
   Heading,
-} from '@chakra-ui/react';
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react'
+import { useRouter  } from 'next/navigation';
 
-export default function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export default function SimpleCard() {
   const router = useRouter();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle login logic here
-    console.log('Login:', { email, password });
-
-    // Mock login success
-    if (email === 'user@example.com' && password === 'password') {
-      // Redirect to home page or dashboard after successful login
-      router.push('/dashboard');
-    } else {
-      alert('Invalid credentials');
-    }
-  };
-
   return (
-    <Box
-      maxW="sm"
-      borderWidth="1px"
-      borderRadius="lg"
-      overflow="hidden"
-      p={6}
-      m="20px auto"
-      boxShadow="lg"
-    >
-      <Heading mb={6} textAlign="center">Login</Heading>
-      <form onSubmit={handleSubmit}>
-        <FormControl id="email" mb={4}>
-          <FormLabel>Email</FormLabel>
-          <Input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </FormControl>
-        <FormControl id="password" mb={4}>
-          <FormLabel>Password</FormLabel>
-          <Input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </FormControl>
-        <Button type="submit" colorScheme="teal" size="md" width="full">
-          Login
-        </Button><br></br>
-        <Button onClick={() => router.push('/selection')}>Go to selection</Button>
-      </form>
-    </Box>
-  );
+    <Flex
+      minH={'100vh'}
+      align={'center'}
+      justify={'center'}
+      bg={useColorModeValue('gray.50', 'gray.800')}>
+      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+        <Stack align={'center'}>
+          <Heading fontSize={'4xl'}>Sign in to your account</Heading>
+        </Stack>
+        <Box
+          rounded={'lg'}
+          bg={useColorModeValue('white', 'gray.700')}
+          boxShadow={'lg'}
+          p={8}>
+          <Stack spacing={4}>
+            <FormControl id="email">
+              <FormLabel>Email address</FormLabel>
+              <Input type="email" />
+            </FormControl>
+            <FormControl id="password">
+              <FormLabel>Password</FormLabel>
+              <Input type="password" />
+            </FormControl>
+            <Stack spacing={10}>
+              <Stack
+                direction={{ base: 'column', sm: 'row' }}
+                align={'start'}
+                justify={'space-between'}>
+                <Checkbox>Remember me</Checkbox>
+                <Text color={'blue.400'}>Forgot password?</Text>
+              </Stack>
+              <Button onClick={() => router.push('/selection')}
+                bg={'blue.400'}
+                color={'white'}
+                _hover={{
+                  bg: 'blue.500',
+                }}>
+                Sign in
+              </Button> 
+            </Stack>
+          </Stack>
+        </Box>
+      </Stack>
+    </Flex>
+  )
 }

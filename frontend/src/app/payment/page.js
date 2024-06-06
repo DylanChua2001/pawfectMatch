@@ -1,8 +1,8 @@
-
+'use client'
 require('../../../../backend/dotenv').config
 import React from 'react';
 import { loadStripe } from '@stripe/stripe-js';
-'use client'
+import { useRouter  } from 'next/navigation';
 import { chakra } from '@chakra-ui/react'
 
 

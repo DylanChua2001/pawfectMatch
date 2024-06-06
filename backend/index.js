@@ -8,6 +8,8 @@ app.use(bodyParser.json());
 app.use('/api/pets', require('./routes/petRoute'));
 app.use('/api/filterPets', require('./routes/petFilterRoute'));
 app.use('/api/users', require('./routes/userRoute'));
+app.use('/api/txn', require('./routes/txnRoute'));
+app.use('/api/trainPack', require('./routes/trainPackRoute'));
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

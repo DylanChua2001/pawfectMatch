@@ -107,7 +107,9 @@ export default function SimpleCard() {
                 <Checkbox
                   fontFamily="sans-serif"
                   fontSize= "13">
+                  <Text fontFamily="sans-serif" fontSize= "13">
                   Remember me
+                  </Text>
                 </Checkbox>
                 <Text 
                   color="blue"

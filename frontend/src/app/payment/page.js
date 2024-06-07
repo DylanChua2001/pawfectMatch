@@ -5,8 +5,13 @@ import { loadStripe } from '@stripe/stripe-js';
 import { useRouter  } from 'next/navigation';
 import { chakra } from '@chakra-ui/react'
 
+const quantity = 25
+var items = [1,2,3,4,5]
+
 
 const stripePromise = loadStripe (process.env.STRIPE_KEY_PK)
+
+
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.

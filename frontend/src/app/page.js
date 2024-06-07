@@ -103,9 +103,6 @@ export default function SimpleCard() {
                 direction={{ base: 'column', sm: 'row' }}
                 align={'start'}
                 justify={'space-between'}
-<<<<<<< HEAD
-              >  
-=======
               >
                 <Checkbox
                   fontFamily="sans-serif"
@@ -114,7 +111,6 @@ export default function SimpleCard() {
                   Remember me
                   </Text>
                 </Checkbox>
->>>>>>> origin/jon
                 <Text 
                   color="blue"
                   fontFamily="sans-serif"

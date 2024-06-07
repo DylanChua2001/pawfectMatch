@@ -1,7 +1,7 @@
 "use client";
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import Header from "../components/header";
+import Header from "../../components/header";
 
 const HomePage = () => {
   return (

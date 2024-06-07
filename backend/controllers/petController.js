@@ -8,6 +8,20 @@ const getAllPets = async (req, res, next) => {
         next(error);
     }
 };
+const getPetByID = async (req, res, next) => {
+    const id = req.params.id; // Get the id from the request parameters
+
+    try {
+        const pet = await petModel.getPetByID(id);
+        if (pet) {
+            res.json(pet); // Return the pet data as JSON
+        } else {
+            res.status(404).json({ message: 'Pet not found' }); // Pet not found
+        }
+    } catch (error) {
+        next(error); // Pass any errors to the error handler middleware
+    }
+};
 const createPet = async (req, res, next) => {
     try {
         const newPet = await petModel.createPet(req.body);
@@ -31,8 +45,8 @@ const updatePet = async (req, res, next) => {
 const deletePet = async (req, res, next) => {
     try {
         const deletePet = await petModel.deletePet(req.params.id);
-        if (deletePet) {
-            res.status(204).send();
+        if (deletePet) {           
+            res.status(200).send({ message: 'Pet successfully deleted' });
         } else {
             res.status(404).json({ message: 'Pet not found' });
         }
@@ -43,6 +57,7 @@ const deletePet = async (req, res, next) => {
 
 module.exports = {
     getAllPets,
+    getPetByID,
     createPet,
     updatePet,
     deletePet

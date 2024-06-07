@@ -1,11 +1,21 @@
 const db = require('../config/db');
 
 const getAllPets = async () => {
-    const queryText = 'SELECT * FROM pet_table';
+    const queryText = 'SELECT * FROM pet_table order by pet_name';
 
     try {
         const { rows } = await db.query(queryText);
         return rows;
+    } catch (error) {
+        throw error;
+    }
+};
+const getPetByID = async (id) => {
+    const queryText = 'SELECT * FROM pet_table where pet_id=$1';
+
+    try {
+        const { rows } = await db.query(queryText, [id]);
+        return rows[0];
     } catch (error) {
         throw error;
     }
@@ -50,6 +60,7 @@ const deletePet = async (id) => {
 
     try {
         await db.query(queryText, [id]);
+        return true;
     } catch (error) {
         throw error;
     }
@@ -57,6 +68,7 @@ const deletePet = async (id) => {
 
 module.exports = {
     getAllPets,
+    getPetByID,
     createPet,
     updatePet,
     deletePet

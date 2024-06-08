@@ -3,7 +3,7 @@ import React from "react";
 import { Box } from "@chakra-ui/react";
 import Header from "../../components/header";
 import Filter from "../../components/filter";
-import "../../styles/background.css";
+
 
 const HomePage = () => {
   return (

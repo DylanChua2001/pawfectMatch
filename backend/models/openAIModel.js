@@ -16,11 +16,11 @@ async function getDatabase() {
 
 async function createDatabasePool() {
     const poolConfig = {
-        host: "ep-small-band-a10fvigk-pooler.ap-southeast-1.aws.neon.tech",
-        port: 5432,
-        user: "default",
-        password: "oZUWNIqJr43k",
-        database: "verceldb",
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DATABASE,
         ssl: {
             rejectUnauthorized: false,
         }

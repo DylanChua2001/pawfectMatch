@@ -2,6 +2,7 @@
 import { Box, Image, Text, VStack, Center, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 
+
 const HomePage = () => {
   const router = useRouter();
 
@@ -16,13 +17,13 @@ const HomePage = () => {
       </Box>
       <Center height="100%">
         <Flex justify="center" align="center" gap={10}>
-          <VStack onClick={() => handleImageClick('/pets')} cursor="pointer">
+          <VStack onClick={() => handleImageClick('/pages/pets')} cursor="pointer">
             <Box boxSize="75%" border="1px solid" borderColor="gray.200">
               <Image src="/corgi.jpg" alt="Pets" boxSize="100%" objectFit="cover" />
             </Box>
             <Text>Pets</Text>
           </VStack>
-          <VStack onClick={() => handleImageClick('/training')} cursor="pointer">
+          <VStack onClick={() => handleImageClick('/pages/training')} cursor="pointer">
             <Box boxSize="75%" border="1px solid" borderColor="gray.200">
               <Image src="/training.jpg" alt="Training Packages" boxSize="100%" objectFit="cover" />
             </Box>

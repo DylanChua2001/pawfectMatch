@@ -1,33 +1,19 @@
-const { ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings } = require("@langchain/google-genai");
-const { VercelPostgres } = require("@langchain/community/vectorstores/vercel_postgres");
 const { SqlDatabase } = require("langchain/sql_db");
-const database = require('../config/db');
-const { createClient } = require("@vercel/postgres");
-require('dotenv').config();
+const { DataSource } = require("typeorm");
 
-(async () => {
-    const client = createClient({
-        connectionString: process.env.POSTGRES_URL,
+async function getDatabase() {
+    const datasource = new DataSource({
+        type: "postgres",
+        url: process.env.NEON_POSTGRES_CONNECTION_STRING,
+        synchronize: true,
+        logging: false,
     });
-    await client.connect();
-
-    const vectorstore = await VercelPostgres.initialize(
-        new GoogleGenerativeAIEmbeddings({
-            model: "gemini-pro",
-            maxOutputTokens: 2048,
-            apiKey: process.env.GOOGLE_GENAI_API_KEY
-        }), {
-        postgresConnectionOptions: {
-            client,
-        },
-    });
-    const db = await SqlDatabase.fromDataSourceParams({
+    return await SqlDatabase.fromDataSourceParams({
         appDataSource: datasource,
+        includeTables: ['pet_table'],
     });
-    console.log(db.allTables.map((t) => t.tableName));
+}
 
-    // Your code using db goes here
-})();
-
-
-// module.exports = { askQuestion };
+module.exports = {
+    getDatabase
+};

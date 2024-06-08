@@ -1,8 +1,7 @@
-// routes/openaiRoute.js
 const express = require('express');
 const router = express.Router();
-const openaiController = require('../controllers/geminiController');
+const { answerQuestion } = require('../controllers/geminiController.js');
 
-router.post('/ask', openaiController.askOpenAI);
+router.post('/question', answerQuestion);
 
 module.exports = router;

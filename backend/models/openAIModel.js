@@ -1,5 +1,6 @@
 const { SqlDatabase } = require("langchain/sql_db");
 const { DataSource } = require("typeorm");
+const pg = require('pg');
 
 async function getDatabase() {
     const datasource = new DataSource({
@@ -10,10 +11,24 @@ async function getDatabase() {
     });
     return await SqlDatabase.fromDataSourceParams({
         appDataSource: datasource,
-        includeTables: ['pet_table'],
     });
 }
 
+async function createDatabasePool() {
+    const poolConfig = {
+        host: "ep-small-band-a10fvigk-pooler.ap-southeast-1.aws.neon.tech",
+        port: 5432,
+        user: "default",
+        password: "oZUWNIqJr43k",
+        database: "verceldb",
+        ssl: {
+            rejectUnauthorized: false,
+        }
+    };
+    return new pg.Pool(poolConfig);
+}
+
 module.exports = {
-    getDatabase
+    getDatabase,
+    createDatabasePool
 };

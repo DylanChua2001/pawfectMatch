@@ -7,7 +7,13 @@ import Filter from "../../components/filter";
 
 const HomePage = () => {
   return (
-    <Box textAlign="center" minHeight="100vh" paddingTop="100px"> {/* Adjust paddingTop as needed */}
+    <Box
+      minHeight="100vh"
+      paddingTop="10%" 
+      backgroundImage="url('/background.png')"
+      backgroundSize="cover"
+      backgroundPosition="center"
+    >
       <Header />
       <Box marginTop="50px"> {/* Adjust marginTop as needed */}
         <Filter />
@@ -15,5 +21,4 @@ const HomePage = () => {
     </Box>
   );
 };
-
 export default HomePage;

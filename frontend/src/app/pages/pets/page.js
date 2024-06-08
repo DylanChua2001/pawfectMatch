@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import React from "react";
 import { Box } from "@chakra-ui/react";
 import Header from "../../components/header";
@@ -7,6 +7,7 @@ import Filter from "../../components/filter";
 
 const HomePage = () => {
   return (
+    <>
     <Box
       minHeight="100vh"
       paddingTop="10%" 
@@ -19,6 +20,7 @@ const HomePage = () => {
         <Filter />
       </Box>
     </Box>
+    </>
   );
 };
 export default HomePage;

@@ -10,13 +10,13 @@ const HomePage = () => {
     <>
     <Box
       minHeight="100vh"
-      paddingTop="10%" 
+      paddingTop="5%" 
       backgroundImage="url('/background.png')"
       backgroundSize="cover"
       backgroundPosition="center"
     >
       <Header />
-      <Box marginTop="50px"> {/* Adjust marginTop as needed */}
+      <Box > {/* Adjust marginTop as needed */}
         <Filter />
       </Box>
     </Box>

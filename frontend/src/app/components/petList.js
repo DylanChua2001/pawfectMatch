@@ -1,5 +1,5 @@
 // components/PetList.js
-import { Box, Flex, SimpleGrid } from '@chakra-ui/react';
+import { Box, SimpleGrid } from '@chakra-ui/react';
 import PetCard from './petCard';
 
 const PetList = () => {
@@ -31,15 +31,13 @@ const PetList = () => {
   ];
 
   return (
-    <>
-    <Box overflowX="auto">
-      <SimpleGrid columns={[1, 2, 3]} spacing={6} p={6}>
+    <Box maxW="200vh" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto">
+      <SimpleGrid columns={pets.length} spacing={6} p={6} minWidth="100%">
         {pets.map((pet) => (
           <PetCard key={pet.id} pet={pet} />
         ))}
       </SimpleGrid>
     </Box>
-    </>
   );
 };
 

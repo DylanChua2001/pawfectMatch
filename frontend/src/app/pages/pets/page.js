@@ -10,7 +10,7 @@ const HomePage = () => {
     <>
     <Box
       minHeight="100vh"
-      paddingTop="5%" 
+      paddingTop="3%" 
       backgroundImage="url('/background.png')"
       backgroundSize="cover"
       backgroundPosition="center"

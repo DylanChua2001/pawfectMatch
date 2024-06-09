@@ -11,6 +11,8 @@ app.use('/api/users', require('./routes/userRoute'));
 app.use('/api/openai', require('./routes/openAIRoute'));
 app.use('/api/txn', require('./routes/txnRoute'));
 app.use('/api/trainPack', require('./routes/trainPackRoute'));
+app.use('/api/cart', require('./routes/cartStripeRoute'));
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

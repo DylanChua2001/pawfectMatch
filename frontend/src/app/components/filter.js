@@ -14,10 +14,11 @@ import {
   useOutsideClick,
 } from '@chakra-ui/react'
 
-const SliderMarkExample = ({ onSelect }) => {
-  const [sliderValue, setSliderValue] = useState(1)
+const SliderMarkExample = ({ onSelectAge, onSelectSize }) => {
+  const [ageValue, setAgeValue] = useState(0) // Default age value
+  const [sizeValue, setSizeValue] = useState(1) // Default size value
 
-  const sizes = ["Small", "Medium", "Large"]
+  const sizeRanges = ["Small", "Medium", "Large"] // Size options
 
   const labelStyles = {
     mt: '2',
@@ -25,46 +26,69 @@ const SliderMarkExample = ({ onSelect }) => {
     fontSize: 'sm',
   }
 
-  const handleSliderChange = (val) => {
-    setSliderValue(val)
-    onSelect(sizes[val - 1]) // Call onSelect prop with the selected option
+  const handleAgeChange = (val) => {
+    setAgeValue(val)
+    onSelectAge(val) // Call onSelectAge prop with the selected age value
+  }
+
+  const handleSizeChange = (val) => {
+    setSizeValue(val)
+    onSelectSize(sizeRanges[val - 1]) // Pass the size label instead of the index
   }
 
   return (
     <Box p={4} pt={6}>
-      <Slider
-        aria-label='slider-ex-6'
-        min={1}
-        max={3}
-        step={1}
-        value={sliderValue}
-        onChange={handleSliderChange}
-      >
-        <SliderMark value={1} {...labelStyles}>
-          Small
-        </SliderMark>
-        <SliderMark value={2} {...labelStyles}>
-          Medium
-        </SliderMark>
-        <SliderMark value={3} {...labelStyles} ml="-1">
-          Large
-        </SliderMark>
-        <SliderMark
-          value={sliderValue}
-          textAlign='center'
-          bg='blue.500'
-          color='white'
-          mt='-10'
-          ml='-10'
-          w='20'
+        <Box mb={10}>
+        <Slider
+          aria-label='size-slider'
+          min={1}
+          max={3}
+          step={1}
+          value={sizeValue}
+          onChange={handleSizeChange}
         >
-          {sizes[sliderValue - 1]}
-        </SliderMark>
-        <SliderTrack>
-          <SliderFilledTrack />
-        </SliderTrack>
-        <SliderThumb />
-      </Slider>
+          <SliderMark value={1} {...labelStyles}>
+            Small
+          </SliderMark>
+          <SliderMark value={2} {...labelStyles}>
+            Medium
+          </SliderMark>
+          <SliderMark value={3} {...labelStyles} ml="-1">
+            Large
+          </SliderMark>
+          <SliderMark
+            value={sizeValue}
+            textAlign='center'
+            bg='blue.500'
+            color='white'
+            mt='-10'
+            ml='-10'
+            w='20'
+          >
+            {sizeRanges[sizeValue - 1]}
+          </SliderMark>
+          <SliderTrack>
+            <SliderFilledTrack />
+          </SliderTrack>
+          <SliderThumb />
+        </Slider>
+      </Box>
+      <Box mb={10}>
+        <Slider
+          aria-label='age-slider'
+          min={0}
+          max={15}
+          step={1}
+          value={ageValue}
+          onChange={handleAgeChange}
+        >
+          <SliderTrack>
+            <SliderFilledTrack />
+          </SliderTrack>
+          <SliderThumb />
+        </Slider>
+        <Box mt={2} textAlign="center">{ageValue}</Box>
+      </Box>
     </Box>
   )
 }
@@ -72,7 +96,8 @@ const SliderMarkExample = ({ onSelect }) => {
 const App = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const menuRef = useRef()
-  const [selectedOption, setSelectedOption] = useState("Small") // State to hold the selected option
+  const [selectedAge, setSelectedAge] = useState(18) // State to hold the selected age
+  const [selectedSize, setSelectedSize] = useState(2) // State to hold the selected size
 
   useOutsideClick({
     ref: menuRef,
@@ -80,7 +105,8 @@ const App = () => {
   })
 
   const handleSaveChanges = () => {
-    console.log("Saved Option:", selectedOption) // Log the saved option
+    console.log("Saved Size:", selectedSize) // Log the saved size
+    console.log("Saved Age:", selectedAge) // Log the saved age
   }
 
   return (
@@ -89,8 +115,8 @@ const App = () => {
         <MenuButton as={Button} onClick={isOpen ? onClose : onOpen}>
           Open Filter
         </MenuButton>
-        <MenuList ref={menuRef} p={6} minW="500px" minH="450px" position="relative">
-          <SliderMarkExample onSelect={setSelectedOption} />
+        <MenuList ref={menuRef} p={6} minW="80vh" h="70vh" position="relative">
+          <SliderMarkExample onSelectAge={setSelectedAge} onSelectSize={setSelectedSize} />
           <Box position="absolute" right="4" bottom="4">
             <Button onClick={handleSaveChanges}>Save Changes</Button> {/* Button to save changes */}
           </Box>

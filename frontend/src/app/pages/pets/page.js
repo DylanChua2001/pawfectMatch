@@ -3,7 +3,7 @@ import React from "react";
 import { Box } from "@chakra-ui/react";
 import Header from "../../components/header";
 import Filter from "../../components/filter";
-
+import Pets from "../../components/petList";
 
 const HomePage = () => {
   return (
@@ -18,6 +18,9 @@ const HomePage = () => {
       <Header />
       <Box >
         <Filter />
+      </Box>
+      <Box>
+        <Pets />
       </Box>
     </Box>
     </>

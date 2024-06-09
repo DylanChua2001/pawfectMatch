@@ -16,7 +16,7 @@ const HomePage = () => {
       backgroundPosition="center"
     >
       <Header />
-      <Box > {/* Adjust marginTop as needed */}
+      <Box >
         <Filter />
       </Box>
     </Box>

@@ -77,10 +77,16 @@ const cartStripeController = {
 
             const {rows} = await db.query(queryText, values)
 
-            res.status(200).json({ 
-                message: `Item '${newItem}' deleted from the cart for user with ID ${userID}`,
-                itemAdded : rows
-            });
+            if (rows.length > 0) {
+                res.status(200).json({
+                    message: `Item '${deleteItem}' deleted from the cart for user with ID ${userID}`,
+                    updatedCart: rows[0].user_cart // Return the updated cart
+                });
+            } else {
+                res.status(404).json({
+                    message: `No cart found for user with ID ${userID} or item '${deleteItem}' not in cart`
+                });
+            }
         
         } catch (error) {
             res.status(500).json({ 

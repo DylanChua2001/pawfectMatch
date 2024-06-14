@@ -19,6 +19,26 @@ const trainPackController = {
         }
     },
 
+    getOneTrainingPackIdNameMoney : async (req, res) => {
+        try{
+            const {trainID} = req.params
+        
+            const queryText = 'SELECT train_name, train_price from train_table where train_id = $1'
+
+            const {rows} = await db.query(queryText, [trainID])
+
+            res.status(200).json ({
+                message : "All Training Package are Displayed",
+                oneTrainPack : rows[0]
+            })
+        }    
+        catch (error) {
+            res.status(404).json ({
+                message : "No Training Packages Found"
+            })
+        }
+    },
+
     createNewTrainingPack: async(req, res) => {
         try{
             const { train_name, train_desc, train_price } = req.body

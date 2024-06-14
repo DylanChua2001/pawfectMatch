@@ -11,6 +11,7 @@ const HomePage = () => {
   };
 
   return (
+    <>
     <Box
     minHeight="100vh"
     paddingTop="5%" 
@@ -38,6 +39,7 @@ const HomePage = () => {
         </Flex>
       </Center>
     </Box>
+    </>
   );
 };
 

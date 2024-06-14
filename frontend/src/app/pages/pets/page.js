@@ -16,11 +16,11 @@ const HomePage = () => {
       backgroundPosition="center"
     >
       <Header />
-      <Box >
+      <Box mb={-1}>
         <Filter />
       </Box>
-      <Box>
-        <Pets />
+      <Box >
+        <Pets/>
       </Box>
     </Box>
     </>

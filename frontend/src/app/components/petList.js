@@ -28,16 +28,55 @@ const PetList = () => {
       description: "A bouncy little Holland Hop Rabbit.",
       image: "/holland_hop_rabbit.jpg",
     },
+    {
+        id: 4,
+        name: "Apollo",
+        description: "A bouncy little Holland Hop Rabbit.",
+        image: "/holland_hop_rabbit.jpg",
+      },
+      {
+        id: 4,
+        name: "Apollo",
+        description: "A bouncy little Holland Hop Rabbit.",
+        image: "/holland_hop_rabbit.jpg",
+      },
+      {
+        id: 4,
+        name: "Apollo",
+        description: "A bouncy little Holland Hop Rabbit.",
+        image: "/holland_hop_rabbit.jpg",
+      },    {
+        id: 4,
+        name: "Apollo",
+        description: "A bouncy little Holland Hop Rabbit.",
+        image: "/holland_hop_rabbit.jpg",
+      },
+      {
+        id: 4,
+        name: "Apollo",
+        description: "A bouncy little Holland Hop Rabbit.",
+        image: "/holland_hop_rabbit.jpg",
+      },
+      {
+        id: 4,
+        name: "Apollo",
+        description: "A bouncy little Holland Hop Rabbit.",
+        image: "/holland_hop_rabbit.jpg",
+      },
   ];
 
   return (
-    <Box maxW="200vh" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto">
-      <SimpleGrid columns={pets.length} spacing={6} p={6} minWidth="100%">
+    <>
+    <Box maxW="100vw" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={6}>
+      <Box display="flex" overflowX="auto">
         {pets.map((pet) => (
-          <PetCard key={pet.id} pet={pet} />
+          <Box key={pet.id} flex="0 0 auto" maxW="sm" p={2}>
+            <PetCard pet={pet} />
+          </Box>
         ))}
-      </SimpleGrid>
+      </Box>
     </Box>
+    </>
   );
 };
 

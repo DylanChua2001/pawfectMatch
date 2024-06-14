@@ -3,17 +3,21 @@ import { Box, Image, Text } from '@chakra-ui/react';
 
 const PetCard = ({ pet }) => {
   return (
-    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" maxH="220px">
-      <Image src={pet.image} alt={pet.name} maxH="150px" objectFit="cover" />
-      <Box p="4">
-        <Text fontWeight="bold" fontSize="md" mb={1} isTruncated>
-          {pet.name}
-        </Text>
-        <Text fontSize="sm" noOfLines={3}>
+    <>
+    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" p={2}>
+      <Image src={pet.image} alt={pet.name} boxSize="sm" objectFit="cover" mx="auto" />
+      <Box >
+        <Box d="flex" alignItems="baseline">
+          <Text fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
+            {pet.name}
+          </Text>
+        </Box>
+        <Text mt={1} color="gray.500" noOfLines={2}>
           {pet.description}
         </Text>
       </Box>
     </Box>
+    </>
   );
 };
 

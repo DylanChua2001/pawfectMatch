@@ -121,7 +121,7 @@ export default function SimpleCard() {
                 </Text>
               </Stack>
               <Button
-                onClick={() => router.push('/selection')}
+                onClick={() => router.push('/pages/selection')}
                 _hover={{ cursor: 'pointer' }}
                 alignItems='center'
                 width= "100%"

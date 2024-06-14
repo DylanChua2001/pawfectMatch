@@ -8,6 +8,7 @@ app.use(bodyParser.json());
 app.use('/api/pets', require('./routes/petRoute'));
 app.use('/api/filterPets', require('./routes/petFilterRoute'));
 app.use('/api/users', require('./routes/userRoute'));
+app.use('/api/openai', require('./routes/openAIRoute'));
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

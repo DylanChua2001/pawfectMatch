@@ -1,6 +1,6 @@
 "use client"
 import { Box, Image, Text, VStack, Center, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"
 
 const HomePage = () => {
   return (

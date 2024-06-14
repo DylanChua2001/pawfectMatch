@@ -1,6 +1,6 @@
 "use client"
 import { Box, Image, Text, VStack, Center, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"
 
 const HomePage = () => {
   return (
@@ -12,7 +12,7 @@ const HomePage = () => {
         <Flex justify="center" align="center" gap={10}>
           <VStack>
             <Box boxSize="450px" border="1px solid" borderColor="gray.200">
-              <Image src="/corgi.jpg" alt="Pets" boxSize="100%" objectFit="cover" />
+              <Image src="/training.jpg" alt="Pets" boxSize="100%" objectFit="cover" />
             </Box>
             <Text>Pets</Text>
           </VStack>

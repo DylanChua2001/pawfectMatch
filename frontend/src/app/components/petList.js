@@ -28,46 +28,11 @@ const PetList = () => {
       description: "A bouncy little Holland Hop Rabbit.",
       image: "/holland_hop_rabbit.jpg",
     },
-    {
-        id: 4,
-        name: "Apollo",
-        description: "A bouncy little Holland Hop Rabbit.",
-        image: "/holland_hop_rabbit.jpg",
-      },
-      {
-        id: 4,
-        name: "Apollo",
-        description: "A bouncy little Holland Hop Rabbit.",
-        image: "/holland_hop_rabbit.jpg",
-      },
-      {
-        id: 4,
-        name: "Apollo",
-        description: "A bouncy little Holland Hop Rabbit.",
-        image: "/holland_hop_rabbit.jpg",
-      },    {
-        id: 4,
-        name: "Apollo",
-        description: "A bouncy little Holland Hop Rabbit.",
-        image: "/holland_hop_rabbit.jpg",
-      },
-      {
-        id: 4,
-        name: "Apollo",
-        description: "A bouncy little Holland Hop Rabbit.",
-        image: "/holland_hop_rabbit.jpg",
-      },
-      {
-        id: 4,
-        name: "Apollo",
-        description: "A bouncy little Holland Hop Rabbit.",
-        image: "/holland_hop_rabbit.jpg",
-      },
   ];
 
   return (
     <>
-    <Box maxW="100vw" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={6}>
+    <Box maxW="100vw" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={4}>
       <Box display="flex" overflowX="auto">
         {pets.map((pet) => (
           <Box key={pet.id} flex="0 0 auto" maxW="sm" p={2}>

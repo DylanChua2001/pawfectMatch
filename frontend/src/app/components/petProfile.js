@@ -1,11 +1,20 @@
 // components/PetProfile.js
-import { Box, Image, Text, SimpleGrid, VStack, Divider, HStack } from '@chakra-ui/react'
+import { useState } from 'react';
+import { Box, Image, Text, SimpleGrid, VStack, Divider, HStack, IconButton } from '@chakra-ui/react';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 const PetProfile = ({ pet }) => {
+  const [liked, setLiked] = useState(false);
+
+  const handleLikeButtonClick = () => {
+    setLiked(!liked);
+    console.log(`Pet liked: ${!liked}`);
+  };
+
   return (
+    <>
     <Box
-      maxW="100vw"
-      maxH="100vh"
+      maxW="80vw"
       mx="auto"
       my={10}
       p={5}
@@ -18,17 +27,25 @@ const PetProfile = ({ pet }) => {
           src={pet.mainPhoto}
           alt="Main Pet Photo"
           borderRadius="md"
-          height="30vh"
-          width="30vh"
+          height="40vh"
+          width="40vh"
           objectFit="contain"
         />
         <VStack align="start" justify="center" spacing={3}>
-          <Text fontSize="3xl" fontWeight="bold">
+          <Text fontSize="4xl" fontWeight="bold">
             {pet.name}
+            <IconButton
+            icon={liked ? <AiFillHeart /> : <AiOutlineHeart />}
+            onClick={handleLikeButtonClick}
+            variant="ghost"
+            colorScheme="red"
+            aria-label="Like button"
+            fontSize="6xl"
+          />
           </Text>
-          <Text fontSize="2xl">Breed: {pet.breed}</Text>
-          <Text fontSize="2xl">Age: {pet.age}</Text>
-          <Text fontSize="2xl">Description: {pet.description}</Text>
+          <Text fontSize="3xl">Breed: {pet.breed}</Text>
+          <Text fontSize="3xl">Age: {pet.age}</Text>
+          <Text fontSize="3xl">Description: {pet.description}</Text>
         </VStack>
       </HStack>
       <Divider my={5} />
@@ -51,7 +68,8 @@ const PetProfile = ({ pet }) => {
         </SimpleGrid>
       </Box>
     </Box>
-  )
-}
+    </>
+  );
+};
 
-export default PetProfile
+export default PetProfile;

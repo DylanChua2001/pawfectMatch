@@ -3,6 +3,7 @@ import { Box, Image, Text } from '@chakra-ui/react';
 
 const PetCard = ({ pet, onClick }) => {
   return (
+    <>
     <Box
       maxW="sm"
       bg="gray.100"
@@ -25,6 +26,7 @@ const PetCard = ({ pet, onClick }) => {
         </Text>
       </Box>
     </Box>
+    </>
   );
 };
 

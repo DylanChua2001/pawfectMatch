@@ -4,7 +4,8 @@ import { Box, Image, Text, SimpleGrid, VStack, Divider, HStack } from '@chakra-u
 const PetProfile = ({ pet }) => {
   return (
     <Box
-      maxW="80vw"
+      maxW="100vw"
+      maxH="100vh"
       mx="auto"
       my={10}
       p={5}
@@ -17,17 +18,17 @@ const PetProfile = ({ pet }) => {
           src={pet.mainPhoto}
           alt="Main Pet Photo"
           borderRadius="md"
-          height="40vh"
-          width="40vh"
+          height="30vh"
+          width="30vh"
           objectFit="contain"
         />
         <VStack align="start" justify="center" spacing={3}>
-          <Text fontSize="4xl" fontWeight="bold">
+          <Text fontSize="3xl" fontWeight="bold">
             {pet.name}
           </Text>
-          <Text fontSize="3xl">Breed: {pet.breed}</Text>
-          <Text fontSize="3xl">Age: {pet.age}</Text>
-          <Text fontSize="3xl">Description: {pet.description}</Text>
+          <Text fontSize="2xl">Breed: {pet.breed}</Text>
+          <Text fontSize="2xl">Age: {pet.age}</Text>
+          <Text fontSize="2xl">Description: {pet.description}</Text>
         </VStack>
       </HStack>
       <Divider my={5} />

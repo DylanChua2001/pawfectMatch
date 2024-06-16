@@ -16,7 +16,7 @@ const HomePage = () => {
       backgroundPosition="center"
     >
       <Header />
-      <Box mb={-1}>
+      <Box mb={-5}>
         <Filter />
       </Box>
       <Box >

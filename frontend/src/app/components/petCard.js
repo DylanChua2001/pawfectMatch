@@ -1,13 +1,21 @@
 // components/PetCard.js
 import { Box, Image, Text } from '@chakra-ui/react';
 
-const PetCard = ({ pet }) => {
+const PetCard = ({ pet, onClick }) => {
   return (
-    <>
-    <Box maxW="sm"  bg="gray.100" borderRadius="lg" overflow="hidden" p={4}>
+    <Box
+      maxW="sm"
+      bg="gray.100"
+      borderRadius="lg"
+      overflow="hidden"
+      p={4}
+      onClick={onClick}
+      cursor="pointer"
+      _hover={{ boxShadow: 'lg' }}
+    >
       <Image src={pet.mainPhoto} alt={pet.name} boxSize="sm" objectFit="contain" />
-      <Box >
-      <Box d="flex" alignItems="baseline">
+      <Box>
+        <Box d="flex" alignItems="baseline">
           <Text fontWeight="semibold" as="h4" lineHeight="tight" isTruncated textAlign="center">
             {pet.name}
           </Text>
@@ -17,7 +25,6 @@ const PetCard = ({ pet }) => {
         </Text>
       </Box>
     </Box>
-    </>
   );
 };
 

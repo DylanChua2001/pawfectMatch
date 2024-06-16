@@ -5,7 +5,7 @@ const PetCard = ({ pet }) => {
   return (
     <>
     <Box maxW="sm"  bg="gray.100" borderRadius="lg" overflow="hidden" p={4}>
-      <Image src={pet.image} alt={pet.name} boxSize="sm" objectFit="contain" />
+      <Image src={pet.mainPhoto} alt={pet.name} boxSize="sm" objectFit="contain" />
       <Box >
       <Box d="flex" alignItems="baseline">
           <Text fontWeight="semibold" as="h4" lineHeight="tight" isTruncated textAlign="center">

@@ -95,7 +95,7 @@ body {
     rgb(var(--background-start-rgb));
 } */
 
-body {
+html body {
   background-image: url('/background.png'); 
     background-size: cover;
     background-repeat: no-repeat;

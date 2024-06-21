@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import { Box } from "@chakra-ui/react";
+import { Box , Button } from "@chakra-ui/react";
 import Header from "../../components/header";
 import Filter from "../../components/filter";
 import Pets from "../../components/petList";
@@ -16,11 +16,11 @@ const HomePage = () => {
       backgroundPosition="center"
     >
       <Header />
-      <Box >
+      <Box mb={-5}>
         <Filter />
       </Box>
-      <Box>
-        <Pets />
+      <Box >
+        <Pets/>
       </Box>
     </Box>
     </>

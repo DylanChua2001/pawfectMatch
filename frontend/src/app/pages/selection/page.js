@@ -55,7 +55,7 @@ const HomePage = () => {
               mt= "4%">
               Training Packages 
             </Heading>
-            <Image src="/training_option_1.png" alt="Training Packages" boxSize="100%" objectFit="cover" />
+            <Image src="/training_option.png" alt="Training Packages" boxSize="100%" objectFit="cover" />
           </Box>
         </VStack>
       </Flex>

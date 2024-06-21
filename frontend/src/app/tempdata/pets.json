@@ -1,0 +1,53 @@
+[
+    {
+      "id": 1,
+      "name": "Georgie",
+      "type": "Dog",
+      "breed": "Old English Sheepdog",
+      "age": "10 months old",
+      "description": "Long and thick coat, highly intelligent, playful, affectionate, energetic",
+      "mainPhoto": "/old_english_sheepdog.jpg",
+      "additionalPhotos": [
+        "/sheepdog2.jpg",
+        "/sheepdog3.jpg"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Smokey",
+      "type": "Cat",
+      "breed": "Scottish Fold Cat",
+      "age": "3 years old",
+      "description": "A lively cat with folded ears, known for its playful and affectionate nature.",
+      "mainPhoto": "/scottish_fold_cat.jpg",
+      "additionalPhotos": [
+        "/cat2.jpg"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Milo",
+      "type": "Dog",
+      "breed": "Corgi",
+      "age": "2 months old",
+      "description": "A young and energetic puppy with a charming personality and short legs.",
+      "mainPhoto": "/milo_corgi.jpg",
+      "additionalPhotos": [
+        "/corgi2.jpg",
+        "/corgi3.jpg"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Apollo",
+      "type": "Rabbit",
+      "breed": "Holland Hop Rabbit",
+      "age": "1 year old",
+      "description": "A small and energetic rabbit with a friendly and curious nature.",
+      "mainPhoto": "/holland_hop_rabbit.jpg",
+      "additionalPhotos": [
+        "/rabbit2.jpg"
+      ]
+    }
+  ]
+  

@@ -5,7 +5,8 @@ const stripe = require('stripe')(process.env.STRIPE_KEY_PK)
 const createCheckoutSession = async(req,res) => {
     try {
         //Send UserID into the sequeunce 
-        
+        const { userID } = req.body
+
         const responseCart = await fetch (`localhost:3000/api/cart/getCart/${userID}`)
         const responseData1 = await responseCart.json();
         const cartItems = responseData1.userCart

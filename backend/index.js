@@ -1,7 +1,8 @@
 const express = require('express')
+const cors = require('cors');
 const app = express()
 const bodyParser = require('body-parser');
-const port = 3000
+const port = 3001
 
 app.use(bodyParser.json());
 
@@ -11,7 +12,7 @@ app.use('/api/users', require('./routes/userRoute'));
 app.use('/api/openai', require('./routes/openAIRoute'));
 app.use('/api/txn', require('./routes/txnRoute'));
 app.use('/api/trainPack', require('./routes/trainPackRoute'));
-app.use('/api/cart', require('./routes/cartStripeRoute'));
+app.use('/api/cart', require('./routes/cartRoute'));
 
 
 app.get('/', (req, res) => {
@@ -21,3 +22,5 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+app.use(cors());

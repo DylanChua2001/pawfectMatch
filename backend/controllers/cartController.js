@@ -1,6 +1,6 @@
 const db = require("../config/db")
 
-const cartStripeController = {
+const cartController = {
 
     getUserCartItems : async(req,res) => {
         try {
@@ -97,4 +97,4 @@ const cartStripeController = {
 
 }
 
-module.exports = cartStripeController
+module.exports = cartController

@@ -31,7 +31,8 @@ const HomePage = () => {
           <Pets/>
         </Box>
       </Flex>
-    </Flex>
+    </Box>
+    </>
   );
 };
 

@@ -4,7 +4,6 @@ import {
   Flex,
   Box,
   FormControl,
-  FormLabel,
   Input,
   Checkbox,
   Stack,
@@ -13,7 +12,6 @@ import {
   Heading,
   Text,
   Avatar,
-  useColorModeValue,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';

@@ -13,11 +13,11 @@ const getAllUserM = async () => {
 }
 
 const createNewUserM = async(newUserData) => {
-    const {email_add, user_name, user_password, user_age, person_traits} = newUserData
+    const {email_add, user_name, user_password, user_age, person_traits, user_pet_fav, is_admin} = newUserData
     
-    const queryText = 'INSERT INTO user_table (email_add, user_name, user_password, user_age, person_traits) VALUES ($1, $2, $3, $4, $5) RETURNING *'
+    const queryText = 'INSERT INTO user_table (email_add, user_name, user_password, user_age, person_traits, user_pet_fav, is_admin) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *'
     
-    const values = [email_add, user_name, user_password, user_age, person_traits]
+    const values = [email_add, user_name, user_password, user_age, person_traits, user_pet_fav, is_admin]
 
     try{
         const {rows} = await db.query(queryText, values)
@@ -38,11 +38,12 @@ const updateUserM = async (userID, updateUserData) => {
         user_password = $3,
         user_age = $4,
         person_traits = $5,
+        user_pet_fav = $6
     WHERE
-        user_id = $6
+        user_id = $7
     RETURNING *` 
 
-    const values = [email_add, user_name, user_password, user_age, person_traits, userID]
+    const values = [email_add, user_name, user_password, user_age, person_traits, user_pet_fav, userID]
 
     try{
         const {rows} = await db.query(queryText,values)

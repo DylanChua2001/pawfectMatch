@@ -14,7 +14,7 @@ import {
   Text,
   Avatar,
   useColorModeValue,
-  Link, 
+ 
 } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';

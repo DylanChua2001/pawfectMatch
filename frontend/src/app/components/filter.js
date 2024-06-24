@@ -98,8 +98,10 @@ const FilterMenu = ({ onSelectAge, onSelectSize, onSelectPrice, onSelectPet }) =
                 bg='blue.500'
                 color='white'
                 mt='-10'
-                ml='-10'
-                w='20'
+                ml='-5'
+                w='20'   
+                h='25'   
+                borderRadius='5px' 
               >
                 {sizeRanges[sizeValue - 1]}
               </SliderMark>
@@ -142,8 +144,10 @@ const FilterMenu = ({ onSelectAge, onSelectSize, onSelectPrice, onSelectPet }) =
                 bg='blue.500'
                 color='white'
                 mt='-10'
-                ml='-10'
-                w='20'
+                ml='-5'
+                w='20'   
+                h='25'   
+                borderRadius='5px' 
               >
                 {ageValue}
               </SliderMark>
@@ -192,8 +196,10 @@ const FilterMenu = ({ onSelectAge, onSelectSize, onSelectPrice, onSelectPet }) =
                 bg='blue.500'
                 color='white'
                 mt='-10'
-                ml='-10'
-                w='28'
+                ml='-5'
+                w='20'   
+                h='25'   
+                borderRadius='5px' 
               >
                 ${priceValue}
               </SliderMark>
@@ -232,24 +238,25 @@ const App = () => {
 
   return (
     <>
-    <Box p={6}>
-      <Menu isOpen={isOpen}>
-        <MenuButton as={Button} onClick={isOpen ? onClose : onOpen}>
-          Filter
-        </MenuButton>
-        <MenuList ref={menuRef} p={4} minW="100vh" h="75vh" position="relative" >
-          <FilterMenu 
-            onSelectAge={setSelectedAge} 
-            onSelectSize={setSelectedSize} 
-            onSelectPrice={setSelectedPriceRange} 
-            onSelectPet={setSelectedPet} 
-          />
-          <Box position="absolute" right="4" bottom="4">
-            <Button onClick={handleSaveChanges}>Save Changes</Button> {/* Button to save changes */}
-          </Box>
-        </MenuList>
-      </Menu>
-    </Box>
+<Box p={6}>
+  <Menu isOpen={isOpen}>
+    <MenuButton as={Button} onClick={isOpen ? onClose : onOpen}>
+      Filter
+    </MenuButton>
+    <MenuList ref={menuRef} p={4} minW="100vh" h="75vh" position="relative" >
+      <FilterMenu 
+        onSelectAge={setSelectedAge} 
+        onSelectSize={setSelectedSize} 
+        onSelectPrice={setSelectedPriceRange} 
+        onSelectPet={setSelectedPet} 
+      />
+      <Box position="absolute" right="4" bottom="1">
+        <Button onClick={handleSaveChanges}>Save Changes</Button> {/* Button to save changes */}
+      </Box>
+    </MenuList>
+  </Menu>
+</Box>
+
     </>
   )
 }

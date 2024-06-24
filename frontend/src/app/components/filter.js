@@ -232,25 +232,24 @@ const App = () => {
 
   return (
     <>
-<Box p={6}>
-  <Menu isOpen={isOpen}>
-    <MenuButton as={Button} onClick={isOpen ? onClose : onOpen}>
-      Filter
-    </MenuButton>
-    <MenuList ref={menuRef} p={4} minW="100vh" h="75vh" position="relative" >
-      <FilterMenu 
-        onSelectAge={setSelectedAge} 
-        onSelectSize={setSelectedSize} 
-        onSelectPrice={setSelectedPriceRange} 
-        onSelectPet={setSelectedPet} 
-      />
-      <Box position="absolute" right="4" bottom="4">
-        <Button onClick={handleSaveChanges}>Save Changes</Button> {/* Button to save changes */}
-      </Box>
-    </MenuList>
-  </Menu>
-</Box>
-
+    <Box p={6}>
+      <Menu isOpen={isOpen}>
+        <MenuButton as={Button} onClick={isOpen ? onClose : onOpen}>
+          Filter
+        </MenuButton>
+        <MenuList ref={menuRef} p={4} minW="100vh" h="75vh" position="relative" >
+          <FilterMenu 
+            onSelectAge={setSelectedAge} 
+            onSelectSize={setSelectedSize} 
+            onSelectPrice={setSelectedPriceRange} 
+            onSelectPet={setSelectedPet} 
+          />
+          <Box position="absolute" right="4" bottom="4">
+            <Button onClick={handleSaveChanges}>Save Changes</Button> {/* Button to save changes */}
+          </Box>
+        </MenuList>
+      </Menu>
+    </Box>
     </>
   )
 }

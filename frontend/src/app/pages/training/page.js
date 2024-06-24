@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 
 const HomePage = () => {
   return (
+    <>
     <Box textAlign="center" height="100vh">
       <Box position="absolute" top={5} left={5}>
         <Text fontSize="2xl">Pawfect Match</Text>
@@ -19,6 +20,7 @@ const HomePage = () => {
         </Flex>
       </Center>
     </Box>
+    </>
   );
 };
 

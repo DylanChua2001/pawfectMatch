@@ -18,32 +18,21 @@ import {
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import Header from './components/header';
 
 
 export default function SimpleCard() {
   const router = useRouter();
 
   return (
+    <>
+    <Header></Header>
     <Flex
       height="100vh"
       alignItems="center"
       justifyContent="center"
       direction="column"
     >
-      <HStack position="fixed" top="2%" zIndex="1" justifyContent="center" width="100%">
-        <Image src="/pawprints.png" alt="Image" width={50} height={50} />
-        <Heading fontSize={'240%'} fontFamily="Kaushan Script" fontStyle='italic'>PawfectMatch</Heading>
-      </HStack>
-
-      <HStack position="fixed" top="2%" right="2%" zIndex="1">
-        <Avatar
-          borderRadius='full'
-          borderColor= "black"
-          src= "profileicon.png"
-          width="50" 
-          height="50"
-        />
-      </HStack>
 
       <Stack 
         align={'center'} 
@@ -145,5 +134,6 @@ export default function SimpleCard() {
         </Box>
       </Stack>
     </Flex>
+    </>
   )
 }

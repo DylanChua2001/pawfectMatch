@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@stripe/stripe-js": "^4.0.0",
+    "dotenv": "^16.4.5",
     "framer-motion": "^11.2.9",
     "next": "14.2.3",
     "react": "^18",

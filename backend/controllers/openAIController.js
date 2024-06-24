@@ -21,8 +21,9 @@ async function reccomendPet(req, res) {
         const prompt = ChatPromptTemplate.fromMessages([
             [
                 "system",
-                `You are a helpful pet shop assistant.
-                Based on the following customer inputs, ask more questions to get a better idea of what the customer wants based on the corresponding SQL query, and SQL result.
+                `You are a pet shop assistant.
+                Based on the following customer inputs, ask more question to get to know the customer's character better.
+                Your aim is to match the customer with a pet based on the customer's character, pet's character, corresponding SQL query, and SQL result.
                 Once a pet fulfils the customer's criteria, reccomend the pet with the corresponding pet_id. Only reccomend one pet.
                 SQL Query: {query}
                 SQL Result: {result}`,
@@ -97,7 +98,7 @@ async function getPetID(req, res) {
         const verifiedAnswer = await verifyAnswerChain.invoke({
             question: `
             Does the content contain a pet_id?
-            If the answer is yes, return only the pet_id as an integer answer.
+            If the answer is yes, return only the latest pet_id as an integer answer.
             If not return: There is no pet_id.
             ` });
 

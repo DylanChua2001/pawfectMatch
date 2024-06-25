@@ -98,8 +98,10 @@ const FilterMenu = ({ onSelectAge, onSelectSize, onSelectPrice, onSelectPet }) =
                 bg='blue.500'
                 color='white'
                 mt='-10'
-                ml='-10'
-                w='20'
+                ml='-5'
+                w='20'   
+                h='25'   
+                borderRadius='5px' 
               >
                 {sizeRanges[sizeValue - 1]}
               </SliderMark>
@@ -142,8 +144,10 @@ const FilterMenu = ({ onSelectAge, onSelectSize, onSelectPrice, onSelectPet }) =
                 bg='blue.500'
                 color='white'
                 mt='-10'
-                ml='-10'
-                w='20'
+                ml='-5'
+                w='20'   
+                h='25'   
+                borderRadius='5px' 
               >
                 {ageValue}
               </SliderMark>
@@ -192,8 +196,10 @@ const FilterMenu = ({ onSelectAge, onSelectSize, onSelectPrice, onSelectPet }) =
                 bg='blue.500'
                 color='white'
                 mt='-10'
-                ml='-10'
-                w='28'
+                ml='-5'
+                w='20'   
+                h='25'   
+                borderRadius='5px' 
               >
                 ${priceValue}
               </SliderMark>
@@ -244,7 +250,7 @@ const App = () => {
         onSelectPrice={setSelectedPriceRange} 
         onSelectPet={setSelectedPet} 
       />
-      <Box position="absolute" right="4" bottom="4">
+      <Box position="absolute" right="4" bottom="1">
         <Button onClick={handleSaveChanges}>Save Changes</Button> {/* Button to save changes */}
       </Box>
     </MenuList>

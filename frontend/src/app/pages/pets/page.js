@@ -1,6 +1,10 @@
 "use client";
 import React from "react";
+<<<<<<< HEAD
 import { Box, Flex, VStack } from "@chakra-ui/react";
+=======
+import { Box , Button } from "@chakra-ui/react";
+>>>>>>> 6ba67a87a61f192840c4c98faea8219d16ef0e83
 import Header from "../../components/header";
 import Filter from "../../components/filter";
 import Pets from "../../components/petList";

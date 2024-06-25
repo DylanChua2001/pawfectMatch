@@ -4,6 +4,7 @@ import {
   Flex,
   Box,
   FormControl,
+  FormLabel,
   Input,
   Checkbox,
   Stack,
@@ -25,48 +26,36 @@ export default function SimpleCard() {
   const router = useRouter();
 
   return (
+    <>
+    <Header></Header>
     <Flex
       height="100vh"
       alignItems="center"
       justifyContent="center"
       direction="column"
     >
-      <HStack position="fixed" top="2%" zIndex="1" justifyContent="center" width="100%">
-        <Image src="/pawprints.png" alt="Image" width={50} height={50} />
-        <Heading fontSize={'240%'} fontFamily="Kaushan Script" fontStyle='italic'>PawfectMatch</Heading>
-      </HStack>
 
-      <HStack position="fixed" top="2%" right="2%" zIndex="1">
-        <Avatar
-          borderRadius='full'
-          borderColor= "black"
-          src= "profileicon.png"
-          width="50" 
-          height="50"
-        />
-      </HStack>
-
-        <Stack
-          align={'center'}
-          mx={'auto'}
-          maxW={'xl'}
-          mt="40px">
-          <Box
-            borderRadius="10px"
-            paddingLeft="8%"
-            paddingRight="8%"
-            bg="rgba(255, 250, 245, 0.7)"
-            width={['90vw', '70vw', '50vw']}
-            minHeight={['70vh', '85vh', '85vh']}
-          >
-            <Heading
-              fontSize="180%"
-              fontFamily="'Lilita One', cursive"
-              fontWeight="bold"
-              textAlign="center"
-              mt="4%">
-              Login
-            </Heading>
+      <Stack 
+        align={'center'} 
+        mx={'auto'} 
+        maxW={'xl'} 
+        mt= "40px">
+        <Box
+          borderRadius="10px"
+          paddingLeft="8%"
+          paddingRight="8%"
+          bg="rgba(255, 250, 245, 0.7)"
+          width={['90vw', '70vw', '50vw']}
+          minHeight={['70vh', '85vh', '85vh']}
+        >
+          <Heading 
+            fontSize="180%"
+            fontFamily="'Lilita One', cursive"
+            fontWeight= "bold"
+            textAlign="center"
+            mt= "4%">
+            Login
+          </Heading>
 
           <Stack spacing={4}>
           
@@ -143,5 +132,6 @@ export default function SimpleCard() {
         </Box>
       </Stack>
     </Flex>
+    </>
   )
 }

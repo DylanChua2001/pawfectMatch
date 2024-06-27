@@ -28,7 +28,6 @@ const HomePage = () => {
           w="100%" 
           maxHeight={["calc(100vh - 200px)", "calc(100vh - 150px)", "calc(100vh - 180px)"]}
           >
-          <Pets/>
         </Box>
       </Flex>
     </Box>

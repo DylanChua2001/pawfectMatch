@@ -28,8 +28,8 @@ const trainPackController = {
             const {rows} = await db.query(queryText, [trainID])
 
             res.status(200).json ({
-                message : "All Training Package are Displayed",
-                oneTrainPack : rows[0]
+                message : `${trainID} Training Package is Displayed`,
+                oneTrainPack : rows
             })
         }    
         catch (error) {

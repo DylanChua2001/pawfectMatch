@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 //const stripe = require('stripe')(process.env.STRIPE_KEY_SK)
+const stripe = require('stripe')('sk_test_51PMUR2Rp0e1tw1uxH3gNUIUwoaAzGOirfCDrkqRlxaFrsGVuHGQDLDMEnDkcHe8RLyhZaixmLnQ6YY4bkFLzCAae0096uzBRLV')
 
 const createCheckoutSession = async(req,res) => {
     const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
@@ -8,10 +9,9 @@ const createCheckoutSession = async(req,res) => {
     try {
         //Send UserID into the sequeunce 
         const userID = req.params.userID; // Extract userID from params
-        //console.log('Received userID:', userID);
+        console.log('Received userID:', userID);
 
         const responseCart = await fetch (`http://localhost:3001/api/cart/getCart/${userID}`)
-        
         const responseData1 = await responseCart.json();
 
         const cartItems = responseData1.userCart.user_cart;

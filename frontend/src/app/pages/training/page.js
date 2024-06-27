@@ -1,24 +1,33 @@
-"use client"
-import { Box, Image, Text, VStack, Center, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/navigation"
+"use client";
+import React from "react";
+import { Box , Flex} from "@chakra-ui/react";
+import Header from "../../components/header";
+import Training from "../../components/trainingList";
 
 const HomePage = () => {
   return (
-    <Box textAlign="center" height="100vh">
-      <Box position="absolute" top={5} left={5}>
-        <Text fontSize="2xl">Pawfect Match</Text>
+    <>
+    <Box
+      minHeight="100vh"
+      paddingTop="3%" 
+      backgroundImage="url('/background.png')"
+      backgroundSize="cover"
+      backgroundPosition="center"
+    >
+      <Header />
+      <Box >
+        <Training/>
       </Box>
-      <Center height="100%">
-        <Flex justify="center" align="center" gap={10}>
-          <VStack>
-            <Box boxSize="450px" border="1px solid" borderColor="gray.200">
-              <Image src="/training.jpg" alt="Pets" boxSize="100%" objectFit="cover" />
-            </Box>
-            <Text>Pets</Text>
-          </VStack>
-        </Flex>
-      </Center>
+      <Flex justifyContent="center">
+        <Box  
+          maxW={["90%", "92%", "97%"]}
+          w="100%" 
+          maxHeight={["calc(100vh - 200px)", "calc(100vh - 150px)", "calc(100vh - 180px)"]}
+          >
+        </Box>
+      </Flex>
     </Box>
+    </>
   );
 };
 

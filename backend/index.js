@@ -14,6 +14,7 @@ app.use('/api/txn', require('./routes/txnRoute'));
 app.use('/api/trainPack', require('./routes/trainPackRoute'));
 app.use('/api/cart', require('./routes/cartRoute'));
 
+app.use('/api/favourites', require('./routes/favouritesRoute'))
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

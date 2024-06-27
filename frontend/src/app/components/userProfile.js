@@ -1,4 +1,3 @@
-// components/Profile.js
 'use client'
 import { useState } from "react";
 import {
@@ -35,6 +34,7 @@ const Profile = () => {
   };
 
   return (
+    <>
     <Box p={5} maxW="600px" mx="auto">
       <VStack spacing={4}>
         <Image
@@ -83,6 +83,7 @@ const Profile = () => {
         </Button>
       </VStack>
     </Box>
+    </>
   );
 };
 

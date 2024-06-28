@@ -3,8 +3,11 @@ const cors = require('cors');
 const app = express()
 const bodyParser = require('body-parser');
 const port = 3001
-
+app.use(cors({
+  origin: 'http://localhost:3000', // Adjust this to match your frontend origin
+}));
 app.use(bodyParser.json());
+app.use(express.json());
 
 app.use('/api/pets', require('./routes/petRoute'));
 app.use('/api/filterPets', require('./routes/petFilterRoute'));
@@ -24,4 +27,3 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
-app.use(cors());

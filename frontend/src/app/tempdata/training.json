@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Puppy Training Package",
+        "description": "A basic training package for puppies, focusing on essential commands and socialization skills.",
+        "price": 149.99,
+        "mainPhoto": "/puppy_training.jpg"
+    },
+    {
+        "name": "Obedience Training Package",
+        "description": "An intermediate training course to improve obedience and reinforce good behavior in adult dogs.",
+        "price": 249.99,
+        "mainPhoto": "/obedience_training.jpg"
+    },
+    {
+        "name": "Advanced Tricks Training Package",
+        "description": "An advanced course teaching fun and impressive tricks, suitable for dogs who have mastered basic commands.",
+        "price": 299.99,
+        "mainPhoto": "/advanced_trick.jpg"
+    },
+    {
+        "name": "Behavioral Training Package",
+        "description": "A specialized training package to address specific behavioral issues and improve overall temperament.",
+        "price": 349.99,
+        "mainPhoto": "/behavioral_training.jpg"
+    },
+    {
+        "name": "Agility Training Package",
+        "description": "A high-energy course for dogs to learn agility skills, including obstacle courses and speed training.",
+        "price": 399.99,
+        "mainPhoto": "/agility_training.jpg"
+    }
+]

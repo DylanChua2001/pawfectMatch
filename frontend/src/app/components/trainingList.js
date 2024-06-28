@@ -1,36 +1,36 @@
-// components/PetList.js
+// components/TrainingPackagesList.js
 import { useState } from 'react';
 import { Box, Button, Input, Flex, IconButton } from '@chakra-ui/react';
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
-import PetCard from './petCard';
-import PetProfile from './petProfile';
-import petsData from '../tempdata/pets.json'; // Adjust the path based on your project structure
+import TrainingPackageCard from './trainingCard';
+import TrainingPackageProfile from './trainingPackageProfile'; // Assuming you have this component
+import trainingPackagesData from '../tempdata/training.json'; // Adjust the path based on your project structure
 
-const PetList = () => {
-  const [selectedPet, setSelectedPet] = useState(null);
+const TrainingPackagesList = () => {
+  const [selectedTrainingPackage, setSelectedTrainingPackage] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredPets, setFilteredPets] = useState(petsData);
+  const [filteredTrainingPackages, setFilteredTrainingPackages] = useState(trainingPackagesData);
 
-  const handlePetCardClick = (pet) => {
-    setSelectedPet(pet);
+  const handleTrainingPackageCardClick = (trainingPackage) => {
+    setSelectedTrainingPackage(trainingPackage);
   };
 
   const handleBackToList = () => {
-    setSelectedPet(null);
+    setSelectedTrainingPackage(null);
   };
 
   const handleSearch = () => {
     const lowercasedFilter = searchTerm.toLowerCase();
-    const filteredData = petsData.filter(pet => 
-      pet.name.toLowerCase().includes(lowercasedFilter) ||
-      pet.description.toLowerCase().includes(lowercasedFilter)
+    const filteredData = trainingPackagesData.filter(trainingPackage => 
+      trainingPackage.name.toLowerCase().includes(lowercasedFilter) ||
+      trainingPackage.description.toLowerCase().includes(lowercasedFilter)
     );
-    setFilteredPets(filteredData);
+    setFilteredTrainingPackages(filteredData);
   };
 
   const handleClearFilter = () => {
     setSearchTerm('');
-    setFilteredPets(petsData);
+    setFilteredTrainingPackages(trainingPackagesData);
   };
 
   const handleKeyDown = (event) => {
@@ -41,17 +41,17 @@ const PetList = () => {
 
   return (
     <>
-      <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={4} >
-        {selectedPet ? (
+      <Box maxW="100vw" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={4}>
+        {selectedTrainingPackage ? (
           <Box>
             <Button onClick={handleBackToList} mb={4}>Back to List</Button>
-            <PetProfile pet={selectedPet} />
+            <TrainingPackageProfile trainingPackage={selectedTrainingPackage} />
           </Box>
         ) : (
           <>
             <Flex mb={4} alignItems="center">
               <Input 
-                placeholder="Search pets..." 
+                placeholder="Search training packages..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={handleKeyDown}
@@ -75,9 +75,9 @@ const PetList = () => {
               )}
             </Flex>
             <Box display="flex" overflowX="auto">
-              {filteredPets.map((pet) => (
-                <Box key={pet.id} flex="0 0 auto" maxW="sm" p={2}>
-                  <PetCard pet={pet} onClick={() => handlePetCardClick(pet)} />
+              {filteredTrainingPackages.map((trainingPackage) => (
+                <Box key={trainingPackage.id} flex="0 0 auto" maxW="sm" p={2}>
+                  <TrainingPackageCard trainingPackage={trainingPackage} onClick={() => handleTrainingPackageCardClick(trainingPackage)} />
                 </Box>
               ))}
             </Box>
@@ -88,4 +88,4 @@ const PetList = () => {
   );
 };
 
-export default PetList;
+export default TrainingPackagesList;

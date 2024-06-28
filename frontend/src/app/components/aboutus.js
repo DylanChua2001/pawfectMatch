@@ -5,13 +5,10 @@ const AboutUs = () => {
   return (
     <>
     <Box
-      maxW="90vw"
-      mx="auto"
-      my="auto"
-      p={5}
-      borderWidth="1px"
-      borderRadius="lg"
-      boxShadow="md"
+      maxW="100vw" 
+      borderRadius="15px" 
+      backgroundColor="rgba(255, 255, 255, 0.7)"
+      overflowX="auto" p={4}
     >
       <VStack spacing={5} align="start">
         <Heading as="h1" size="2xl" textAlign="center" w="100%">

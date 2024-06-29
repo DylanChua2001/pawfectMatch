@@ -43,6 +43,7 @@ const AddPet = () => {
   };
 
   return (
+    <>
     <Box maxW="80vw" mx="auto" my={10} p={5} borderWidth="1px" borderRadius="lg" boxShadow="md" backgroundColor="rgba(255, 255, 255, 0.7)">
       <HStack spacing={5} align="start">
         
@@ -84,6 +85,7 @@ const AddPet = () => {
       <Divider my={5} />
       <Button onClick={handleSubmit} mt={4} colorScheme="teal" variant="solid">Add Pet</Button>
     </Box>
+    </>
   );
 };
 

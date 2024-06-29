@@ -22,7 +22,7 @@ const HomePage = () => {
       <Box >
         <Pets/>
       </Box>
-      <Flex justifyContent="center">
+      {/* <Flex justifyContent="center">
         <Box  
           maxW={["90%", "92%", "97%"]}
           w="100%" 
@@ -30,7 +30,7 @@ const HomePage = () => {
           >
           <Pets/>
         </Box>
-      </Flex>
+      </Flex> */}
     </Box>
     </>
   );

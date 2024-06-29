@@ -58,6 +58,7 @@ const Header = () => {
             <MenuItem onClick={() => navigateTo('/pages/pets')}>Pets</MenuItem>
             <MenuItem onClick={() => navigateTo('/pages/training')}>Training Packages</MenuItem>
             <MenuItem onClick={() => navigateTo('/pages/profile')}>Profile</MenuItem>
+            <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>
             {/* Add more MenuItems for additional pages */}
           </MenuList>
         </Menu>

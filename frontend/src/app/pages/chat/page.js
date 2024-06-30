@@ -3,11 +3,13 @@ import { Box, Avatar, Flex, Input, Button } from "@chakra-ui/react";
 import React, { useState, useEffect, useRef } from 'react';
 import Header from "../../components/header"
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const messageContainerRef = useRef(null);
+  const router = useRouter(); // Initialize useRouter hook
 
   useEffect(() => {
     // Function to fetch messages from backend
@@ -47,7 +49,7 @@ const Chatbot = () => {
     try {
       // Simulate sending message to a chatbot API
       const response = await axios.post(
-        'localhost:3001/api/openai/ask',
+        'http://localhost:3001/api/openai/ask',
         { question: inputText },
         {
           headers: {
@@ -56,7 +58,7 @@ const Chatbot = () => {
         }
       );
 
-      const botMessage = { content: response.data.answer, type: 'ai' };
+      const botMessage = { content: response.data.response, type: 'ai' };
       setMessages(prevMessages => [...prevMessages, botMessage]); // Update messages with the bot's response
 
       // After sending message, fetch updated messages from backend
@@ -73,6 +75,31 @@ const Chatbot = () => {
       sendMessage();
     }
   }
+
+  const handleVerify = async () => {
+    try {
+      // const response = await axios.post(
+      //   'http://localhost:3001/api/verifyPetID',
+      //   { sessionID: 'langchain-test-session4' }, // Replace with the actual session ID
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   }
+      // );
+
+      // console.log(response.data);
+      // const { finalAnswer, message } = response.data;
+
+      if (true) {
+        router.push(`/pages/pets`);
+      } else {
+        alert(message); // Display an alert message if verification fails
+      }
+    } catch (error) {
+      console.error('Error verifying pet ID:', error);
+    }
+  };
 
   const scrollToBottom = () => {
     messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
@@ -105,6 +132,7 @@ const Chatbot = () => {
                 justifyContent={msg.type === 'ai' ? 'flex-start' : 'flex-end'}
                 marginBottom="10px"
               >
+
                 {msg.type === 'ai' && (
                   <Avatar
                     borderRadius="full"
@@ -127,6 +155,21 @@ const Chatbot = () => {
                 >
                   {msg.content}
                 </Box>
+
+                {msg.type === 'ai' && msg.content.includes('pet_id') && (
+                  <Button
+                    onClick={handleVerify}
+                    colorScheme="yellow"
+                    size="sm"
+                    mt="10px" // Added margin-top for spacing
+                    ml='10px'
+                    width="30%"
+                    textAlign="center"
+                  >
+                    Bring me to the pet!
+                  </Button>
+                )}
+
                 {msg.type !== 'ai' && (
                   <Avatar
                     borderRadius="full"

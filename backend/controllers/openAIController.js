@@ -114,6 +114,7 @@ async function getPetID(req, res) {
             const id = req.body.sessionID;
             await database.query(queryText, [id]);
             res.status(200).json({ message: `Chat record deleted successfully and proceeding to checkout page of pet_id ${finalAnswer}` });
+            return res.json({ finalAnswer });
         } else {
             console.log(finalAnswer);
             res.status(300).json({ message: `We are unable to determine the pet that you want. Answer more questions first.` });

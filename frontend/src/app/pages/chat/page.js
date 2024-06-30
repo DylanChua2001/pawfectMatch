@@ -1,47 +1,171 @@
-"use client";
-import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
+'use client';
+import { Box, Avatar, Flex, Input, Button } from "@chakra-ui/react";
+import React, { useState, useEffect, useRef } from 'react';
+import Header from "../../components/header"
+import axios from 'axios';
 
-const socket = io('http://localhost:3001'); // Adjust the URL to match your server
+const Chatbot = () => {
+  const [messages, setMessages] = useState([]);
+  const [inputText, setInputText] = useState('');
+  const messageContainerRef = useRef(null);
 
-function Chat() {
-    const [messages, setMessages] = useState([]);
-    const [message, setMessage] = useState('');
-
-    useEffect(() => {
-        socket.on('message', (newMessage) => {
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
+  useEffect(() => {
+    // Function to fetch messages from backend
+    const fetchMessages = async () => {
+      try {
+        const response = await axios.post('http://localhost:3001/api/chat/getchatbyid', {
+          id: 'langchain-test-session4', // change this during integration
         });
-
-        return () => {
-            socket.off('message');
+        setMessages(response.data);
+        console.log(response);
+        const initialAIMessage = {
+          content: "Hello! I am PawAI and I am here to help you find a perfect match for your ideal pet! Let's start off by getting to know your personality better so that we can match you to a pet?",
+          type: 'ai'
         };
-    }, []);
-
-    const sendMessage = () => {
-        socket.emit('message', message);
-        setMessage('');
+        setMessages(prevMessages => [initialAIMessage, ...prevMessages]);
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+        const initialAIMessage = {
+          content: "Hello! I am PawAI and I am here to help you find a perfect match for your ideal pet! Let's start off by getting to know your personality better so that we can match you to a pet?",
+          type: 'ai'
+        };
+        setMessages([initialAIMessage]);
+      }
     };
 
-    return (
-        <>
-            <div className="App">
-                <h1>Socket.IO Chat</h1>
-                <div>
-                    {messages.map((msg, index) => (
-                        <div key={index}>{msg}</div>
-                    ))}
-                </div>
-                <input
-                    type="text"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Type a message..."
-                />
-                <button onClick={sendMessage}>Send</button>
-            </div>
-        </>
-    );
-}
+    // Call fetchMessages function when component mounts
+    fetchMessages();
+  }, []); // Empty dependency array ensures this effect runs once when component mounts
 
-export default Chat;
+  const sendMessage = async () => {
+    if (!inputText.trim()) return;
+
+    const userMessage = { content: inputText, type: 'user' };
+    setMessages(prevMessages => [...prevMessages, userMessage]); // Update messages with user's message
+    setInputText('');
+
+    try {
+      // Simulate sending message to a chatbot API
+      const response = await axios.post(
+        'localhost:3001/api/openai/ask',
+        { question: inputText },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const botMessage = { content: response.data.answer, type: 'ai' };
+      setMessages(prevMessages => [...prevMessages, botMessage]); // Update messages with the bot's response
+
+      // After sending message, fetch updated messages from backend
+      fetchMessages();
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // Handle error state
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent default behavior (e.g., form submission)
+      sendMessage();
+    }
+  }
+
+  const scrollToBottom = () => {
+    messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]); // Scroll to bottom whenever messages change
+
+  return (
+    <Flex height="100vh" direction="column" alignItems="center" justifyContent="center">
+      <Header />
+      <Flex direction="row" mt="10px" justifyContent="center" alignItems="center" gap='10%' p='20px' maxWidth="100%">
+        <Box
+          borderRadius="50px"
+          padding="3%"
+          bg="rgba(255, 250, 245, 0.7)"
+          textAlign="center"
+          overflow="auto"
+          maxHeight="80vh"
+          width="100%" // Ensure full width for message container
+          ref={messageContainerRef} // Ref to scroll container
+        >
+          <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+            {/* Display messages */}
+            {messages.map((msg, index) => (
+              <Flex
+                key={index}
+                className={`message ${msg.type}`}
+                justifyContent={msg.type === 'ai' ? 'flex-start' : 'flex-end'}
+                marginBottom="10px"
+              >
+                {msg.type === 'ai' && (
+                  <Avatar
+                    borderRadius="full"
+                    borderColor="black"
+                    src="../chick.png"
+                    width="50"
+                    height="50"
+                    marginRight="5px"
+                    marginTop="5px"
+                  />
+                )}
+                <Box
+                  bg='rgba(235,232,226,255)'
+                  paddingX="20px"
+                  paddingY="10px"
+                  borderRadius="20px"
+                  maxWidth="80%" // Set maximum width to 70%
+                  wordBreak="break-word" // Allow long words to break and wrap
+                  textAlign="left"
+                >
+                  {msg.content}
+                </Box>
+                {msg.type !== 'ai' && (
+                  <Avatar
+                    borderRadius="full"
+                    borderColor="black"
+                    src="../profile.jpg"
+                    width="50"
+                    height="50"
+                    marginLeft="5px"
+                    marginTop="5px"
+                  />
+                )}
+              </Flex>
+            ))}
+          </Box>
+          <Flex justifyContent="space-between" alignItems="center" marginTop="10px">
+            <Input
+              flex="1"
+              type="text"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder="Type your message..."
+              borderRadius="20px"
+              padding="15px"
+              marginRight="10px"
+              onKeyDown={handleKeyDown}
+            />
+            <Button
+              onClick={sendMessage}
+              colorScheme="yellow"
+              borderRadius="20px"
+              padding="15px"
+            >
+              Send
+            </Button>
+          </Flex>
+        </Box>
+      </Flex>
+    </Flex>
+  );
+};
+
+export default Chatbot;

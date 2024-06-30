@@ -1,33 +1,26 @@
 const db = require('../config/db');
 
-const getMessages = async (session_id) => {
-  try {
-    const result = await db.query(`
-      SELECT sender, message->>'content' AS content
-      FROM messages
-      WHERE session_id = $1
-      ORDER BY timestamp;
-    `, [session_id]);
-    return result.rows;
-  } catch (error) {
-    throw new Error('Error retrieving messages from database');
-  }
-};
+const getChatByID = async (req, res, next) => {
+  const id = req.body.id; // Get the id from the request parameters
+  const queryText = 'SELECT * FROM langchain_chat_histories WHERE session_id=$1 ORDER BY id ASC ';
 
-const addMessage = async (session_id, sender, content) => {
   try {
-    const result = await db.query(`
-      INSERT INTO messages (session_id, sender, message)
-      VALUES ($1, $2, '{"content": $3}')
-      RETURNING *;
-    `, [session_id, sender, content]);
-    return result.rows[0];
+    const { rows } = await db.query(queryText, [id]);
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'Chat not found' });
+    }
+    const filteredData = rows.map(row => ({
+      type: row.message.type,
+      content: row.message.content,
+    }));
+    return res.status(200).json(filteredData);
+
   } catch (error) {
-    throw new Error('Error adding message to database');
+    console.error('Error in getChatByID:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 };
 
 module.exports = {
-  getMessages,
-  addMessage,
+  getChatByID,
 };

@@ -22,14 +22,14 @@ const HomePage = () => {
       <Box >
         <Pets/>
       </Box>
-      <Flex justifyContent="center">
+      {/* <Flex justifyContent="center">
         <Box  
           maxW={["90%", "92%", "97%"]}
           w="100%" 
           maxHeight={["calc(100vh - 200px)", "calc(100vh - 150px)", "calc(100vh - 180px)"]}
           >
         </Box>
-      </Flex>
+      </Flex> */}
     </Box>
     </>
   );

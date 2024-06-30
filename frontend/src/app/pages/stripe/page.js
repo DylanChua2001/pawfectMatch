@@ -6,24 +6,24 @@ import Header from "../../components/header";
 import React, {useEffect} from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY_PK)
-
+const stripe = require('stripe')('sk_test_51PMUR2Rp0e1tw1uxH3gNUIUwoaAzGOirfCDrkqRlxaFrsGVuHGQDLDMEnDkcHe8RLyhZaixmLnQ6YY4bkFLzCAae0096uzBRLV')
 
 
 function StripePage() {
   console.log(stripePromise)
 
-  const StripeSessionPayment = async (req,res) => {
+  const StripeSessionPayment = async () => {
 
     try{
-      const stripe = await stripePromise;
+      const stripes = await stripePromise;
       console.log("Button clicked!");
       console.log('Stripe public key:', stripePromise);
-      //const userID  = 4
+      const userID  = 4
       console.log('Received Trial userID:', userID);
 
       console.log("Success 1")
 
-      const response = await fetch(`http://localhost:3001/api/cart/getCart/${userID}`, {
+      const responseCart = await fetch(`http://localhost:3001/api/cart/getCart/${userID}`, {
         method: 'GET',
       });
 
@@ -33,14 +33,11 @@ function StripePage() {
         throw new Error(`HTTP error! status: ${responseCart.status}`);
       }
   
-      console.log("Fetch Response:", response);
+      console.log("Fetch Response:", responseCart);
   
-      if (!response.ok) {
+      if (!responseCart.ok) {
         throw new Error('Failed to create checkout session');
       }
-
-      const responseCart = await fetch (`http://localhost:3001/api/cart/getCart/${userID}`)
-      console.log("Success 3")
 
       const responseData1 = await responseCart.json();
 
@@ -76,7 +73,9 @@ function StripePage() {
 
         console.log("Training Package Price : " + responseOneTrainItemPrice + typeof(responseOneTrainItemPrice))
 
-        console.log ("END")
+        console.log ("END of Generating Packages")
+
+        console.log("Success 5")
 
         itemCounts[cartItem] = (itemCounts[cartItem] || 0) + 1;
 
@@ -85,16 +84,22 @@ function StripePage() {
             name : responseOneTrainItemName
         })
 
+        console.log("Success 6 Creating Product in Stripe")
+
         const price = await stripe.prices.create({
           product : product.id,
           unit_amount : unitAmount,
           currency: 'sgd'
         })
+
+        console.log("Success 7 Creating Pricing in Stripe")
   
         lineItems.push({
             price: price.id,
             quantity: itemCounts[cartItem], // Include the quantity here
         });
+
+        console.log("Success 8 Created Line Items Successfuly")
 
       }
   
@@ -106,10 +111,10 @@ function StripePage() {
             automatic_tax: { enabled: true }
       })
 
-      res.json({ url: session.url });
+      console.log("Success 9 Stripe Session Ready")
 
       if (session.url) {
-        console.log("Redirecting to Stripe Checkout:", session,url)
+        console.log("Redirecting to Stripe Checkout:", session.url)
         window.location.href = session.url;
       } else {
         console.error('Error creating checkout session:', session);

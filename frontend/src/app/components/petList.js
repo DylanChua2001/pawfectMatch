@@ -41,7 +41,7 @@ const PetList = () => {
 
   return (
     <>
-      <Box maxW="100vw" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={4}>
+      <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={4} >
         {selectedPet ? (
           <Box>
             <Button onClick={handleBackToList} mb={4}>Back to List</Button>

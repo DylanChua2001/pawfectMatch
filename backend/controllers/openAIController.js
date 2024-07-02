@@ -21,8 +21,9 @@ async function reccomendPet(req, res) {
         const prompt = ChatPromptTemplate.fromMessages([
             [
                 "system",
-                `You are a helpful pet shop assistant.
-                Based on the following customer inputs, ask more questions to get a better idea of what the customer wants based on the corresponding SQL query, and SQL result.
+                `You are a pet shop assistant.
+                Based on the following customer inputs, ask more question to get to know the customer's character better.
+                Your aim is to match the customer with a pet based on the customer's character, pet's character, corresponding SQL query, and SQL result.
                 Once a pet fulfils the customer's criteria, reccomend the pet with the corresponding pet_id. Only reccomend one pet.
                 SQL Query: {query}
                 SQL Result: {result}`,
@@ -55,7 +56,7 @@ async function reccomendPet(req, res) {
             {
                 input: req.body.question,
             },
-            { configurable: { sessionId: "langchain-test-session3" } }
+            { configurable: { sessionId: "langchain-test-session4" } }
         );
         console.log(response);
         await pool.end();
@@ -97,7 +98,7 @@ async function getPetID(req, res) {
         const verifiedAnswer = await verifyAnswerChain.invoke({
             question: `
             Does the content contain a pet_id?
-            If the answer is yes, return only the pet_id as an integer answer.
+            If the answer is yes, return only the latest pet_id as an integer answer.
             If not return: There is no pet_id.
             ` });
 
@@ -113,6 +114,7 @@ async function getPetID(req, res) {
             const id = req.body.sessionID;
             await database.query(queryText, [id]);
             res.status(200).json({ message: `Chat record deleted successfully and proceeding to checkout page of pet_id ${finalAnswer}` });
+            return res.json({ finalAnswer });
         } else {
             console.log(finalAnswer);
             res.status(300).json({ message: `We are unable to determine the pet that you want. Answer more questions first.` });

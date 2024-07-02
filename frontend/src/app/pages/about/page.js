@@ -7,16 +7,6 @@ import AboutUs from '../../components/aboutus';
 const AboutPage = () => {
   return (
     <>
-    {/* <Box
-      display="flex"
-      flexDirection="column"
-      minHeight="100vh"
-    >
-      <Header />
-      <Box flex="1" display="flex" alignItems="center" justifyContent="center">
-        <AboutUs />
-      </Box>
-    </Box> */}
     <Flex direction="column" height="100vh">
       <Box mt="60px">
         <Header />

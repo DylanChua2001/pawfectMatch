@@ -43,12 +43,12 @@ const PetProfile = ({ pet }) => {
             fontSize="6xl"
           />
           </Text>
-          <Text fontSize="3xl">Breed: {pet.breed}</Text>
-          <Text fontSize="3xl">Age: {pet.age}</Text>
-          <Text fontSize="3xl">Description: {pet.description}</Text>
+          <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Breed: {pet.breed}</Text>
+          <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Age: {pet.age}</Text>
+          <Text fontSize={["1rem", "5rem", "1.0rem", "1.5rem"]}>Description: {pet.description}</Text>
         </VStack>
       </HStack>
-      <Divider my={5} />
+      <Divider my={3} />
       <Box>
         <Text fontSize="xl" fontWeight="bold" mb={3}>
           Additional Photos

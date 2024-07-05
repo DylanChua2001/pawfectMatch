@@ -37,15 +37,18 @@ export default function SimpleCard() {
 
       <Stack 
         align={'center'} 
+        spacing={6} 
         mx={'auto'} 
         maxW={'xl'} 
-        mt= "40px">
+        mt= {40}>
         <Box
           borderRadius="10px"
-          paddingLeft="8%"
-          paddingRight="8%"
+          paddingTop="3%"
+          paddingBottom="3%"
+          paddingLeft="10%"
+          paddingRight="10%"
           bg="rgba(255, 250, 245, 0.7)"
-          width={['90vw', '70vw', '50vw']}
+          width={['90%', '70%', '50vw']}
           minHeight={['70vh', '85vh', '85vh']}
         >
           <Heading 
@@ -53,7 +56,7 @@ export default function SimpleCard() {
             fontFamily="'Lilita One', cursive"
             fontWeight= "bold"
             textAlign="center"
-            mt= "4%">
+            mb={10}>
             Login
           </Heading>
 
@@ -64,8 +67,8 @@ export default function SimpleCard() {
                 type="email" 
                 placeholder='Email' 
                 width= "100%"
-                padding= "20px"
-                mt= "4%"
+                padding= "10"
+                my= '10'
                 size= "100"
                 borderRadius= "5px"
                 borderColor= "#D9D9D9"
@@ -77,8 +80,8 @@ export default function SimpleCard() {
                 type="password" 
                 placeholder= "Password"
                 width= "100%"
-                padding= "20px"
-                mt= "2%"
+                padding= "10"
+                my= "10"
                 size= "100"
                 borderRadius= "5px"
                 borderColor= "#D9D9D9"
@@ -90,7 +93,6 @@ export default function SimpleCard() {
                 direction={{ base: 'column', sm: 'row' }}
                 align={'start'}
                 justify={'space-between'}
-                mt="2%"
               >
                 <Checkbox
                   fontFamily="sans-serif"
@@ -113,18 +115,19 @@ export default function SimpleCard() {
                 _hover={{ cursor: 'pointer' }}
                 alignItems='center'
                 width= "100%"
-                padding= "30px"
-                mt= "3%"
+                padding= "10"
+                my= "5"
                 borderRadius= "5px"
                 backgroundColor= "#F8D3A7"
                 textColor='black'>
                 Login
               </Button>
             </Stack>
-            <Stack alignItems='center'mt="3%" fontFamily="sans-serif" fontSize= "13" >
-              <Text>Don't have an account? {' '} 
-                <Link href="/signup" color= 'blue' background= 'none' border= 'none' cursor= 'pointer' display= "inline-block" passHref >
-                  Sign up
+            <Stack alignItems='center' mt= "5">
+              <Text fontFamily="sans-serif" fontSize= "13">
+                Don't have an account? {" "}
+                <Link href="/signup" passHref>
+                  <button style={{ color: 'blue', background: 'none', border: 'none', cursor: 'pointer' }}>Sign up</button>
                 </Link>
               </Text>
             </Stack>

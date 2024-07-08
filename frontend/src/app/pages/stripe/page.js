@@ -186,16 +186,18 @@ function StripePage() {
 
   return (
     <>
-      <Box
-        display="flex"
-        flexDirection="column"
-        minHeight="100vh"
-      >
-        <Header />
-        <Box flex="1" display="flex" alignItems="center" justifyContent="center">
-          <Button onClick={StripeSessionPayment}>Click Me</Button>
+      <React.StrictMode>
+        <Box
+          display="flex"
+          flexDirection="column"
+          minHeight="100vh"
+        >
+          <Header />
+          <Box flex="1" display="flex" alignItems="center" justifyContent="center">
+            <Button onClick={StripeSessionPayment}>Click Me</Button>
+          </Box>
         </Box>
-      </Box>
+      </React.StrictMode>
     </>
   );
 };

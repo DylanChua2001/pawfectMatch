@@ -8,7 +8,7 @@ import { loadStripe } from '@stripe/stripe-js';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY_PK)
 const stripe = require('stripe')('sk_test_51PMUR2Rp0e1tw1uxH3gNUIUwoaAzGOirfCDrkqRlxaFrsGVuHGQDLDMEnDkcHe8RLyhZaixmLnQ6YY4bkFLzCAae0096uzBRLV')
 
-const userID  = 4
+const userID  = 10 //Need to change once Session is Up
 
 function StripePage() {
   console.log(stripePromise)
@@ -21,7 +21,6 @@ function StripePage() {
       const stripes = await stripePromise;
       console.log("Button clicked!");
       console.log('Stripe public key:', stripePromise);
-      //const userID  = 4
       console.log('Received Trial userID:', userID);
 
       console.log("Success 1")
@@ -59,10 +58,14 @@ function StripePage() {
       console.log("Test Start")
 
       const itemCounts = {};
+      for (const cartItem of cartItems) {
+        itemCounts[cartItem] = (itemCounts[cartItem] || 0) + 1;
+      }
+
       const lineItems = [];
       let stripeGrandTotal = 0
 
-      for (const cartItem of cartItems){
+      for (const cartItem in itemCounts){
         const responseOneTrainItem = await fetch (`http://localhost:3001/api/trainPack/getOneTrainingPackIdNameMoney/${cartItem}`)
         const OneTrainItem = await responseOneTrainItem.json();
         console.log (OneTrainItem)
@@ -73,7 +76,7 @@ function StripePage() {
  
         const responseOneTrainItemPrice = parseFloat(OneTrainItem.oneTrainPack[0].train_price)
 
-        stripeGrandTotal += responseOneTrainItemPrice
+        stripeGrandTotal += responseOneTrainItemPrice * itemCounts[cartItem];
 
         const unitAmount = Math.round(responseOneTrainItemPrice * 100);
 
@@ -82,8 +85,6 @@ function StripePage() {
         console.log ("END of Generating Packages")
 
         console.log("Success 5")
-
-        itemCounts[cartItem] = (itemCounts[cartItem] || 0) + 1;
 
         // Create product in Stripe
         const product = await stripe.products.create({
@@ -112,6 +113,8 @@ function StripePage() {
       let gstGrandTotal = stripeGrandTotal * 1.09
 
       setCalculateGrandTotal(gstGrandTotal)
+
+      console.log(userID)
 
       const transactionData = {
         user_id : userID,
@@ -156,9 +159,35 @@ function StripePage() {
   
       const data = await response.json();
       console.log('Transaction logged:', data);
+
+      localStorage.removeItem('transactionData');
+      console.log('Local storage cleared.');
+
     } catch (error) {
+
       console.error('Error logging transaction:', error);
+      
     }
+  }
+
+  const emptyUserCart = async() => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/cart/resetCart/${userID}`, {
+        method : 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await response.json();
+      console.log('User cart reset:', data);
+
+    } catch (error) {
+
+      console.error('Error emptying user cart:', error);
+
+    }
+
   }
 
   useEffect(() => {
@@ -173,6 +202,7 @@ function StripePage() {
 
         localStorage.setItem('orderConfirmation', 'Order placed! You will receive an email confirmation.');
         logTxnData(storedTransactionData);
+        emptyUserCart()
       } else {
         console.error('No transaction data found in localStorage.');
       }

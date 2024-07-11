@@ -35,6 +35,18 @@ const matchController = {
         try {
             const {userID, petID} = req.params
 
+            // Check if user exists in user_table
+            const userQuery = `SELECT * FROM user_table WHERE user_id = $1`;
+            const userValues = [userID];
+            const { rows: userRows } = await db.query(userQuery, userValues);
+
+            // If user does not exist, return a 404 error
+            if (userRows.length === 0) {
+                return res.status(404).json({
+                    message: `No user found with ID ${userID}`
+                });
+            }
+
             // update pet status in pet_table
             const statusQuery = `
                 UPDATE pet_table 
@@ -43,14 +55,14 @@ const matchController = {
                 RETURNING *;
             `;
 
-            const statusValues = [petID, 'unavailable'];
+            const statusValues = [petID, 'Unavailable'];
             const { rows: updateRows } = await db.query(statusQuery, statusValues);
 
             // check if insert was successful
             if (updateRows.length > 0) {
 
                 // Insert the match into the adoption_table
-                const insertQuery = `INSERT INTO adoption_table (userID, petID) VALUES ($1, $2) RETURNING *`
+                const insertQuery = `INSERT INTO adoption_table (user_id, pet_id) VALUES ($1, $2) RETURNING *`
                 const insertValues = [userID, petID]
 
                 const {rows: insertRows} = await db.query(insertQuery, insertValues)
@@ -72,11 +84,11 @@ const matchController = {
                         RETURNING *;
                     `;
 
-                    const statusValues = [petID, 'available'];
+                    const statusValues = [petID, 'Available'];
                     const { rows: updateRows } = await db.query(statusQuery, statusValues);
 
                     res.status(404).json({
-                        message: `Pet status updated successfully but failed to log match. No user found with ID ${userID}`,
+                        message: `Failed to log match. Pet status changed back to 'Available'.`,
                         updatedPetStatus: updateRows[0]
                     });
                 }
@@ -88,9 +100,10 @@ const matchController = {
             }
                 
         } catch (error) {
-
+            console.error('Error executing query', error.stack);
             res.status(500).json({ 
-                message: 'Internal Server Error' 
+                message: 'Internal Server Error',
+                error: error.message 
             });
 
         }

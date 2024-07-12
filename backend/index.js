@@ -18,6 +18,7 @@ app.use('/api/trainPack', require('./routes/trainPackRoute'));
 app.use('/api/cart', require('./routes/cartRoute'));
 app.use('/api/chat', require('./routes/chatRoute'))
 app.use('/api/favourites', require('./routes/favouritesRoute'))
+app.use('/api/match', require('./routes/matchRoute'))
 
 
 app.listen(port, () => {

@@ -4,39 +4,32 @@ import {
   Flex,
   Box,
   FormControl,
-  FormLabel,
   Input,
   Checkbox,
   Stack,
-  HStack,
   Button,
   Heading,
   Text,
-  Avatar,
-  useColorModeValue,
-  useToast
+  useToast,
 } from '@chakra-ui/react'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import Header from './components/header';
 import Cookie from 'js-cookie';
 import axios from 'axios';
 
-
 export default function SimpleCard() {
   const router = useRouter();
   const toast = useToast();
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',  // Assuming 'username' is what your backend expects
     password: '',
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
-
 
   const handleSignIn = async () => {
     try {
@@ -80,20 +73,20 @@ export default function SimpleCard() {
 
   return (
     <>
-      <Header></Header>
+      <Header />
       <Flex
         height="100vh"
         alignItems="center"
         justifyContent="center"
         direction="column"
       >
-
         <Stack
           align={'center'}
           spacing={6}
           mx={'auto'}
           maxW={'xl'}
-          mt={40}>
+          mt={40}
+        >
           <Box
             borderRadius="10px"
             paddingTop="3%"
@@ -109,17 +102,17 @@ export default function SimpleCard() {
               fontFamily="'Lilita One', cursive"
               fontWeight="bold"
               textAlign="center"
-              mb={10}>
+              mb={10}
+            >
               Login
             </Heading>
 
             <Stack spacing={4}>
-
-              <FormControl id="email">
+              <FormControl id="username">
                 <Input
                   onChange={handleChange}
-                  type="email"
-                  placeholder='Email'
+                  type="text"
+                  placeholder='Username'
                   width="100%"
                   padding="10"
                   my='10'
@@ -151,7 +144,8 @@ export default function SimpleCard() {
                 >
                   <Checkbox
                     fontFamily="sans-serif"
-                    fontSize="13">
+                    fontSize="13"
+                  >
                     <Text fontFamily="sans-serif" fontSize="13">
                       Remember me
                     </Text>
@@ -159,7 +153,8 @@ export default function SimpleCard() {
                   <Text
                     color="blue"
                     fontFamily="sans-serif"
-                    fontSize="13">
+                    fontSize="13"
+                  >
                     <Link href="forgot-password">
                       Forgot password?
                     </Link>
@@ -174,7 +169,8 @@ export default function SimpleCard() {
                   my="5"
                   borderRadius="5px"
                   backgroundColor="#F8D3A7"
-                  textColor='black'>
+                  textColor='black'
+                >
                   Login
                 </Button>
               </Stack>
@@ -191,5 +187,5 @@ export default function SimpleCard() {
         </Stack>
       </Flex>
     </>
-  )
+  );
 }

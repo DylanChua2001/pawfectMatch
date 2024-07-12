@@ -1,4 +1,5 @@
-const User = require("../models/userModel");
+const db = require('../config/db');
+const bcrypt = require("bcryptjs");
 
 const register = async (req, res) => {
     try {
@@ -14,17 +15,17 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     try {
         const { username, password } = req.body;
-        const user = await User.findOne({ where: { username } });
-        if (!user) {
+        const queryText = 'SELECT user_password FROM user_table WHERE email_add=$1';
+        const { rows } = await db.query(queryText, [username]);
+        if (rows.length === 0) {
             return res.status(400).send('User not found');
         }
-
-        const isMatch = await user.comparePassword(password);
-        if (!isMatch) {
+        const storedPassword = rows[0].user_password;
+        const correctPassword = await bcrypt.compare(password, storedPassword);
+        if (!correctPassword) {
             return res.status(400).send('Invalid credentials');
         }
-
-        req.session.user = { id: user.id, username: user.username, role: user.role };
+        req.session.user = { username };
         res.status(200).json({ message: 'Logged in', session: req.session.user });
     } catch (err) {
         console.error('Error logging in:', err);

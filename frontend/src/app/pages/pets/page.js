@@ -1,4 +1,5 @@
 "use client";
+"use client";
 import React from "react";
 import { Box , Flex} from "@chakra-ui/react";
 import Header from "../../components/header";
@@ -8,19 +9,12 @@ import Pets from "../../components/petList";
 const HomePage = () => {
   return (
     <>
-    <Box
-      minHeight="100vh"
-      paddingTop="3%" 
-      backgroundImage="url('/background.png')"
-      backgroundSize="cover"
-      backgroundPosition="center"
-    >
-      <Header />
-      <Box mb={-5}>
-        <Filter />
+    <Flex direction="column" height="100vh">
+      <Box mt="60px">
+        <Header />
       </Box>
-      <Box >
-        <Pets/>
+      <Box>
+        <Filter />
       </Box>
       <Flex justifyContent="center">
         <Box  
@@ -28,11 +22,13 @@ const HomePage = () => {
           w="100%" 
           maxHeight={["calc(100vh - 200px)", "calc(100vh - 150px)", "calc(100vh - 180px)"]}
           >
+          <Pets/>
         </Box>
       </Flex>
-    </Box>
+    </Flex>
     </>
   );
 };
+
 
 export default HomePage;

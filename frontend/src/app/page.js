@@ -34,7 +34,10 @@ export default function SimpleCard() {
   const handleSignIn = async () => {
     try {
       const response = await axios.post("http://localhost:3001/api/auth/login", formData);
-      Cookie.set('sessionId', response.data.session.id);
+      const { userID, username } = response.data.session;
+      Cookie.set('userID', userID);
+      Cookie.set('username', username);
+  
       router.push("/pages/selection");
     } catch (error) {
       console.error('Axios Error:', error);

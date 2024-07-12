@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -12,25 +12,54 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react";
+import Cookie from 'js-cookie';
+import axios from 'axios';
 
 const Profile = () => {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(true); // Start with editing enabled
   const [profile, setProfile] = useState({
-    name: "John Tan",
-    gender: "Male",
-    mobile: "+65 81234567",
-    email: "john.tan.2022@gmail.com",
-    bio: "I love big dogs",
+    user_name: '',
+    age: '',
+    person_traits: '',
+    email: '',
   });
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const fetchProfile = async () => {
+    try {
+      const id = Cookie.get('userID'); // Assuming 'userID' is the cookie key storing the ID
+      const response = await axios.get(`http://localhost:3001/api/users/id/${id}`);
+      const { data } = response;
+      console.log(data);
+      setProfile({
+        user_name: data.user_name,
+        age: data.age,
+        person_traits: data.person_traits.join(', '), // Join traits if necessary
+        email: data.email_add,
+      });
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+      // Handle error fetching profile data
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProfile({ ...profile, [name]: value });
   };
 
-  const handleSave = () => {
-    setIsEditing(false);
-    console.log('Profile Saved:', profile);
+  const handleSave = async () => {
+    try {
+      const response = await axios.put("http://localhost:3001/api/profile", profile);
+      console.log('Profile updated:', response.data);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      // Handle error updating profile
+    }
   };
 
   return (
@@ -44,24 +73,24 @@ const Profile = () => {
           alt="Profile Picture"
         />
         <FormControl>
-          <FormLabel>Name</FormLabel>
-          <Editable defaultValue={profile.name} isDisabled={!isEditing}>
+          <FormLabel>Username</FormLabel>
+          <Editable defaultValue={profile.user_name} isDisabled={!isEditing}>
             <EditablePreview />
-            <Input as={EditableInput} name="name" onChange={handleInputChange} value={profile.name} />
+            <Input as={EditableInput} name="user_name" onChange={handleInputChange} value={profile.user_name} />
           </Editable>
         </FormControl>
         <FormControl>
-          <FormLabel>Gender</FormLabel>
-          <Editable defaultValue={profile.gender} isDisabled={!isEditing}>
+          <FormLabel>Age</FormLabel>
+          <Editable defaultValue={profile.age} isDisabled={!isEditing}>
             <EditablePreview />
-            <Input as={EditableInput} name="gender" onChange={handleInputChange} value={profile.gender} />
+            <Input as={EditableInput} name="age" onChange={handleInputChange} value={profile.age} />
           </Editable>
         </FormControl>
         <FormControl>
-          <FormLabel>Mobile Number</FormLabel>
-          <Editable defaultValue={profile.mobile} isDisabled={!isEditing}>
+          <FormLabel>Person Traits</FormLabel>
+          <Editable defaultValue={profile.person_traits} isDisabled={!isEditing}>
             <EditablePreview />
-            <Input as={EditableInput} name="mobile" onChange={handleInputChange} value={profile.mobile} />
+            <Input as={EditableInput} name="person_traits" onChange={handleInputChange} value={profile.person_traits} />
           </Editable>
         </FormControl>
         <FormControl>
@@ -69,13 +98,6 @@ const Profile = () => {
           <Editable defaultValue={profile.email} isDisabled={!isEditing}>
             <EditablePreview />
             <Input as={EditableInput} name="email" onChange={handleInputChange} value={profile.email} />
-          </Editable>
-        </FormControl>
-        <FormControl>
-          <FormLabel>Bio</FormLabel>
-          <Editable defaultValue={profile.bio} isDisabled={!isEditing}>
-            <EditablePreview />
-            <Input as={EditableInput} name="bio" onChange={handleInputChange} value={profile.bio} />
           </Editable>
         </FormControl>
         <Button onClick={isEditing ? handleSave : () => setIsEditing(true)}>

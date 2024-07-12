@@ -13,6 +13,17 @@ const getAllUserM = async () => {
     }
 }
 
+const getUserByID = async (id) => {
+    const queryText = 'SELECT * FROM user_table where user_id=$1';
+
+    try {
+        const { rows } = await db.query(queryText, [id]);
+        return rows[0];
+    } catch (error) {
+        throw error;
+    }
+};
+
 const createNewUserM = async(newUserData) => {
     const {email_add, user_name, user_password, user_age, person_traits} = newUserData
     
@@ -68,6 +79,7 @@ const deleteUserM = async (userID) => {
 
 module.exports = {
     getAllUserM,
+    getUserByID,
     createNewUserM,
     updateUserM,
     deleteUserM

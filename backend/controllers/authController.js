@@ -15,18 +15,22 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     try {
         const { username, password } = req.body;
-        const queryText = 'SELECT user_password FROM user_table WHERE email_add=$1';
+        const queryText = 'SELECT user_id, user_password FROM user_table WHERE email_add = $1';
         const { rows } = await db.query(queryText, [username]);
+
         if (rows.length === 0) {
             return res.status(400).send('User not found');
         }
-        const storedPassword = rows[0].user_password;
-        const correctPassword = await bcrypt.compare(password, storedPassword);
+
+        const { user_id, user_password } = rows[0];
+        const correctPassword = await bcrypt.compare(password, user_password);
+        
         if (!correctPassword) {
             return res.status(400).send('Invalid credentials');
         }
-        req.session.user = { username };
+        req.session.user = { userID: user_id, username };
         res.status(200).json({ message: 'Logged in', session: req.session.user });
+
     } catch (err) {
         console.error('Error logging in:', err);
         res.status(500).send('Error logging in');

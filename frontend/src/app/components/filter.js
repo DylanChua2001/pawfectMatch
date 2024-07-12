@@ -63,6 +63,7 @@ const FilterMenu = ({ onSelectAge, onSelectSize, onSelectPrice, onSelectPet }) =
                 onClick={() => handlePetChange(petName)}
                 bg={pet === petName ? 'blue.500' : 'gray.200'}
                 color={pet === petName ? 'white' : 'black'}
+                // colorScheme="yellow"
                 mr={4}
               >
                 {petName}

@@ -1,5 +1,4 @@
 const express = require('express')
-
 const app = express()
 const bodyParser = require('body-parser');
 const port = 3001
@@ -30,6 +29,7 @@ app.use('/api/cart', require('./routes/cartRoute'));
 app.use('/api/chat', require('./routes/chatRoute'))
 app.use('/api/favourites', require('./routes/favouritesRoute'))
 app.use('/api/match', require('./routes/matchRoute'))
+app.use('/api/auth',require('./routes/authRoute'))
 
 
 app.listen(port, () => {

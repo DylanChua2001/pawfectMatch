@@ -1,4 +1,3 @@
-// components/Header.js
 "use client"
 import { useState } from 'react';
 import {
@@ -13,6 +12,7 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation'; // Import useRouter hook from Next.js
+import Cookies from 'js-cookie';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,8 +23,8 @@ const Header = () => {
   };
 
   const navigateTo = (route) => {
-    router.push(route); // Use router.push to navigate to the specified route
-    setIsOpen(false); // Close the menu after navigation
+    router.push(route);
+    setIsOpen(false);
   };
 
   return (

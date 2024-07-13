@@ -57,7 +57,7 @@ const Header = () => {
             {/* <MenuItem onClick={() => navigateTo('/pages/selection')}>Selection</MenuItem> */}
             <MenuItem onClick={() => navigateTo('/pages/pets')}>Pets</MenuItem>
             <MenuItem onClick={() => navigateTo('/pages/training')}>Training Packages</MenuItem>
-            <MenuItem onClick={() => navigateTo('/pages/profile')}>Profile</MenuItem>
+            <MenuItem onClick={() => navigateTo('/pages/about')}>About Us</MenuItem>
             <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>
             <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training</MenuItem>
             <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat</MenuItem>

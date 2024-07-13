@@ -1,4 +1,5 @@
 const db = require("../config/db")
+const bcrypt = require("bcryptjs")
 
 const getAllUserM = async () => {
     const queryText = 'SELECT * FROM user_table'
@@ -12,12 +13,25 @@ const getAllUserM = async () => {
     }
 }
 
+const getUserByID = async (id) => {
+    const queryText = 'SELECT * FROM user_table where user_id=$1';
+
+    try {
+        const { rows } = await db.query(queryText, [id]);
+        return rows[0];
+    } catch (error) {
+        throw error;
+    }
+};
+
 const createNewUserM = async(newUserData) => {
     const {email_add, user_name, user_password, user_age, person_traits} = newUserData
     
     const queryText = 'INSERT INTO user_table (email_add, user_name, user_password, user_age, person_traits) VALUES ($1, $2, $3, $4, $5) RETURNING *'
     
-    const values = [email_add, user_name, user_password, user_age, person_traits]
+    const hashPassword = await bcrypt.hash(user_password, 10);
+
+    const values = [email_add, user_name, hashPassword, user_age, person_traits]
 
     try{
         const {rows} = await db.query(queryText, values)
@@ -65,6 +79,7 @@ const deleteUserM = async (userID) => {
 
 module.exports = {
     getAllUserM,
+    getUserByID,
     createNewUserM,
     updateUserM,
     deleteUserM

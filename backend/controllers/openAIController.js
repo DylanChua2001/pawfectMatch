@@ -56,7 +56,7 @@ async function reccomendPet(req, res) {
             {
                 input: req.body.question,
             },
-            { configurable: { sessionId: "langchain-test-session4" } }
+            { configurable: { sessionId: req.cookies.userID } }
         );
         console.log(response);
         await pool.end();

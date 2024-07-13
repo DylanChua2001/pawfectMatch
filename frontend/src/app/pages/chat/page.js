@@ -3,6 +3,7 @@ import { Box, Avatar, Flex, Input, Button } from "@chakra-ui/react";
 import React, { useState, useEffect, useRef } from 'react';
 import Header from "../../components/header"
 import axios from 'axios';
+import Cookie from 'js-cookie';
 import { useRouter } from 'next/navigation';
 
 const Chatbot = () => {
@@ -11,30 +12,32 @@ const Chatbot = () => {
   const messageContainerRef = useRef(null);
   const router = useRouter(); // Initialize useRouter hook
 
-  useEffect(() => {
-    // Function to fetch messages from backend
-    const fetchMessages = async () => {
-      try {
-        const response = await axios.post('http://localhost:3001/api/chat/getchatbyid', {
-          id: 'langchain-test-session4', // change this during integration
-        });
-        setMessages(response.data);
-        console.log(response);
-        const initialAIMessage = {
-          content: "Hello! I am PawAI and I am here to help you find a perfect match for your ideal pet! Let's start off by getting to know your personality better so that we can match you to a pet?",
-          type: 'ai'
-        };
-        setMessages(prevMessages => [initialAIMessage, ...prevMessages]);
-      } catch (error) {
-        console.error('Error fetching messages:', error);
-        const initialAIMessage = {
-          content: "Hello! I am PawAI and I am here to help you find a perfect match for your ideal pet! Let's start off by getting to know your personality better so that we can match you to a pet?",
-          type: 'ai'
-        };
-        setMessages([initialAIMessage]);
-      }
-    };
+  // Function to fetch messages from backend
+  const fetchMessages = async () => {
+    try {
+      const sessionID = Cookie.get('userID');
+      console.log(sessionID);
+      const response = await axios.post('http://localhost:3001/api/chat/getchatbyid', {
+        id: sessionID
+      });
+      setMessages(response.data);
+      console.log(response);
+      const initialAIMessage = {
+        content: "Hello! I am PawAI and I am here to help you find a perfect match for your ideal pet! Let's start off by getting to know your personality better so that we can match you to a pet?",
+        type: 'ai'
+      };
+      setMessages(prevMessages => [initialAIMessage, ...prevMessages]);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+      const initialAIMessage = {
+        content: "Hello! I am PawAI and I am here to help you find a perfect match for your ideal pet! Let's start off by getting to know your personality better so that we can match you to a pet?",
+        type: 'ai'
+      };
+      setMessages([initialAIMessage]);
+    }
+  };
 
+  useEffect(() => {
     // Call fetchMessages function when component mounts
     fetchMessages();
   }, []); // Empty dependency array ensures this effect runs once when component mounts
@@ -47,7 +50,10 @@ const Chatbot = () => {
     setInputText('');
 
     try {
-      // Simulate sending message to a chatbot API
+      // Get the userID cookie from the browser
+      const sessionID = Cookie.get('userID');
+  
+      // Make the HTTP POST request with Axios
       const response = await axios.post(
         'http://localhost:3001/api/openai/ask',
         { question: inputText },
@@ -55,9 +61,12 @@ const Chatbot = () => {
           headers: {
             'Content-Type': 'application/json',
           },
+          // Send the cookie in the request headers
+          withCredentials: true,  // Ensure credentials (cookies) are sent
+          credentials: 'include', // Option to include cookies in CORS requests
         }
       );
-
+      
       const botMessage = { content: response.data.response, type: 'ai' };
       setMessages(prevMessages => [...prevMessages, botMessage]); // Update messages with the bot's response
 

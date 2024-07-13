@@ -1,7 +1,7 @@
 // components/PetProfile.js
 'use client'
 import { useState, useEffect } from 'react';
-import { Box, Image, Text, VStack, IconButton, Button } from '@chakra-ui/react';
+import { Box, Image, Text, VStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {

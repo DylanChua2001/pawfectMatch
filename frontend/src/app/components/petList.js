@@ -5,7 +5,7 @@ import { Box, Button, Input, Flex, IconButton } from '@chakra-ui/react';
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
 import PetCard from './petCard';
 import PetProfile from './petProfile';
-import FavoritePets from './favpets'; // Assuming you have a component for displaying favorite pets
+import { useRouter } from 'next/navigation';
 
 const PetList = () => {
   const [selectedPet, setSelectedPet] = useState(null);
@@ -13,9 +13,9 @@ const PetList = () => {
   const [filteredPets, setFilteredPets] = useState([]);
   const [petsData, setPetsData] = useState([]);
   const [favoritePets, setFavoritePets] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
-    // Fetch pets data from the backend
     const fetchPetsData = async () => {
       try {
         const response = await fetch('http://localhost:3001/api/pets/getAllPets');
@@ -30,6 +30,17 @@ const PetList = () => {
     fetchPetsData();
   }, []);
 
+  // Load favorite pets from localStorage on initial render
+  useEffect(() => {
+    const savedFavoritePets = JSON.parse(localStorage.getItem('favoritePets')) || [];
+    setFavoritePets(savedFavoritePets);
+  }, []);
+
+  // Update localStorage whenever favoritePets changes
+  useEffect(() => {
+    localStorage.setItem('favoritePets', JSON.stringify(favoritePets));
+  }, [favoritePets]);
+
   const handlePetCardClick = (pet) => {
     setSelectedPet(pet);
   };
@@ -40,7 +51,7 @@ const PetList = () => {
 
   const handleSearch = () => {
     const lowercasedFilter = searchTerm.toLowerCase();
-    const filteredData = petsData.filter(pet => 
+    const filteredData = petsData.filter(pet =>
       pet.pet_name.toLowerCase().includes(lowercasedFilter) ||
       (pet.pet_description && pet.pet_description.toLowerCase().includes(lowercasedFilter))
     );
@@ -53,7 +64,6 @@ const PetList = () => {
   };
 
   const handleLikePet = (pet) => {
-    // Check if pet already exists in favorites
     if (!favoritePets.some(favPet => favPet.pet_id === pet.pet_id)) {
       setFavoritePets([...favoritePets, pet]);
     }
@@ -74,6 +84,10 @@ const PetList = () => {
     }
   };
 
+  const navigateToFavorites = () => {
+    router.push('/pages/favpets'); // Navigate to favorites page
+  };
+
   return (
     <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={4}>
       {selectedPet ? (
@@ -84,18 +98,18 @@ const PetList = () => {
       ) : (
         <>
           <Flex mb={4} alignItems="center">
-            <Input 
-              placeholder="Search pets..." 
+            <Input
+              placeholder="Search pets..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={handleKeyDown}
               maxW="300px"
             />
-            <IconButton 
-              aria-label="Search" 
-              icon={<SearchIcon />} 
-              onClick={handleSearch} 
-              colorScheme="teal" 
+            <IconButton
+              aria-label="Search"
+              icon={<SearchIcon />}
+              onClick={handleSearch}
+              colorScheme="teal"
               ml={2}
             />
             {searchTerm && (
@@ -115,7 +129,7 @@ const PetList = () => {
               </Box>
             ))}
           </Box>
-          <FavoritePets favoritePets={favoritePets} onRemove={handleRemoveFromFavorites} onPetClick={handleFavoritePetClick} />
+          <Button onClick={navigateToFavorites} mt={4} colorScheme="blue">Go to Favorites</Button>
         </>
       )}
     </Box>

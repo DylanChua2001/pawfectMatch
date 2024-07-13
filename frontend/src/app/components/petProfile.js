@@ -11,13 +11,21 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const sessionID = Cookie.get('userID'); 
+  console.log(sessionID)
+  console.log(pet.pet_id)
 
   useEffect(() => {
     const checkIfLiked = async () => {
       try {
-        const response = await axios.get(`/getUser/${sessionID}`);
+        const response = await axios.get(`http://localhost:3001/api/users/id/${sessionID}`);
         const { user_pet_fav } = response.data;
-        setLiked(user_pet_fav.includes(pet.id));
+        console.log(user_pet_fav)
+        if (user_pet_fav == null) {
+          setLiked(false)
+        } else {
+          setLiked(user_pet_fav.includes(pet.pet_id));
+        }
+        
         // console.log(liked);
       } catch (error) {
         console.error('Error fetching user favorites:', error);
@@ -25,22 +33,25 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
     };
 
     checkIfLiked();
-  }, [sessionID, pet.id]);
+  }, [sessionID, pet.pet_id]);
 
   const handleLikeButtonClick = async () => {
     const url = liked
-      ? `/deleteFavPet/${sessionID}/delete/${pet.id}`
-      : `/addFavPet/${sessionID}/add/${pet.id}`;
+      ? `http://localhost:3001/api/favourites/deleteFavPet/${sessionID}/delete/${pet.pet_id}`
+      : `http://localhost:3001/api/favourites/addFavPet/${sessionID}/add/${pet.pet_id}`;
 
     try {
-      const response = await axios.post(url, { liked: !liked });
+      const response = await axios.put(url, { liked: !liked });
       console.log('Response from API:', response.data);
       setLiked(!liked); // Update state based on successful API response
+
+      if (onLike) {
+        onLike(pet); // Notify parent component of like action
+      }
 
     } catch (error) {
       console.error('Error updating like status:', error);
     }
-    onLike(pet); // Notify parent component of like action
   };
 
   const handleModalOpen = () => {

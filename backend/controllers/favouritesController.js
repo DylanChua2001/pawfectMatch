@@ -80,7 +80,7 @@ const favouritesController = {
 
     deleteFavPet: async (req, res) => {
         try {
-            const {userID, deletePet} = req.params
+            const {userID, petID} = req.params
             
             const checkQuery = `
                 SELECT user_pet_fav 
@@ -99,9 +99,9 @@ const favouritesController = {
             const currentFavPets = checkResult.rows[0].user_pet_fav;
 
             // Check if the train pack to be deleted is in the user's favorites
-            if (!currentFavPets.includes(deletePet)) {
+            if (!currentFavPets.includes(petID)) {
                 return res.status(404).json({
-                    message: `Training package ${deletePet} not found in user's favorite train packs`
+                    message: `Pet ${petID} not found in user's favorite pets`
                 });
             }
 
@@ -112,7 +112,7 @@ const favouritesController = {
                 RETURNING user_pet_fav;
             `;
                     
-            const {rows} = await db.query(queryText, [userID, deletePet]) // await result before continuing
+            const {rows} = await db.query(queryText, [userID, petID]) // await result before continuing
             
             if (rows.length > 0) {
                 res.status(200).json({
@@ -123,7 +123,7 @@ const favouritesController = {
                 })
             } else {
                 res.status(404).json({
-                    message: `No Favourite Pets found for user with ID ${userID} or item ${deletePet} could not be found`
+                    message: `No Favourite Pets found for user with ID ${userID} or item ${petID} could not be found`
                 });
             }
 
@@ -170,7 +170,7 @@ const favouritesController = {
 
     addFavTrainPack: async (req, res) => {
         try {
-            const {userID, addTrainPack} = req.params
+            const {userID, trainPackID} = req.params
 
             const checkQuery = `
                 SELECT user_train_fav 
@@ -193,7 +193,7 @@ const favouritesController = {
                 RETURNING user_train_fav;
             `;
                     
-            const {rows} = await db.query(queryText, [userID, addTrainPack]) // await result before continuing
+            const {rows} = await db.query(queryText, [userID, trainPackID]) // await result before continuing
             
             if (rows.length > 0) {
                 res.status(200).json({
@@ -216,7 +216,7 @@ const favouritesController = {
 
     deleteFavTrainPack: async (req, res) => {
         try {
-            const {userID, deleteTrainPack} = req.params
+            const {userID, trainPackID} = req.params
 
             const checkQuery = `
                 SELECT user_train_fav 
@@ -235,9 +235,9 @@ const favouritesController = {
             const currentFavTrainPacks = checkResult.rows[0].user_train_fav;
 
             // Check if the train pack to be deleted is in the user's favorites
-            if (!currentFavTrainPacks.includes(deleteTrainPack)) {
+            if (!currentFavTrainPacks.includes(trainPackID)) {
                 return res.status(404).json({
-                    message: `Training package ${deleteTrainPack} not found in user's favorite train packs`
+                    message: `Training package ${trainPackID} not found in user's favorite train packs`
                 });
             }
 
@@ -248,7 +248,7 @@ const favouritesController = {
                 RETURNING user_train_fav;
             `;
                     
-            const {rows} = await db.query(queryText, [userID, deleteTrainPack]) // await result before continuing
+            const {rows} = await db.query(queryText, [userID, trainPackID]) // await result before continuing
             
             if (rows.length > 0) {
                 res.status(200).json({
@@ -259,7 +259,7 @@ const favouritesController = {
                 })
             } else {
                 res.status(404).json({
-                    message: `No Favourite Pets found for user with ID ${userID} or item ${deleteTrainPack} could not be found`
+                    message: `No Favourite Pets found for user with ID ${userID} or item ${trainPackID} could not be found`
                 });
             }
 

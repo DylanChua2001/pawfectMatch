@@ -1,14 +1,16 @@
+// components/PetProfile.js
+'use client'
 import { useState } from 'react';
 import { Box, Image, Text, SimpleGrid, VStack, Divider, HStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
-const PetProfile = ({ pet }) => {
+const PetProfile = ({ pet, onLike }) => {
   const [liked, setLiked] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleLikeButtonClick = () => {
     setLiked(!liked);
-    console.log(`Pet liked: ${!liked}`);
+    onLike(pet); // Notify parent component of like action
   };
 
   const handleModalOpen = () => {

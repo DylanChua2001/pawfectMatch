@@ -1,15 +1,18 @@
 // components/PetList.js
+'use client'
 import { useState, useEffect } from 'react';
 import { Box, Button, Input, Flex, IconButton } from '@chakra-ui/react';
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
 import PetCard from './petCard';
 import PetProfile from './petProfile';
+import FavoritePets from './favpets'; // Assuming you have a component for displaying favorite pets
 
 const PetList = () => {
   const [selectedPet, setSelectedPet] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPets, setFilteredPets] = useState([]);
   const [petsData, setPetsData] = useState([]);
+  const [favoritePets, setFavoritePets] = useState([]);
 
   useEffect(() => {
     // Fetch pets data from the backend
@@ -49,6 +52,22 @@ const PetList = () => {
     setFilteredPets(petsData);
   };
 
+  const handleLikePet = (pet) => {
+    // Check if pet already exists in favorites
+    if (!favoritePets.some(favPet => favPet.pet_id === pet.pet_id)) {
+      setFavoritePets([...favoritePets, pet]);
+    }
+  };
+
+  const handleRemoveFromFavorites = (petId) => {
+    const updatedFavorites = favoritePets.filter(pet => pet.pet_id !== petId);
+    setFavoritePets(updatedFavorites);
+  };
+
+  const handleFavoritePetClick = (pet) => {
+    setSelectedPet(pet);
+  };
+
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       handleSearch();
@@ -60,7 +79,7 @@ const PetList = () => {
       {selectedPet ? (
         <Box>
           <Button onClick={handleBackToList} mb={4}>Back to List</Button>
-          <PetProfile pet={selectedPet} />
+          <PetProfile pet={selectedPet} onLike={handleLikePet} />
         </Box>
       ) : (
         <>
@@ -96,6 +115,7 @@ const PetList = () => {
               </Box>
             ))}
           </Box>
+          <FavoritePets favoritePets={favoritePets} onRemove={handleRemoveFromFavorites} onPetClick={handleFavoritePetClick} />
         </>
       )}
     </Box>

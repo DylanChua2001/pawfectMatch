@@ -10,6 +10,21 @@ const getAllUserC = async(req,res,next) => {
     }
 }
 
+const getUserByID = async (req, res, next) => {
+    const id = req.params.id; // Get the id from the request parameters
+
+    try {
+        const user = await userModel.getUserByID(id);
+        if (user) {
+            res.json(user); // Return the pet data as JSON
+        } else {
+            res.status(404).json({ message: 'User not found' }); // Pet not found
+        }
+    } catch (error) {
+        next(error); // Pass any errors to the error handler middleware
+    }
+};
+
 const createNewUserC = async (req, res, next) => {
     try{
         const newUser = await userModel.createNewUserM(req.body)
@@ -64,6 +79,7 @@ const deleteUserC = async (req, res, next) => {
 
 module.exports = {
     getAllUserC,
+    getUserByID,
     createNewUserC,
     updateUserC,
     deleteUserC

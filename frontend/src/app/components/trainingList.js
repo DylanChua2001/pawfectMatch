@@ -1,15 +1,27 @@
 // components/TrainingPackagesList.js
-import { useState } from 'react';
+'use client'
+import { useState, useEffect } from 'react';
 import { Box, Button, Input, Flex, IconButton } from '@chakra-ui/react';
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
 import TrainingPackageCard from './trainingCard';
-import TrainingPackageProfile from './trainingPackageProfile'; // Assuming you have this component
-import trainingPackagesData from '../tempdata/training.json'; // Adjust the path based on your project structure
+import TrainingPackageProfile from './trainingPackageProfile';
+import { useRouter } from 'next/navigation';
 
 const TrainingPackagesList = () => {
   const [selectedTrainingPackage, setSelectedTrainingPackage] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredTrainingPackages, setFilteredTrainingPackages] = useState(trainingPackagesData);
+  const [filteredTrainingPackages, setFilteredTrainingPackages] = useState([]);
+  const [cart, setCart] = useState([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchTrainingPackages = async () => {
+      const response = await fetch('http://localhost:3001/api/trainPack/getAllTrainingPack');
+      const data = await response.json();
+      setFilteredTrainingPackages(data.allTrainPack);
+    };
+    fetchTrainingPackages();
+  }, []);
 
   const handleTrainingPackageCardClick = (trainingPackage) => {
     setSelectedTrainingPackage(trainingPackage);
@@ -21,16 +33,16 @@ const TrainingPackagesList = () => {
 
   const handleSearch = () => {
     const lowercasedFilter = searchTerm.toLowerCase();
-    const filteredData = trainingPackagesData.filter(trainingPackage => 
-      trainingPackage.name.toLowerCase().includes(lowercasedFilter) ||
-      trainingPackage.description.toLowerCase().includes(lowercasedFilter)
+    const filteredData = filteredTrainingPackages.filter(trainingPackage => 
+      trainingPackage.train_name.toLowerCase().includes(lowercasedFilter) ||
+      trainingPackage.train_desc.toLowerCase().includes(lowercasedFilter)
     );
     setFilteredTrainingPackages(filteredData);
   };
 
   const handleClearFilter = () => {
     setSearchTerm('');
-    setFilteredTrainingPackages(trainingPackagesData);
+    fetchTrainingPackages();
   };
 
   const handleKeyDown = (event) => {
@@ -39,13 +51,21 @@ const TrainingPackagesList = () => {
     }
   };
 
+  const handleAddToCart = (trainingPackage) => {
+    setCart((prevCart) => [...prevCart, trainingPackage]);
+    router.push('/pages/cart', { state: { cart } });
+  };
+
   return (
     <>
       <Box maxW="100vw" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={4}>
         {selectedTrainingPackage ? (
           <Box>
             <Button onClick={handleBackToList} mb={4}>Back to List</Button>
-            <TrainingPackageProfile trainingPackage={selectedTrainingPackage} />
+            <TrainingPackageProfile 
+              trainingPackage={selectedTrainingPackage} 
+              onAddToCart={handleAddToCart} // Pass the addToCart function
+            />
           </Box>
         ) : (
           <>
@@ -76,8 +96,11 @@ const TrainingPackagesList = () => {
             </Flex>
             <Box display="flex" overflowX="auto">
               {filteredTrainingPackages.map((trainingPackage) => (
-                <Box key={trainingPackage.id} flex="0 0 auto" maxW="sm" p={2}>
-                  <TrainingPackageCard trainingPackage={trainingPackage} onClick={() => handleTrainingPackageCardClick(trainingPackage)} />
+                <Box key={trainingPackage.train_id} flex="0 0 auto" maxW="sm" p={2}>
+                  <TrainingPackageCard 
+                    trainingPackage={trainingPackage} 
+                    onClick={() => handleTrainingPackageCardClick(trainingPackage)} 
+                  />
                 </Box>
               ))}
             </Box>

@@ -1,14 +1,22 @@
-// components/PetProfile.js
 import { useState } from 'react';
-import { Box, Image, Text, SimpleGrid, VStack, Divider, HStack, IconButton } from '@chakra-ui/react';
+import { Box, Image, Text, SimpleGrid, VStack, Divider, HStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 const PetProfile = ({ pet }) => {
   const [liked, setLiked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleLikeButtonClick = () => {
     setLiked(!liked);
     console.log(`Pet liked: ${!liked}`);
+  };
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -45,6 +53,7 @@ const PetProfile = ({ pet }) => {
           <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Breed: {pet.pet_breed}</Text> {/* Use pet_breed */}
           <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Age: {pet.pet_age} years</Text> {/* Use pet_age */}
           <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Description: {pet.pet_description || "No description available"}</Text> {/* Adjust as necessary */}
+          <Button onClick={handleModalOpen} colorScheme="blue" mt={4}>Match</Button>
         </VStack>
       </HStack>
       <Divider my={3} />
@@ -70,6 +79,24 @@ const PetProfile = ({ pet }) => {
           ))}
         </SimpleGrid>
       </Box>
+
+      <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Match</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text fontSize="lg" fontWeight="bold" color="green.500">
+              Congratulations! You have been matched with {pet.pet_name}.
+            </Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleModalClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

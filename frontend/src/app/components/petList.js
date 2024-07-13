@@ -5,6 +5,7 @@ import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
 import PetCard from './petCard';
 import PetProfile from './petProfile';
 import petsData from '../tempdata/pets.json'; // Adjust the path based on your project structure
+import Filter from "./filter";
 
 const PetList = () => {
   const [selectedPet, setSelectedPet] = useState(null);
@@ -49,7 +50,7 @@ const PetList = () => {
           </Box>
         ) : (
           <>
-            <Flex mb={4} alignItems="center">
+            <Flex  marginLeft= "8px" mb="10px" alignItems="center">
               <Input 
                 placeholder="Search pets..." 
                 value={searchTerm}
@@ -73,6 +74,7 @@ const PetList = () => {
                   ml={2}
                 />
               )}
+                <Filter />
             </Flex>
             <Box display="flex" overflowX="auto">
               {filteredPets.map((pet) => (

@@ -3,7 +3,6 @@
 import React from "react";
 import { Box , Flex} from "@chakra-ui/react";
 import Header from "../../components/header";
-import Filter from "../../components/filter";
 import Pets from "../../components/petList";
 
 const HomePage = () => {
@@ -13,10 +12,7 @@ const HomePage = () => {
       <Box mt="60px">
         <Header />
       </Box>
-      <Box>
-        <Filter />
-      </Box>
-      <Flex justifyContent="center">
+      <Flex justifyContent="center" mt="20px">
         <Box  
           maxW={["90%", "92%", "97%"]}
           w="100%" 

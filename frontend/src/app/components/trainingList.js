@@ -41,7 +41,7 @@ const TrainingPackagesList = () => {
 
   return (
     <>
-      <Box maxW="100vw" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={4}>
+      <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={4}>
         {selectedTrainingPackage ? (
           <Box>
             <Button onClick={handleBackToList} mb={4}>Back to List</Button>
@@ -49,7 +49,7 @@ const TrainingPackagesList = () => {
           </Box>
         ) : (
           <>
-            <Flex mb={4} alignItems="center">
+            <Flex  marginLeft= "8px" mb={4} alignItems="center">
               <Input 
                 placeholder="Search training packages..." 
                 value={searchTerm}

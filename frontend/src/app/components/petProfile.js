@@ -4,30 +4,33 @@ import { useState, useEffect } from 'react';
 import { Box, Image, Text, VStack, IconButton, Button } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import axios from 'axios';
+import Cookie from 'js-cookie';
 
-const PetProfile = ({ pet, onLike, showNameAndPhotoOnly, userID }) => {
+const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   const [liked, setLiked] = useState(false); //liked is a boolean, while setLiked sets the value of liked
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const sessionID = Cookie.get('userID'); 
 
   useEffect(() => {
     const checkIfLiked = async () => {
       try {
-        const response = await axios.get(`/getUser/${userID}`);
+        const response = await axios.get(`/getUser/${sessionID}`);
         const { user_pet_fav } = response.data;
         setLiked(user_pet_fav.includes(pet.id));
-        console.log(liked);
+        // console.log(liked);
       } catch (error) {
         console.error('Error fetching user favorites:', error);
       }
     };
 
     checkIfLiked();
-  }, [userID, pet.id]);
+  }, [sessionID, pet.id]);
 
   const handleLikeButtonClick = async () => {
     const url = liked
-      ? `/deleteFavPet/${userID}/delete/${pet.id}`
-      : `/addFavPet/${userID}/add/${pet.id}`;
+      ? `/deleteFavPet/${sessionID}/delete/${pet.id}`
+      : `/addFavPet/${sessionID}/add/${pet.id}`;
 
     try {
       const response = await axios.post(url, { liked: !liked });

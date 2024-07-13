@@ -1,14 +1,42 @@
 // components/PetProfile.js
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Image, Text, SimpleGrid, VStack, Divider, HStack, IconButton } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import axios from 'axios';
 
-const PetProfile = ({ pet }) => {
-  const [liked, setLiked] = useState(false);
+const PetProfile = ({ pet, userID }) => {
+  const [liked, setLiked] = useState(false); //liked is a boolean, while setLiked sets the value of liked
 
-  const handleLikeButtonClick = () => {
-    setLiked(!liked);
-    console.log(`Pet liked: ${!liked}`);
+  useEffect(() => {
+    const checkIfLiked = async () => {
+      try {
+        const response = await axios.get(`/getUser/${userID}`);
+        const { user_pet_fav } = response.data;
+        setLiked(user_pet_fav.includes(pet.id));
+        console.log(liked);
+      } catch (error) {
+        console.error('Error fetching user favorites:', error);
+      }
+    };
+
+    checkIfLiked();
+  }, [userID, pet.id]);
+
+  const handleLikeButtonClick = async () => {
+
+    const url = liked
+      ? `/deleteFavPet/${userID}/delete/${pet.id}`
+      : `/addFavPet/${userID}/add/${pet.id}`;
+
+    try {
+      const response = await axios.post(url, { liked: !liked });
+      console.log('Response from API:', response.data);
+      setLiked(!liked); // Update state based on successful API response
+
+    } catch (error) {
+      console.error('Error updating like status:', error);
+    }
+
   };
 
   return (

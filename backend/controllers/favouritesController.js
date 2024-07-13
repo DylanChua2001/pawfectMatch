@@ -34,7 +34,7 @@ const favouritesController = {
 
     addFavPet: async (req, res) => {
         try {
-            const {userID, addPet} = req.params
+            const {userID, petID} = req.params
 
             const checkQuery = `
                 SELECT user_pet_fav 
@@ -57,7 +57,7 @@ const favouritesController = {
                 RETURNING user_pet_fav;
             `;
                     
-            const {rows} = await db.query(queryText, [userID, addPet]) // await result before continuing
+            const {rows} = await db.query(queryText, [userID, petID]) // await result before continuing
             
             if (rows.length > 0) {
                 res.status(200).json({

@@ -1,15 +1,20 @@
 // components/TrainingPackageProfile.js
 'use client'
 import { useState } from 'react';
-import { Box, Text, VStack, HStack, IconButton } from '@chakra-ui/react';
+import { Box, Text, VStack, HStack, IconButton, Button} from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
-const TrainingPackageProfile = ({ trainingPackage }) => {
+const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
   const [liked, setLiked] = useState(false);
 
   const handleLikeButtonClick = () => {
     setLiked(!liked);
     console.log(`Training Package liked: ${!liked}`);
+  };
+
+  const handleAddToCart = () => {
+    onAddToCart(trainingPackage);
+    console.log(`Added ${trainingPackage.train_name} to cart`);
   };
 
   return (
@@ -38,6 +43,13 @@ const TrainingPackageProfile = ({ trainingPackage }) => {
           </Text>
           <Text fontSize="3xl">Price: ${trainingPackage.train_price}</Text>
           <Text fontSize="3xl">Description: {trainingPackage.train_desc}</Text>
+          <Button
+            colorScheme="teal"
+            onClick={handleAddToCart}
+            mt={4}
+          >
+            Add to Cart
+          </Button>
         </VStack>
       </HStack>
     </Box>

@@ -27,16 +27,6 @@ const TrainingPackageCard = ({ trainingPackage, onClick, onAddToCart }) => {
         <Text mt={2} fontWeight="bold" textAlign="center">
           ${trainingPackage.train_price}
         </Text>
-        <Button 
-          colorScheme="teal" 
-          mt={4} 
-          onClick={(e) => {
-            e.stopPropagation();
-            onAddToCart(trainingPackage);
-          }}
-        >
-          Add to Cart
-        </Button>
       </Box>
     </Box>
   );

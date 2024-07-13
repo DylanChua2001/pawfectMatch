@@ -62,7 +62,10 @@ const TrainingPackagesList = () => {
         {selectedTrainingPackage ? (
           <Box>
             <Button onClick={handleBackToList} mb={4}>Back to List</Button>
-            <TrainingPackageProfile trainingPackage={selectedTrainingPackage} />
+            <TrainingPackageProfile 
+              trainingPackage={selectedTrainingPackage} 
+              onAddToCart={handleAddToCart} // Pass the addToCart function
+            />
           </Box>
         ) : (
           <>
@@ -97,7 +100,6 @@ const TrainingPackagesList = () => {
                   <TrainingPackageCard 
                     trainingPackage={trainingPackage} 
                     onClick={() => handleTrainingPackageCardClick(trainingPackage)} 
-                    onAddToCart={handleAddToCart}
                   />
                 </Box>
               ))}

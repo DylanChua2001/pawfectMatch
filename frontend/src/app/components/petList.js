@@ -1,5 +1,7 @@
 // components/PetList.js
+
 'use client'
+
 import { useState, useEffect } from 'react';
 import { Box, Button, Input, Flex, IconButton } from '@chakra-ui/react';
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
@@ -12,6 +14,7 @@ const PetList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPets, setFilteredPets] = useState([]);
   const [petsData, setPetsData] = useState([]);
+
   const [favoritePets, setFavoritePets] = useState([]);
   const router = useRouter();
 
@@ -110,6 +113,7 @@ const PetList = () => {
               icon={<SearchIcon />}
               onClick={handleSearch}
               colorScheme="teal"
+
               ml={2}
             />
             {searchTerm && (

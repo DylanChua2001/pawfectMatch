@@ -6,10 +6,19 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   const [liked, setLiked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleLikeButtonClick = () => {
     setLiked(!liked);
     onLike(pet); // Notify parent component of like action
+  };
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -43,7 +52,26 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
             <Button colorScheme="blue" mt={4}>Match</Button>
           </VStack>
         )}
+
       </Box>
+
+      <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Match</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text fontSize="lg" fontWeight="bold" color="green.500">
+              Congratulations! You have been matched with {pet.pet_name}.
+            </Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleModalClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

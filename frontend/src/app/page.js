@@ -1,95 +1,56 @@
-'use client'
-
-import {
-  Flex,
-  Box,
-  FormControl,
-  Input,
-  Checkbox,
-  Stack,
-  Button,
-  Heading,
-  Text,
-  useToast,
-} from '@chakra-ui/react'
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Header from './components/header';
+"use client"
+import { Box, Image, VStack, Flex, Heading, useToast } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
+import Header from "./components/header";
 import Cookie from 'js-cookie';
-import axios from 'axios';
 
-export default function SimpleCard() {
+const HomePage = () => {
   const router = useRouter();
+  const userID = Cookie.get('userID');
   const toast = useToast();
-  const [formData, setFormData] = useState({
-    username: '',  // Assuming 'username' is what your backend expects
-    password: '',
-  });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
-
-  const handleSignIn = async () => {
-    try {
-      const response = await axios.post("http://localhost:3001/api/auth/login", formData);
-      const { userID, username } = response.data.session;
-      Cookie.set('userID', userID);
-      Cookie.set('username', username);
-  
-      router.push("/pages/selection");
-    } catch (error) {
-      console.error('Axios Error:', error);
-
-      if (error.response) {
-        console.error('Response Status:', error.response.status);
-        console.error('Response Data:', error.response.data);
-        toast({
-          title: 'Login Error',
-          description: error.response.data,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
-      } else if (error.request) {
-        console.error('No Response Received:', error.request);
-        toast({
-          title: 'Login Error',
-          description: 'No response received from the server',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
-      } else {
-        console.error('Error Message:', error.message);
-        toast({
-          title: 'Login Error',
-          description: 'An error occurred',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
-      }
+  const handleImageClick = (route) => {
+    if (!userID) {
+      toast({
+        title: 'Please Login to view our pets and training packages',
+        description: 'Redirecting to login page',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        onCloseComplete: () => router.push('/pages/login'), // Replace with your actual login page route
+      });
+      return;
     }
+    router.push(route);
   };
 
   return (
-    <>
+    <Flex height="100vh" alignItems="center" justifyContent="center">
       <Header />
-      <Flex
-        height="100vh"
-        alignItems="center"
-        justifyContent="center"
-        direction="column"
-      >
-        <Stack
-          align={'center'}
-          spacing={6}
-          mx={'auto'}
-          maxW={'xl'}
-          mt={40}
-        >
+      <Flex direction="row" mt="10px" justifyContent="center" alignItems="center" gap="2.5%" p="20px" maxWidth="100%">
+        <VStack onClick={() => handleImageClick('/pages/pets')} cursor="pointer">
+          <Box
+            borderRadius="10px"
+            padding="3%"
+            paddingRight="10%"
+            bg="rgba(255, 250, 245, 0.7)"
+            width={['50vw', '40vw', '30vw']}
+            minHeight={['65vh', '55vh', '55vh']}
+            textAlign="center"
+          >
+            <Heading
+              fontSize="250%"
+              fontFamily="'Lilita One', cursive"
+              fontWeight="bold"
+              textAlign="center"
+              mt="4%"
+            >
+              Pets
+            </Heading>
+            <Image src="/pets_option.png" alt="Pets" boxSize="100%" objectFit="cover" />
+          </Box>
+        </VStack>
+        <VStack onClick={() => handleImageClick('/pages/training')} cursor="pointer">
           <Box
             borderRadius="10px"
             paddingTop="3%"
@@ -97,98 +58,49 @@ export default function SimpleCard() {
             paddingLeft="10%"
             paddingRight="10%"
             bg="rgba(255, 250, 245, 0.7)"
-            width={['90%', '70%', '50vw']}
-            minHeight={['70vh', '85vh', '85vh']}
+            width={['50vw', '40vw', '30vw']}
+            minHeight={['65vh', '55vh', '55vh']}
+            textAlign="center"
           >
             <Heading
-              fontSize="180%"
+              fontSize={['200%', '200%', '250%', '250%']}
               fontFamily="'Lilita One', cursive"
               fontWeight="bold"
               textAlign="center"
-              mb={10}
+              mt="4%"
             >
-              Login
+              Training Packages
             </Heading>
-
-            <Stack spacing={4}>
-              <FormControl id="username">
-                <Input
-                  onChange={handleChange}
-                  type="text"
-                  placeholder='Username'
-                  width="100%"
-                  padding="10"
-                  my='10'
-                  size="100"
-                  borderRadius="5px"
-                  borderColor="#D9D9D9"
-                  _focus={{ bg: "white", borderColor: "blue.400" }}
-                />
-              </FormControl>
-              <FormControl id="password">
-                <Input
-                  onChange={handleChange}
-                  type="password"
-                  placeholder="Password"
-                  width="100%"
-                  padding="10"
-                  my="10"
-                  size="100"
-                  borderRadius="5px"
-                  borderColor="#D9D9D9"
-                  _focus={{ bg: "white", borderColor: "blue.400" }}
-                />
-              </FormControl>
-              <Stack>
-                <Stack
-                  direction={{ base: 'column', sm: 'row' }}
-                  align={'start'}
-                  justify={'space-between'}
-                >
-                  <Checkbox
-                    fontFamily="sans-serif"
-                    fontSize="13"
-                  >
-                    <Text fontFamily="sans-serif" fontSize="13">
-                      Remember me
-                    </Text>
-                  </Checkbox>
-                  <Text
-                    color="blue"
-                    fontFamily="sans-serif"
-                    fontSize="13"
-                  >
-                    <Link href="forgot-password">
-                      Forgot password?
-                    </Link>
-                  </Text>
-                </Stack>
-                <Button
-                  onClick={handleSignIn}
-                  _hover={{ cursor: 'pointer' }}
-                  alignItems='center'
-                  width="100%"
-                  padding="10"
-                  my="5"
-                  borderRadius="5px"
-                  backgroundColor="#F8D3A7"
-                  textColor='black'
-                >
-                  Login
-                </Button>
-              </Stack>
-              <Stack alignItems='center' mt="5">
-                <Text fontFamily="sans-serif" fontSize="13">
-                  Don't have an account? {" "}
-                  <Link href="/signup" passHref>
-                    <button style={{ color: 'blue', background: 'none', border: 'none', cursor: 'pointer' }}>Sign up</button>
-                  </Link>
-                </Text>
-              </Stack>
-            </Stack>
+            <Image src="/training_option.png" alt="Training Packages" boxSize="100%" objectFit="cover" />
           </Box>
-        </Stack>
+        </VStack>
+         <VStack onClick={() => handleImageClick('/pages/chat')} cursor="pointer">
+          <Box
+            borderRadius="10px"
+            paddingTop="7%"
+            paddingBottom="7%"
+            paddingLeft="10%"
+            paddingRight="10%"
+            bg="rgba(255, 250, 245, 0.7)"
+            width={['50vw', '40vw', '30vw']}
+            minHeight={['65vh', '55vh', '55vh']}
+            textAlign="center"
+          >
+            <Heading
+              fontSize={['200%', '200%', '250%', '250%']}
+              fontFamily="'Lilita One', cursive"
+              fontWeight="bold"
+              textAlign="center"
+              mb="4%"
+            >
+              PawAI
+            </Heading>
+            <Image src="../chick.png" alt="Training Packages" boxSize="100%" objectFit="cover" />
+          </Box>
+        </VStack>
       </Flex>
-    </>
+    </Flex>
   );
-}
+};
+
+export default HomePage;

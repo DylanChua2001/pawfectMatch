@@ -2,9 +2,6 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { Box, Image, Text, VStack, IconButton, Button } from '@chakra-ui/react';
-'use client'
-import { useState, useEffect } from 'react';
-import { Box, Image, Text, VStack, IconButton, Button } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 const PetProfile = ({ pet, onLike, showNameAndPhotoOnly, onLike, showNameAndPhotoOnly }) => {
@@ -25,8 +22,6 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly, onLike, showNameAndPhot
   };
 
   return (
-    <Box maxW="80vw" mx="auto" my={10} p={5} borderWidth="1px" borderRadius="lg" boxShadow="md">
-      <Box>
     <Box maxW="80vw" mx="auto" my={10} p={5} borderWidth="1px" borderRadius="lg" boxShadow="md">
       <Box>
         <Image

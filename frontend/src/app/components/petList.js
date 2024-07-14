@@ -81,29 +81,10 @@ const PetList = () => {
     setSelectedPet(pet);
   };
 
-  const handleLikePet = (pet) => {
-    if (!favoritePets.some(favPet => favPet.pet_id === pet.pet_id)) {
-      setFavoritePets([...favoritePets, pet]);
-    }
-  };
-
-  const handleRemoveFromFavorites = (petId) => {
-    const updatedFavorites = favoritePets.filter(pet => pet.pet_id !== petId);
-    setFavoritePets(updatedFavorites);
-  };
-
-  const handleFavoritePetClick = (pet) => {
-    setSelectedPet(pet);
-  };
-
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       handleSearch();
     }
-  };
-
-  const navigateToFavorites = () => {
-    router.push('/pages/favpets'); // Navigate to favorites page
   };
 
   const navigateToFavorites = () => {

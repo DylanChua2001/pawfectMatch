@@ -13,9 +13,6 @@ const HomePage = () => {
         <Box mt="60px">
           <Header />
         </Box>
-        <Box>
-          <Filter />
-        </Box>
         <Box >
           <Pets />
         </Box>

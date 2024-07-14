@@ -56,7 +56,7 @@ async function reccomendPet(req, res) {
             {
                 input: req.body.question,
             },
-            { configurable: { sessionId: "langchain-test-session4" } }
+            { configurable: { sessionId: req.cookies.userID } }
         );
         console.log(response);
         await pool.end();
@@ -113,8 +113,7 @@ async function getPetID(req, res) {
             const queryText = 'DELETE FROM langchain_chat_histories WHERE session_id = $1;';
             const id = req.body.sessionID;
             await database.query(queryText, [id]);
-            res.status(200).json({ message: `Chat record deleted successfully and proceeding to checkout page of pet_id ${finalAnswer}` });
-            return res.json({ finalAnswer });
+            res.status(200).json(finalAnswer);
         } else {
             console.log(finalAnswer);
             res.status(300).json({ message: `We are unable to determine the pet that you want. Answer more questions first.` });

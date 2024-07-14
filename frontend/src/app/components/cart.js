@@ -1,6 +1,5 @@
 // pages/cart.js
 'use client'
-// pages/cart.js
 import { Box, Button, Text, VStack, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -10,14 +9,14 @@ const Cart = () => {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    if (router.state && router.state.cart) {
-      setCart(router.state.cart);
-    }
-  }, [router.state]);
+    const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    setCart(savedCart);
+  }, []);
 
   const totalPrice = cart.reduce((total, item) => total + parseFloat(item.train_price), 0);
 
   const handleCheckout = () => {
+    localStorage.removeItem('cart');
     setCart([]);
     router.push('/pages/stripe');
   };
@@ -40,4 +39,3 @@ const Cart = () => {
 };
 
 export default Cart;
-

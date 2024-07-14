@@ -1,7 +1,7 @@
 // components/TrainingPackageProfile.js
 'use client'
 import { useState } from 'react';
-import { Box, Text, VStack, HStack, IconButton, Button} from '@chakra-ui/react';
+import { Box, Text, VStack, HStack, IconButton, Button } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
@@ -28,7 +28,6 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
       boxShadow="md"
     >
       <HStack spacing={5} align="start">
-        {/* Replace 'mainPhoto' with an actual image URL if needed */}
         <VStack align="start" justify="center" spacing={3}>
           <Text fontSize="4xl" fontWeight="bold">
             {trainingPackage.train_name}

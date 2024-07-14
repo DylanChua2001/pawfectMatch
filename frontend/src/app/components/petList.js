@@ -1,10 +1,14 @@
 // components/PetList.js
 'use client'
-import { useState, useEffect } from 'react';
+
+'use client'
+
+import { useState, useEffect, useEffect } from 'react';
 import { Box, Button, Input, Flex, IconButton } from '@chakra-ui/react';
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
 import PetCard from './petCard';
 import PetProfile from './petProfile';
+import { useRouter } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
 const PetList = () => {
@@ -78,10 +82,29 @@ const PetList = () => {
     setSelectedPet(pet);
   };
 
+  const handleLikePet = (pet) => {
+    if (!favoritePets.some(favPet => favPet.pet_id === pet.pet_id)) {
+      setFavoritePets([...favoritePets, pet]);
+    }
+  };
+
+  const handleRemoveFromFavorites = (petId) => {
+    const updatedFavorites = favoritePets.filter(pet => pet.pet_id !== petId);
+    setFavoritePets(updatedFavorites);
+  };
+
+  const handleFavoritePetClick = (pet) => {
+    setSelectedPet(pet);
+  };
+
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       handleSearch();
     }
+  };
+
+  const navigateToFavorites = () => {
+    router.push('/pages/favpets'); // Navigate to favorites page
   };
 
   const navigateToFavorites = () => {

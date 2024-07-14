@@ -30,10 +30,12 @@ const Header = () => {
   return (
     <>
       <HStack position="fixed" top="2%" left="2%" zIndex="1">
-        <Image src="/pawprints.png" alt="Image" width={50} height={50} />
-        <Heading fontSize="240%" fontFamily="Kaushan Script" fontStyle="italic">
-          PawfectMatch
-        </Heading>
+        <Button bg={'transparent'} _hover={{ bg: 'transparent' }} onClick={() => router.push("/pages/selection")}>
+          <Image src="/pawprints.png" alt="Image" width={50} height={50} />
+          <Heading fontSize="240%" fontFamily="Kaushan Script" fontStyle="italic">
+            PawfectMatch
+          </Heading>
+        </Button>
       </HStack>
       <HStack position="fixed" top="2%" right="2%" zIndex="1">
         <Menu>

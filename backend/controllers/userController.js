@@ -1,4 +1,5 @@
 const userModel = require("../models/userModel")
+const db = require("../config/db")
 
 const getAllUserC = async(req,res,next) => {
     try{
@@ -76,11 +77,82 @@ const deleteUserC = async (req, res, next) => {
     }
 }
 
+const uploadUserImageIDC = async(req,res) => {
+    try {
+        const {userID} = req.params
+        const {photoID} = req.body
+
+        const queryText = `UPDATE user_table 
+        SET user_image_id = $1
+        WHERE user_id = $2
+        RETURNING user_image_id`
+
+        const values = [photoID, userID]
+
+        const{rows} = await db.query(queryText, values)
+
+        if (rows.length > 0) {
+            res.status(200).json({
+
+                message : `Photo for User with ID ${userID} has been uploaded successfully`,
+                userImage : rows[0].user_photo
+
+            })
+        } else {
+            res.status(404).json({
+                message: `Photo for user with ID ${userID} has not been uploaded.`
+            });
+        }
+
+    } catch (error) {
+
+        res.status(500).json({ 
+            message: 'Internal Server Error' 
+        });
+
+    }
+}
+
+
+const retrieveUserImageIDC = async(req,res) => {
+    try {
+        const {userID} = req.params
+
+        const queryText = 'SELECT user_image_id FROM user_table WHERE user_id = $1';
+
+        const values = [userID]
+
+        const{rows} = await db.query(queryText, values)
+
+        if (rows.length > 0) {
+            res.status(200).json({
+
+                message : `Photo for User with ID ${userID} has been retrieved successfully`,
+                userImage : rows
+
+            })
+        } else {
+            res.status(404).json({
+                message: `Photo for user with ID ${userID} has failed to retrieve.`
+            });
+        }
+
+    } catch (error) {
+
+        res.status(500).json({ 
+            message: 'Internal Server Error' 
+        });
+
+    }
+}
+
 
 module.exports = {
     getAllUserC,
     getUserByID,
     createNewUserC,
     updateUserC,
-    deleteUserC
+    deleteUserC,
+    uploadUserImageIDC,
+    retrieveUserImageIDC
 }

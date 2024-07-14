@@ -30,6 +30,7 @@ app.use('/api/chat', require('./routes/chatRoute'))
 app.use('/api/favourites', require('./routes/favouritesRoute'))
 app.use('/api/match', require('./routes/matchRoute'))
 app.use('/api/auth',require('./routes/authRoute'))
+app.use('/api/image',require('./routes/s3Route'))
 
 
 app.listen(port, () => {

@@ -3,14 +3,55 @@
 import { useState, useEffect } from 'react';
 import { Box, Image, Text, VStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import axios from 'axios';
+import Cookie from 'js-cookie';
 
 const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(false); //liked is a boolean, while setLiked sets the value of liked
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleLikeButtonClick = () => {
-    setLiked(!liked);
-    onLike(pet); // Notify parent component of like action
+  const sessionID = Cookie.get('userID'); 
+  console.log(sessionID)
+  console.log(pet.pet_id)
+
+  useEffect(() => {
+    const checkIfLiked = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/api/users/id/${sessionID}`);
+        const { user_pet_fav } = response.data;
+        console.log(user_pet_fav)
+        if (user_pet_fav == null) {
+          setLiked(false)
+        } else {
+          setLiked(user_pet_fav.includes(pet.pet_id));
+        }
+        
+        // console.log(liked);
+      } catch (error) {
+        console.error('Error fetching user favorites:', error);
+      }
+    };
+
+    checkIfLiked();
+  }, [sessionID, pet.pet_id]);
+
+  const handleLikeButtonClick = async () => {
+    const url = liked
+      ? `http://localhost:3001/api/favourites/deleteFavPet/${sessionID}/delete/${pet.pet_id}`
+      : `http://localhost:3001/api/favourites/addFavPet/${sessionID}/add/${pet.pet_id}`;
+
+    try {
+      const response = await axios.put(url, { liked: !liked });
+      console.log('Response from API:', response.data);
+      setLiked(!liked); // Update state based on successful API response
+
+      if (onLike) {
+        onLike(pet); // Notify parent component of like action
+      }
+
+    } catch (error) {
+      console.error('Error updating like status:', error);
+    }
   };
 
   const handleModalOpen = () => {

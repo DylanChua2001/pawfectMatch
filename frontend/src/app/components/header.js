@@ -1,4 +1,5 @@
-"use client"
+'use client'
+
 import { useState } from 'react';
 import {
   HStack,
@@ -27,13 +28,23 @@ const Header = () => {
     setIsOpen(false);
   };
 
+  const handleLogout = () => {
+    Cookies.remove('userID'); // Remove userID cookie on logout
+    router.push('/');
+  };
+
+  // Check if userID exists in cookies
+  const userID = Cookies.get('userID');
+
   return (
     <>
       <HStack position="fixed" top="2%" left="2%" zIndex="1">
-        <Image src="/pawprints.png" alt="Image" width={50} height={50} />
-        <Heading fontSize="240%" fontFamily="Kaushan Script" fontStyle="italic">
-          PawfectMatch
-        </Heading>
+        <Button bg={'transparent'} _hover={{ bg: 'transparent' }} onClick={() => router.push("/")}>
+          <Image src="/pawprints.png" alt="Image" width={50} height={50} />
+          <Heading fontSize="240%" fontFamily="Kaushan Script" fontStyle="italic">
+            PawfectMatch
+          </Heading>
+        </Button>
       </HStack>
       <HStack position="fixed" top="2%" right="2%" zIndex="1">
         <Menu>
@@ -52,16 +63,18 @@ const Header = () => {
             />
           </MenuButton>
           <MenuList>
-            {/* <MenuItem onClick={() => navigateTo('/')}>Login</MenuItem> */}
-            <MenuItem onClick={() => navigateTo('/pages/profile')}>Profile</MenuItem>
-            {/* <MenuItem onClick={() => navigateTo('/pages/selection')}>Selection</MenuItem> */}
-            <MenuItem onClick={() => navigateTo('/pages/pets')}>Pets</MenuItem>
-            <MenuItem onClick={() => navigateTo('/pages/training')}>Training Packages</MenuItem>
+            {!userID && <MenuItem onClick={() => navigateTo('/')}>Login</MenuItem>}
+            {userID && <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/profile')}>Profile</MenuItem>}
+            {/* <MenuItem onClick={() => navigateTo('/pages/pets')}>Pets</MenuItem> */}
+            {/* <MenuItem onClick={() => navigateTo('/pages/training')}>Training Packages</MenuItem> */}
             <MenuItem onClick={() => navigateTo('/pages/about')}>About Us</MenuItem>
-            <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>
-            <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training</MenuItem>
-            <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat</MenuItem>
-            <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>
+            {userID && <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>}
+            <MenuItem onClick={() => navigateTo('/pages/s3bucket')}>S3</MenuItem>
+            <MenuItem onClick={() => navigateTo('/pages/stripe')}>Stripe</MenuItem>
             {/* Add more MenuItems for additional pages */}
           </MenuList>
         </Menu>

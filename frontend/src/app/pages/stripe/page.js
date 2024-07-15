@@ -3,14 +3,17 @@
 require('dotenv').config({ path: '../../../../dotenv' });
 import { Box, Button } from '@chakra-ui/react';
 import Header from "../../components/header";
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY_PK)
 const stripe = require('stripe')('sk_test_51PMUR2Rp0e1tw1uxH3gNUIUwoaAzGOirfCDrkqRlxaFrsGVuHGQDLDMEnDkcHe8RLyhZaixmLnQ6YY4bkFLzCAae0096uzBRLV')
 
+const userID  = 10 //Need to change once Session is Up
 
 function StripePage() {
   console.log(stripePromise)
+  const [cartItems, setCartItems] = useState([]);
+  const [calculateGrandTotal, setCalculateGrandTotal] = useState(0);
 
   const StripeSessionPayment = async () => {
 
@@ -18,7 +21,6 @@ function StripePage() {
       const stripes = await stripePromise;
       console.log("Button clicked!");
       console.log('Stripe public key:', stripePromise);
-      const userID  = 4
       console.log('Received Trial userID:', userID);
 
       console.log("Success 1")
@@ -43,7 +45,10 @@ function StripePage() {
 
       const cartItems = responseData1.userCart.user_cart;
       console.log("Success 4")
-      //console.log('Cart items:', cartItems);
+      console.log('Cart items:', cartItems);
+
+      setCartItems(cartItems)
+      console.log(setCartItems(cartItems))
 
       if (!Array.isArray(cartItems) || cartItems.length === 0) {
           // Check if cartItems is not an array or if it's an empty array
@@ -53,10 +58,14 @@ function StripePage() {
       console.log("Test Start")
 
       const itemCounts = {};
-      const lineItems = [];
-      var calculateGrandTotal = 0
+      for (const cartItem of cartItems) {
+        itemCounts[cartItem] = (itemCounts[cartItem] || 0) + 1;
+      }
 
-      for (const cartItem of cartItems){
+      const lineItems = [];
+      let stripeGrandTotal = 0
+
+      for (const cartItem in itemCounts){
         const responseOneTrainItem = await fetch (`http://localhost:3001/api/trainPack/getOneTrainingPackIdNameMoney/${cartItem}`)
         const OneTrainItem = await responseOneTrainItem.json();
         console.log (OneTrainItem)
@@ -67,7 +76,7 @@ function StripePage() {
  
         const responseOneTrainItemPrice = parseFloat(OneTrainItem.oneTrainPack[0].train_price)
 
-        calculateGrandTotal += responseOneTrainItemPrice
+        stripeGrandTotal += responseOneTrainItemPrice * itemCounts[cartItem];
 
         const unitAmount = Math.round(responseOneTrainItemPrice * 100);
 
@@ -76,8 +85,6 @@ function StripePage() {
         console.log ("END of Generating Packages")
 
         console.log("Success 5")
-
-        itemCounts[cartItem] = (itemCounts[cartItem] || 0) + 1;
 
         // Create product in Stripe
         const product = await stripe.products.create({
@@ -102,12 +109,27 @@ function StripePage() {
         console.log("Success 8 Created Line Items Successfuly")
 
       }
+
+      let gstGrandTotal = stripeGrandTotal * 1.09
+
+      setCalculateGrandTotal(gstGrandTotal)
+
+      console.log(userID)
+
+      const transactionData = {
+        user_id : userID,
+        txn_items : cartItems,
+        txn_amt : gstGrandTotal,
+        is_success : 'True'
+      }
+
+      localStorage.setItem('transactionData', JSON.stringify(transactionData));
   
       const session = await stripe.checkout.sessions.create({  //stripe session
             line_items: lineItems,
             mode: 'payment',
-            success_url: `http://localhost:3000/?success=true`,
-            cancel_url: `http://localhost:3000/?canceled=true`,
+            success_url: `http://localhost:3000/pages/stripe/?success=true`,
+            cancel_url: `http://localhost:3000/pages/stripe/?canceled=true`,
             automatic_tax: { enabled: true }
       })
 
@@ -123,33 +145,89 @@ function StripePage() {
       console.error('Error in StripeSessionPayment:', error);
       // Handle error (e.g., display error message to user)
     }
-};
+  };
+
+  const logTxnData = async(transactionData) => {
+    try {
+      const response = await fetch('http://localhost:3001/api/txn/createTxn', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(transactionData)
+      });
+  
+      const data = await response.json();
+      console.log('Transaction logged:', data);
+
+      localStorage.removeItem('transactionData');
+      console.log('Local storage cleared.');
+
+    } catch (error) {
+
+      console.error('Error logging transaction:', error);
+      
+    }
+  }
+
+  const emptyUserCart = async() => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/cart/resetCart/${userID}`, {
+        method : 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await response.json();
+      console.log('User cart reset:', data);
+
+    } catch (error) {
+
+      console.error('Error emptying user cart:', error);
+
+    }
+
+  }
 
   useEffect(() => {
-      const query = new URLSearchParams(window.location.search);
-  
-      if (query.get('success')) {
+    const query = new URLSearchParams(window.location.search);
+
+    if (query.get('success')) {
+      const storedTransactionData = JSON.parse(localStorage.getItem('transactionData'));
+      if (storedTransactionData) {
         console.log('Order placed! You will receive an email confirmation.');
+        console.log('Current cartItems:', storedTransactionData.txn_items);
+        console.log('Current calculateGrandTotal:', storedTransactionData.txn_amt);
+
+        localStorage.setItem('orderConfirmation', 'Order placed! You will receive an email confirmation.');
+        logTxnData(storedTransactionData);
+        emptyUserCart()
+      } else {
+        console.error('No transaction data found in localStorage.');
       }
-  
-      if (query.get('canceled')) {
-        console.log('Order canceled -- continue to shop around and checkout when you’re ready.');
-      }
-    }, []);
+    }
+
+    if (query.get('canceled')) {
+      console.log('Order canceled -- continue to shop around and checkout when you’re ready.');
+    }
+  }, [cartItems, calculateGrandTotal]);
 
 
   return (
     <>
-      <Box
-        display="flex"
-        flexDirection="column"
-        minHeight="100vh"
-      >
-        <Header />
-        <Box flex="1" display="flex" alignItems="center" justifyContent="center">
-          <Button onClick={StripeSessionPayment}>Click Me</Button>
+      <React.StrictMode>
+        <Box
+          display="flex"
+          flexDirection="column"
+          minHeight="100vh"
+        >
+          <Header />
+          <Box flex="1" display="flex" alignItems="center" justifyContent="center">
+            <Button onClick={StripeSessionPayment}>Click Me</Button>
+          </Box>
         </Box>
-      </Box>
+      </React.StrictMode>
     </>
   );
 };

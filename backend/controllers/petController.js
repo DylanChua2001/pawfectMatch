@@ -1,4 +1,5 @@
 const petModel = require('../models/petModel');
+const db = require("../config/db")
 
 const getAllPets = async (req, res, next) => {
     try {
@@ -55,10 +56,83 @@ const deletePet = async (req, res, next) => {
     }
 };
 
+const uploadPetImageIDC = async(req,res) => {
+    try {
+        const {petID} = req.params
+        const {photoID} = req.body
+
+        console.log(petID)
+        console.log(photoID)
+
+        const queryText = `UPDATE pet_table 
+        SET pet_image_id = $1
+        WHERE pet_id = $2
+        RETURNING pet_image_id`
+
+        const values = [photoID, petID]
+
+        const{rows} = await db.query(queryText, values)
+
+        if (rows.length > 0) {
+            res.status(200).json({
+
+                message : `Photo for pet with ID ${petID} has been uploaded successfully`,
+                petImage : rows[0].pet_image_id
+
+            })
+        } else {
+            res.status(404).json({
+                message: `Photo for pet with ID ${petID} has not been uploaded.`
+            });
+        }
+
+    } catch (error) {
+
+        res.status(500).json({ 
+            message: 'Internal Server Error' 
+        });
+
+    }
+}
+
+const retrievePetImageIDC = async(req,res) => {
+    try {
+        const {petID} = req.params
+
+        const queryText = 'SELECT pet_image_id FROM pet_table WHERE pet_id = $1';
+
+        const values = [petID]
+
+        const{rows} = await db.query(queryText, values)
+
+        if (rows.length > 0) {
+            res.status(200).json({
+
+                message : `Photo for pet with ID ${petID} has been retrieved successfully`,
+                petImage : rows
+
+            })
+        } else {
+            res.status(404).json({
+                message: `Photo for pet with ID ${petID} has failed to retrieve.`
+            });
+        }
+
+    } catch (error) {
+
+        res.status(500).json({ 
+            message: 'Internal Server Error' 
+        });
+
+    }
+}
+
 module.exports = {
     getAllPets,
     getPetByID,
     createPet,
     updatePet,
-    deletePet
+    deletePet,
+    uploadPetImageIDC,
+    retrievePetImageIDC
 };

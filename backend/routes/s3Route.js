@@ -14,6 +14,8 @@ router.post('/uploadImage/:userID', upload.single('image'), s3Controller.uploadI
 router.get('/retrieveImage/:userID', s3Controller.displayImage);
 router.post('/uploadPetImage/:petID', upload.single('image'), s3Controller.uploadPetImage);
 router.get('/retrievePetImage/:petID', s3Controller.displayPetImage);
+router.post('/uploadTrainingImage/:trainID', upload.single('image'), s3Controller.uploadTrainingImage);
+router.get('/retrieveTrainingImage/:trainID', s3Controller.displayTrainingImage);
 
 
 module.exports = router;

@@ -1,4 +1,3 @@
-// components/TrainingPackageProfile.js
 'use client'
 import { useState } from 'react';
 import { Box, Text, VStack, HStack, IconButton, Button } from '@chakra-ui/react';

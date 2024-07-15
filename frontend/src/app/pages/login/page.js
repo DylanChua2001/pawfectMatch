@@ -32,10 +32,13 @@ export default function SimpleCard() {
 
   const handleSignIn = async () => {
     try {
-      const response = await axios.post("http://localhost:3001/api/auth/login", formData);
-      const { userID, username } = response.data.session;
+      const response = await axios.post('http://localhost:3001/api/auth/login', formData, {
+        withCredentials: true
+      });
+      console.log(response)
+      const { userID, isAdmin } = response.data.session;
       Cookie.set('userID', userID);
-      Cookie.set('username', username);
+      Cookie.set('isAdmin', isAdmin);
   
       router.push("/");
     } catch (error) {
@@ -114,7 +117,7 @@ export default function SimpleCard() {
                 <Input
                   onChange={handleChange}
                   type="text"
-                  placeholder='Username'
+                  placeholder='Email Address'
                   width="100%"
                   padding="10"
                   my='10'

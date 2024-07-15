@@ -1,5 +1,9 @@
 const db = require('../config/db');
 const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
+const JWT_SECRET = process.env.jwt;
 
 const register = async (req, res) => {
     try {
@@ -15,21 +19,35 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     try {
         const { username, password } = req.body;
-        const queryText = 'SELECT user_id, user_password FROM user_table WHERE email_add = $1';
+        const queryText = 'SELECT user_id, user_password, is_admin FROM user_table WHERE email_add = $1';
         const { rows } = await db.query(queryText, [username]);
 
         if (rows.length === 0) {
             return res.status(400).send('User not found');
         }
 
-        const { user_id, user_password } = rows[0];
+        const { user_id, user_password, is_admin } = rows[0];
         const correctPassword = await bcrypt.compare(password, user_password);
-        
+
         if (!correctPassword) {
             return res.status(400).send('Invalid credentials');
         }
-        req.session.user = { userID: user_id, username };
-        res.status(200).json({ message: 'Logged in', session: req.session.user });
+
+        const token = jwt.sign(
+            { userID: user_id, isAdmin: is_admin },
+            JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        res.cookie('token', token, {
+            httpOnly: true,
+            // secure: process.env.NODE_ENV === 'production', // Set to true in production
+            sameSite: 'strict',
+            maxAge: 3600000, // 1 hour expiration
+        });
+
+        // Respond with user session data
+        res.status(200).json({ message: 'Logged in', session: { userID: user_id, isAdmin: is_admin } });
 
     } catch (err) {
         console.error('Error logging in:', err);
@@ -38,13 +56,15 @@ const login = async (req, res) => {
 };
 
 const logout = (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            console.error('Error logging out:', err);
-            return res.status(500).send('Error logging out');
-        }
-        res.status(200).send('Logged out');
+    console.log('finally')
+    res.clearCookie('token', {
+        httpOnly: true,
+        // secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 0, // Set maxAge to 0 to immediately expire the cookie
     });
+
+    res.status(200).json({ message: 'Logged out' });
 };
 
 module.exports = {

@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation'; // Import useRouter hook from Next.js
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,8 +29,12 @@ const Header = () => {
     setIsOpen(false);
   };
 
-  const handleLogout = () => {
-    Cookies.remove('userID'); // Remove userID cookie on logout
+  const handleLogout = async () => {
+    await axios.get('http://localhost:3001/api/auth/logout')
+    Cookies.remove('token'); // Remove JWT token cookie
+    Cookies.remove('userID'); // Remove userID cookie
+    Cookies.remove('isAdmin'); // Remove isAdmin cookie
+    Cookies.remove('connect.sid'); // Remove session ID cookie (if applicable)
     router.push('/');
   };
 
@@ -63,7 +68,7 @@ const Header = () => {
             />
           </MenuButton>
           <MenuList>
-            {!userID && <MenuItem onClick={() => navigateTo('/')}>Login</MenuItem>}
+            {!userID && <MenuItem onClick={() => navigateTo('/pages/login')}>Login</MenuItem>}
             {userID && <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/profile')}>Profile</MenuItem>}
             {/* <MenuItem onClick={() => navigateTo('/pages/pets')}>Pets</MenuItem> */}

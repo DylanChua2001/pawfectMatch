@@ -8,13 +8,32 @@ import Cookie from 'js-cookie';
 const Cart = () => {
   const router = useRouter();
   const [cart, setCart] = useState([]);
+  const [trainingPackages, setTrainingPackages] = useState([]);
   const userId = Cookie.get('userID');
 
   useEffect(() => {
     const fetchCart = async () => {
       try {
         const response = await axios.get(`http://localhost:3001/api/cart/getCart/${userId}`);
-        setCart(response.data.cart || []); // Ensure cart is an array
+        const cartItemIds = response.data.userCart.user_cart;
+
+        // Fetch details for each training package ID in user_cart
+        const fetchTrainingPackages = async () => {
+          try {
+            const response = await axios.get(`http://localhost:3001/api/trainPack/getAllTrainingPack`);
+            const allTrainPack = response.data.allTrainPack;
+            
+            const cartItemsData = cartItemIds.map(itemId => {
+              const item = allTrainPack.find(trainPackage => trainPackage.train_id === itemId);
+              return item;
+            });
+            setCart(cartItemsData);
+          } catch (error) {
+            console.error('Error fetching training packages:', error);
+          }
+        };
+
+        fetchTrainingPackages();
       } catch (error) {
         console.error('Error fetching cart:', error);
         setCart([]); // Fallback to an empty array in case of error

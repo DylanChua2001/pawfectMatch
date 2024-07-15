@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Box, Image, Text, VStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useParams } from 'next/navigation'
+import Header from '../../../components/header';
 
 const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
     const [liked, setLiked] = useState(false);
@@ -49,8 +50,9 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
     };
 
     return (
-        <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={4}>
-            <Box maxW="80vw" mx="auto" my={10} p={5} borderWidth="1px" borderRadius="lg" boxShadow="md">
+        <>
+            <Header />
+            <Box maxW="80vw" mx="auto" my={10} p={5} backgroundColor="rgba(255, 255, 255, 0.7)" borderWidth="1px" borderRadius="lg" boxShadow="md">
                 <Box>
                     <Image
                         src={pet.mainPhoto || pet.imageUrl} // Adjust based on your data structure
@@ -101,7 +103,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
                     </ModalContent>
                 </Modal>
             </Box>
-        </Box>
+        </>
     );
 };
 

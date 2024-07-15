@@ -1,20 +1,16 @@
-// components/PetList.js
-
-'use client'
-
-import { useState, useEffect } from 'react';
-import { Box, Button, Input, Flex, IconButton } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Box, Input, Flex, IconButton, Button, Spacer } from '@chakra-ui/react';
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
 import PetCard from './petCard';
 import PetProfile from './petProfile';
 import { useRouter } from 'next/navigation';
+import FilterMenu from './filter'; // Import the FilterMenu component
 
 const PetList = () => {
   const [selectedPet, setSelectedPet] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPets, setFilteredPets] = useState([]);
   const [petsData, setPetsData] = useState([]);
-
   const [favoritePets, setFavoritePets] = useState([]);
   const router = useRouter();
 
@@ -33,13 +29,11 @@ const PetList = () => {
     fetchPetsData();
   }, []);
 
-  // Load favorite pets from localStorage on initial render
   useEffect(() => {
     const savedFavoritePets = JSON.parse(localStorage.getItem('favoritePets')) || [];
     setFavoritePets(savedFavoritePets);
   }, []);
 
-  // Update localStorage whenever favoritePets changes
   useEffect(() => {
     localStorage.setItem('favoritePets', JSON.stringify(favoritePets));
   }, [favoritePets]);
@@ -91,6 +85,15 @@ const PetList = () => {
     router.push('/pages/favpets'); // Navigate to favorites page
   };
 
+  const applyFilters = (petIDs) => {
+    // Filter petsData based on selected petIDs
+    const filteredData = petsData.filter(pet => petIDs.includes(pet.pet_id));
+    console.log(filteredData)
+    // Only set filteredPets if searchTerm is empty
+    setFilteredPets(filteredData);
+
+  };
+
   return (
     <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={4}>
       {selectedPet ? (
@@ -125,6 +128,8 @@ const PetList = () => {
                 ml={2}
               />
             )}
+            <Spacer />
+            <FilterMenu applyFilters={applyFilters} />
           </Flex>
           <Box display="flex" overflowX="auto">
             {filteredPets.map((pet) => (

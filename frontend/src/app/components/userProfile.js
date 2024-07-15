@@ -30,12 +30,28 @@ const Profile = () => {
       try {
         const id = Cookie.get('userID'); // Assuming 'userID' is the cookie key storing the ID
         const response = await axios.get(`http://localhost:3001/api/users/id/${id}`);
+
+        const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${id}`, {
+          method: 'GET'
+        });
+
+        console.log('Photo Response:', photoresponse); // Check the response object
+
+        const photoresponsedata = await photoresponse.json();
+
+        console.log('Photo Response Data:', photoresponsedata); // Check the parsed JSON data
+
+        const imageSrcUrl = photoresponsedata.userImage[0].photo_url;
+
+        console.log("Image Link :" , imageSrcUrl)
+
         const { data } = response;
         setProfile({
           user_name: data.user_name || '',
           user_age: data.user_age || '',
           person_traits: data.person_traits ? data.person_traits.join(', ') : '',
           email_add: data.email_add || '',
+          imageSrcUrl: imageSrcUrl || '' // Ensure it's set even if undefined
         });
       } catch (error) {
         console.error('Error fetching profile:', error);
@@ -75,7 +91,7 @@ const Profile = () => {
         <Image
           borderRadius="full"
           boxSize="150px"
-          src="/profile.jpg"
+          src= {profile.imageSrcUrl}
           alt="Profile Picture"
         />
         <FormControl>

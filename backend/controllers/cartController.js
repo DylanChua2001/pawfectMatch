@@ -93,7 +93,41 @@ const cartController = {
                 message: 'Internal Server Error' 
             });
         }
-    }
+    },
+
+    resetUserCart : async (req,res) => {
+
+        try {
+
+            const {userID} = req.params
+
+            const resetItem = []
+
+            const queryText = `UPDATE user_table
+            SET user_cart = $1
+            WHERE user_id = $2
+            RETURNING user_cart
+            `
+
+            const values = [resetItem, userID]
+
+            const {rows} = await db.query(queryText,values)
+
+            res.status(200).json ({
+
+                message : `User Cart has been reset successfully`,
+                usersCart : rows[0].user_cart
+
+            })
+
+        }catch(error){
+            res.status(500).json({ 
+
+                message: 'Internal Server Error'
+                
+            });
+        }
+    } 
 
 }
 

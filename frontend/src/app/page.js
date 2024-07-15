@@ -1,137 +1,106 @@
-'use client'
+"use client"
+import { Box, Image, VStack, Flex, Heading, useToast } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
+import Header from "./components/header";
+import Cookie from 'js-cookie';
 
-import {
-  Flex,
-  Box,
-  FormControl,
-  FormLabel,
-  Input,
-  Checkbox,
-  Stack,
-  HStack,
-  Button,
-  Heading,
-  Text,
-  Avatar,
-  useColorModeValue,
- 
-} from '@chakra-ui/react'
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import Link from 'next/link';
-import Header from './components/header';
-
-
-export default function SimpleCard() {
+const HomePage = () => {
   const router = useRouter();
+  const userID = Cookie.get('userID');
+  const toast = useToast();
+
+  const handleImageClick = (route) => {
+    if (!userID) {
+      toast({
+        title: 'Please Login to view our pets and training packages',
+        description: 'Redirecting to login page',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        onCloseComplete: () => router.push('/pages/login'), // Replace with your actual login page route
+      });
+      return;
+    }
+    router.push(route);
+  };
 
   return (
-    <>
-    <Header></Header>
-    <Flex
-      height="100vh"
-      alignItems="center"
-      justifyContent="center"
-      direction="column"
-    >
-
-      <Stack 
-        align={'center'} 
-        mx={'auto'} 
-        maxW={'xl'} 
-        mt= "40px">
-        <Box
-          borderRadius="10px"
-          paddingLeft="8%"
-          paddingRight="8%"
-          bg="rgba(255, 250, 245, 0.7)"
-          width={['90vw', '70vw', '50vw']}
-          minHeight={['70vh', '85vh', '85vh']}
-        >
-          <Heading 
-            fontSize="180%"
-            fontFamily="'Lilita One', cursive"
-            fontWeight= "bold"
+    <Flex height="100vh" alignItems="center" justifyContent="center">
+      <Header />
+      <Flex direction="row" mt="10px" justifyContent="center" alignItems="center" gap="2.5%" p="20px" maxWidth="100%">
+        <VStack onClick={() => handleImageClick('/pages/pets')} cursor="pointer">
+          <Box
+            borderRadius="10px"
+            padding="3%"
+            paddingRight="10%"
+            bg="rgba(255, 250, 245, 0.7)"
+            width={['50vw', '40vw', '30vw']}
+            minHeight={['65vh', '55vh', '55vh']}
             textAlign="center"
-            mt= "4%">
-            Login
-          </Heading>
-
-          <Stack spacing={4}>
-          
-            <FormControl id="email">
-              <Input 
-                type="email" 
-                placeholder='Email' 
-                width= "100%"
-                padding= "20px"
-                mt= "4%"
-                size= "100"
-                borderRadius= "5px"
-                borderColor= "#D9D9D9"
-                _focus={{ bg: "white", borderColor: "blue.400" }}
-              />
-            </FormControl>
-            <FormControl id="password">
-              <Input 
-                type="password" 
-                placeholder= "Password"
-                width= "100%"
-                padding= "20px"
-                mt= "2%"
-                size= "100"
-                borderRadius= "5px"
-                borderColor= "#D9D9D9"
-                _focus={{ bg: "white", borderColor: "blue.400" }}
-              />
-            </FormControl>
-            <Stack>
-              <Stack
-                direction={{ base: 'column', sm: 'row' }}
-                align={'start'}
-                justify={'space-between'}
-                mt="2%"
-              >
-                <Checkbox
-                  fontFamily="sans-serif"
-                  fontSize= "13">
-                  <Text fontFamily="sans-serif" fontSize= "13">
-                  Remember me
-                  </Text>
-                </Checkbox>
-                <Text 
-                  color="blue"
-                  fontFamily="sans-serif"
-                  fontSize= "13">
-                  <Link href= "forgot-password">
-                    Forgot password?
-                  </Link>
-                </Text>
-              </Stack>
-              <Button
-                onClick={() => router.push('/pages/selection')}
-                _hover={{ cursor: 'pointer' }}
-                alignItems='center'
-                width= "100%"
-                padding= "30px"
-                mt= "3%"
-                borderRadius= "5px"
-                backgroundColor= "#F8D3A7"
-                textColor='black'>
-                Login
-              </Button>
-            </Stack>
-            <Stack alignItems='center'mt="3%" fontFamily="sans-serif" fontSize= "13" >
-              <Text>Don't have an account? {' '} 
-                <Link href="/signup" color= 'blue' background= 'none' border= 'none' cursor= 'pointer' display= "inline-block" passHref >
-                  Sign up
-                </Link>
-              </Text>
-            </Stack>
-          </Stack>
-        </Box>
-      </Stack>
+          >
+            <Heading
+              fontSize="250%"
+              fontFamily="'Lilita One', cursive"
+              fontWeight="bold"
+              textAlign="center"
+              mt="4%"
+            >
+              Pets
+            </Heading>
+            <Image src="/pets_option.png" alt="Pets" boxSize="100%" objectFit="cover" />
+          </Box>
+        </VStack>
+        <VStack onClick={() => handleImageClick('/pages/training')} cursor="pointer">
+          <Box
+            borderRadius="10px"
+            paddingTop="3%"
+            paddingBottom="3%"
+            paddingLeft="10%"
+            paddingRight="10%"
+            bg="rgba(255, 250, 245, 0.7)"
+            width={['50vw', '40vw', '30vw']}
+            minHeight={['65vh', '55vh', '55vh']}
+            textAlign="center"
+          >
+            <Heading
+              fontSize={['200%', '200%', '250%', '250%']}
+              fontFamily="'Lilita One', cursive"
+              fontWeight="bold"
+              textAlign="center"
+              mt="4%"
+            >
+              Training Packages
+            </Heading>
+            <Image src="/training_option.png" alt="Training Packages" boxSize="100%" objectFit="cover" />
+          </Box>
+        </VStack>
+         <VStack onClick={() => handleImageClick('/pages/chat')} cursor="pointer">
+          <Box
+            borderRadius="10px"
+            paddingTop="7%"
+            paddingBottom="7%"
+            paddingLeft="10%"
+            paddingRight="10%"
+            bg="rgba(255, 250, 245, 0.7)"
+            width={['50vw', '40vw', '30vw']}
+            minHeight={['65vh', '55vh', '55vh']}
+            textAlign="center"
+          >
+            <Heading
+              fontSize={['200%', '200%', '250%', '250%']}
+              fontFamily="'Lilita One', cursive"
+              fontWeight="bold"
+              textAlign="center"
+              mb="4%"
+            >
+              PawAI
+            </Heading>
+            <Image src="../chick.png" alt="Training Packages" boxSize="100%" objectFit="cover" />
+          </Box>
+        </VStack>
+      </Flex>
     </Flex>
-    </>
-  )
-}
+  );
+};
+
+export default HomePage;

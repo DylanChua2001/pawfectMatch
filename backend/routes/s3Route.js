@@ -12,6 +12,8 @@ const upload = multer({ storage: storage });
 
 router.post('/uploadImage/:userID', upload.single('image'), s3Controller.uploadImage);
 router.get('/retrieveImage/:userID', s3Controller.displayImage);
+router.post('/uploadPetImage/:petID', upload.single('image'), s3Controller.uploadPetImage);
+router.get('/retrievePetImage/:petID', s3Controller.displayPetImage);
 
 
 module.exports = router;

@@ -10,7 +10,7 @@ const HomePage = () => {
   return (
     <>
       <Flex direction="column" height="100vh">
-        <Box mt="60px">
+        <Box mt="80px">
           <Header />
         </Box>
         <Box >

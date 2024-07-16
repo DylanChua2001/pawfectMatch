@@ -119,7 +119,7 @@ export default function RegisterCard() {
               textAlign="center"
               mb={10}
             >
-              Register
+              Sign Up
             </Heading>
 
             <Stack spacing={4}>

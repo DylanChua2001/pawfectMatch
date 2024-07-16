@@ -1,4 +1,3 @@
-// components/TrainingPackagesList.js
 'use client'
 import { useState, useEffect } from 'react';
 import { Box, Button, Input, Flex, IconButton } from '@chakra-ui/react';
@@ -6,6 +5,7 @@ import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
 import TrainingPackageCard from './trainingCard';
 import TrainingPackageProfile from './trainingPackageProfile';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 import Cookie from 'js-cookie';
 
 const TrainingPackagesList = () => {
@@ -14,6 +14,7 @@ const TrainingPackagesList = () => {
   const [filteredTrainingPackages, setFilteredTrainingPackages] = useState([]);
   const [cart, setCart] = useState([]);
   const router = useRouter();
+  const userId = Cookie.get('userID');
 
   useEffect(() => {
     const fetchTrainingPackages = async () => {
@@ -30,13 +31,18 @@ const TrainingPackagesList = () => {
   }, []);
 
   useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    setCart(savedCart);
-  }, []);
+    const fetchCart = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/api/cart/getCart/${userId}`);
+        setCart(response.data.cart || []); // Ensure cart is an array
+      } catch (error) {
+        console.error('Error fetching cart:', error);
+        setCart([]); // Fallback to an empty array in case of error
+      }
+    };
 
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
+    fetchCart();
+  }, [userId]);
 
   const handleTrainingPackageCardClick = (trainingPackage) => {
     setSelectedTrainingPackage(trainingPackage);
@@ -66,9 +72,12 @@ const TrainingPackagesList = () => {
     }
   };
 
-  const handleAddToCart = (trainingPackage) => {
-    if (!cart.some(cartItem => cartItem.train_id === trainingPackage.train_id)) {
-      setCart([...cart, trainingPackage]);
+  const handleAddToCart = async (trainingPackage) => {
+    try {
+      await axios.put(`http://localhost:3001/api/cart/addCart/${userId}/add/${trainingPackage.train_id}`);
+      setCart(prevCart => [...prevCart, trainingPackage]);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
     }
   };
 

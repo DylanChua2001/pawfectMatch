@@ -35,7 +35,7 @@ const Header = () => {
     Cookies.remove('userID'); // Remove userID cookie
     Cookies.remove('isAdmin'); // Remove isAdmin cookie
     Cookies.remove('connect.sid'); // Remove session ID cookie (if applicable)
-    router.push('/');
+    router.push('/pages/login');
   };
 
   // Check if userID exists in cookies
@@ -43,13 +43,11 @@ const Header = () => {
 
   return (
     <>
-      <HStack position="fixed" top="2%" left="2%" zIndex="1">
-        <Button bg={'transparent'} _hover={{ bg: 'transparent' }} onClick={() => router.push("/")}>
-          <Image src="/pawprints.png" alt="Image" width={50} height={50} />
-          <Heading fontSize="240%" fontFamily="Kaushan Script" fontStyle="italic">
-            PawfectMatch
-          </Heading>
-        </Button>
+      <HStack position="fixed" top="2%" left="2%" zIndex="1" mb='10%'>
+        <Image src="/pawprints.png" alt="Image" width={50} height={50} />
+        <Heading fontSize="240%" fontFamily="Kaushan Script" fontStyle="italic">
+          PawfectMatch
+        </Heading>
       </HStack>
       <HStack position="fixed" top="2%" right="2%" zIndex="1">
         <Menu>

@@ -20,17 +20,64 @@ const getPetByID = async (id) => {
         throw error;
     }
 };
+
 const createPet = async (pet) => {
-    const { pet_name, pet_type, pet_breed, pet_age, pet_traits, pet_price, pet_status, pet_size } = pet;
-    const queryText = 'INSERT INTO pet_table ( pet_name, pet_type, pet_breed, pet_age, pet_traits, pet_price, pet_status, pet_size) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *';
+    const { 
+        pet_name, 
+        pet_type, 
+        pet_breed, 
+        pet_age, 
+        pet_price, 
+        pet_status, 
+        pet_size, 
+        pet_character, 
+        pet_physical_trait,
+        pet_image_id,
+        pet_description
+    } = pet;
+
+    // Split comma-separated strings into arrays
+    const petCharacterArray = pet_character.split(',').map(trait => trait.trim());
+    const petPhysicalTraitArray = pet_physical_trait.split(',').map(trait => trait.trim());
+
+    const queryText = `
+        INSERT INTO pet_table (
+            pet_name, 
+            pet_type, 
+            pet_breed, 
+            pet_age, 
+            pet_price, 
+            pet_status, 
+            pet_size, 
+            pet_character, 
+            pet_physical_trait,
+            pet_image_id,
+            pet_description
+        ) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) 
+        RETURNING *`;
 
     try {
-        const { rows } = await db.query(queryText, [pet_name, pet_type, pet_breed, pet_age, pet_traits, pet_price, pet_status, pet_size]);
+        const { rows } = await db.query(queryText, [
+            pet_name, 
+            pet_type, 
+            pet_breed, 
+            pet_age, 
+            pet_price, 
+            pet_status, 
+            pet_size, 
+            petCharacterArray,  // Array of text (text[])
+            petPhysicalTraitArray,  // Array of text (text[])
+            pet_image_id,
+            pet_description
+        ]);
+        
         return rows[0];
     } catch (error) {
         throw error;
     }
 };
+
 const updatePet = async (id, updatedData) => {
     const { pet_name, pet_type, pet_breed, pet_age, pet_traits, pet_price, pet_status, pet_size } = updatedData;
     const queryText = `

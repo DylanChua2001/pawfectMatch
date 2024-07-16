@@ -43,11 +43,13 @@ const Header = () => {
 
   return (
     <>
-      <HStack position="fixed" top="2%" left="2%" zIndex="1" mb='10%'>
-        <Image src="/pawprints.png" alt="Image" width={50} height={50} />
-        <Heading fontSize="240%" fontFamily="Kaushan Script" fontStyle="italic">
-          PawfectMatch
-        </Heading>
+      <HStack position="fixed" top="2%" left="2%" zIndex="1">
+        <Button bg={'transparent'} _hover={{ bg: 'transparent' }} onClick={() => router.push("/")}>
+          <Image src="/pawprints.png" alt="Image" width={50} height={50} />
+          <Heading fontSize="240%" fontFamily="Kaushan Script" fontStyle="italic">
+            PawfectMatch
+          </Heading>
+        </Button>
       </HStack>
       <HStack position="fixed" top="2%" right="2%" zIndex="1">
         <Menu>
@@ -72,10 +74,12 @@ const Header = () => {
             {/* <MenuItem onClick={() => navigateTo('/pages/pets')}>Pets</MenuItem> */}
             {/* <MenuItem onClick={() => navigateTo('/pages/training')}>Training Packages</MenuItem> */}
             <MenuItem onClick={() => navigateTo('/pages/about')}>About Us</MenuItem>
-            {userID && <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>}
+            {userID && {userID && <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>}}
+            {userID && {userID && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training</MenuItem>}}
+            {userID && {userID && <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat</MenuItem>}}
+            {userID && {userID && <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>}}
+            <MenuItem onClick={() => navigateTo('/pages/s3bucket')}>S3</MenuItem>
+            <MenuItem onClick={() => navigateTo('/pages/stripe')}>Stripe</MenuItem>
             {/* Add more MenuItems for additional pages */}
           </MenuList>
         </Menu>

@@ -9,8 +9,10 @@ import Cookie from 'js-cookie';
 const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   const [liked, setLiked] = useState(false); //liked is a boolean, while setLiked sets the value of liked
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  
   const sessionID = Cookie.get('userID'); 
+  const [photo, setPhoto] = useState('')
+  const petID = pet.pet_id
   console.log(sessionID)
   console.log(pet.pet_id)
 
@@ -34,6 +36,25 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
 
     checkIfLiked();
   }, [sessionID, pet.pet_id]);
+
+  useEffect(() => {
+    const fetchPhotoList = async() => {
+      try {
+        const photoresponse = await fetch(`http://localhost:3001/api/image/retrievePetImage/${petID}`, {
+          method: 'GET'
+        });
+        const photoresponsedata = await photoresponse.json();
+        const imageSrcUrl = photoresponsedata.petImage[0].photo_url;
+        console.log("Image Link :" , imageSrcUrl)
+        setPhoto(imageSrcUrl)
+
+      } catch (error) {
+        console.error('Error fetching image:', error)
+      }
+    }
+
+    fetchPhotoList()
+  },[petID])
 
   const handleLikeButtonClick = async () => {
     const url = liked
@@ -66,7 +87,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
     <Box maxW="80vw" mx="auto" my={10} p={5} borderWidth="1px" borderRadius="lg" boxShadow="md">
       <Box>
         <Image
-          src={pet.mainPhoto || pet.imageUrl} // Adjust based on your data structure
+          src={photo || pet.imageUrl} // Adjust based on your data structure
           alt={pet.pet_name} // Use pet_name for accessibility
           borderRadius="md"
           height="40vh"

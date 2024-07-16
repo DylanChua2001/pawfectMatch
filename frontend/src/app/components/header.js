@@ -74,10 +74,10 @@ const Header = () => {
             {/* <MenuItem onClick={() => navigateTo('/pages/pets')}>Pets</MenuItem> */}
             {/* <MenuItem onClick={() => navigateTo('/pages/training')}>Training Packages</MenuItem> */}
             <MenuItem onClick={() => navigateTo('/pages/about')}>About Us</MenuItem>
-            {userID && {userID && <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>}}
-            {userID && {userID && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training</MenuItem>}}
-            {userID && {userID && <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat</MenuItem>}}
-            {userID && {userID && <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>}}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>}
             <MenuItem onClick={() => navigateTo('/pages/s3bucket')}>S3</MenuItem>
             <MenuItem onClick={() => navigateTo('/pages/stripe')}>Stripe</MenuItem>
             {/* Add more MenuItems for additional pages */}

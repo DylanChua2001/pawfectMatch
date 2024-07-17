@@ -52,7 +52,17 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
     return (
         <>
             <Header />
-            <Box maxW="80vw" mx="auto" my={10} p={5} backgroundColor="rgba(255, 255, 255, 0.7)" borderWidth="1px" borderRadius="lg" boxShadow="md">
+            <Box 
+                position="fixed"
+                top={["100px", "100px", "100px"]} // Adjust the top position as needed for different screen sizes
+                left="0"
+                right="0"
+                margin="auto"
+                maxW={["90%", "92%", "97%"]}
+                w="100%"
+                h={["calc(100vh - 60px)", "calc(100vh - 70px)", "calc(100vh - 80px)"]}
+                overflowY="auto">
+          {/* maxW="80vw" mx="auto" my={10} p={5} backgroundColor="rgba(255, 255, 255, 0.7)" borderWidth="1px" borderRadius="lg" boxShadow="md"> */}
                 <Box>
                     <Image
                         src={pet.mainPhoto || pet.imageUrl} // Adjust based on your data structure
@@ -64,7 +74,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
                     />
                     {!showNameAndPhotoOnly && (
                         <VStack align="start" mt={4}>
-                            <Text fontSize="4xl" fontWeight="bold">
+                            <Text  fontSize={["0.70rem", "0.70rem", "0.80rem", "0.90rem"]} fontWeight="bold">
                                 {pet.pet_name} {/* Use pet_name */}
                                 <IconButton
                                     icon={liked ? <AiFillHeart /> : <AiOutlineHeart />}
@@ -79,7 +89,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
                             <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Breed: {pet.pet_breed}</Text> {/* Use pet_breed */}
                             <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Age: {pet.pet_age} years</Text> {/* Use pet_age */}
                             <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Description: {pet.pet_description || "No description available"}</Text> {/* Adjust as necessary */}
-                            <Button colorScheme="blue" mt={4}>Match</Button>
+                            <Button bg="rgba(253, 222, 176, 1)" color='black' mt={4}>Match</Button>
                         </VStack>
                     )}
 

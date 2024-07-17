@@ -9,14 +9,21 @@ import Pets from "../../components/petList";
 const HomePage = () => {
   return (
     <>
-      <Flex direction="column" height="100vh" alignItems="center" justifyContent="center">
-        <Box>
+      <Flex direction="column" height="100vh">
+        <Box marginBottom= "100px">
           <Header />
         </Box>
         <Box 
+          position="fixed"
+          top={["100px", "100px", "100px"]} // Adjust the top position as needed for different screen sizes
+          left="0"
+          right="0"
+          margin="auto"
           maxW={["90%", "92%", "97%"]}
-          w="100%" 
-          maxHeight={["calc(100vh - 170px)", "calc(100vh - 150px)", "calc(100vh - 200px)"]}>
+          w="100%"
+          h={["calc(100vh - 60px)", "calc(100vh - 70px)", "calc(100vh - 80px)"]}
+          overflowY="auto"
+          >
           <Pets />
         </Box>
       </Flex>

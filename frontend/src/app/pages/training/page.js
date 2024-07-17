@@ -7,26 +7,24 @@ import Training from "../../components/trainingList";
 const HomePage = () => {
   return (
     <>
-    <Box
-      minHeight="100vh"
-      paddingTop="3%" 
-      backgroundImage="url('/background.png')"
-      backgroundSize="cover"
-      backgroundPosition="center"
-    >
-      <Header />
-      <Box >
-        <Training/>
-      </Box>
-      <Flex justifyContent="center">
-        <Box  
+    <Flex direction="column" height="100vh">
+        <Box marginBottom= "100px">
+          <Header />
+        </Box>
+        <Box 
+          position="fixed"
+          top={["100px", "100px", "100px"]} // Adjust the top position as needed for different screen sizes
+          left="0"
+          right="0"
+          margin="auto"
           maxW={["90%", "92%", "97%"]}
-          w="100%" 
-          maxHeight={["calc(100vh - 200px)", "calc(100vh - 150px)", "calc(100vh - 180px)"]}
+          w="100%"
+          h={["calc(100vh - 60px)", "calc(100vh - 70px)", "calc(100vh - 80px)"]}
+          overflowY="auto"
           >
+          <Training />
         </Box>
       </Flex>
-    </Box>
     </>
   );
 };

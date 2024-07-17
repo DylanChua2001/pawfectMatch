@@ -95,15 +95,15 @@ const PetList = () => {
   };
 
   return (
-    <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto"  pt= "10px" p={4}>
+    <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" px="20px">
       {selectedPet ? (
         <Box>
-          <Button onClick={handleBackToList} mb={4}>Back to List</Button>
+          <Button onClick={handleBackToList} mb={4}>Back to Pets</Button>
           <PetProfile pet={selectedPet} onLike={handleLikePet} />
         </Box>
       ) : (
         <>
-          <Flex mb={4} alignItems="center">
+          <Flex alignItems="center">
             <Input
               placeholder="Search pets..."
               value={searchTerm}
@@ -115,8 +115,7 @@ const PetList = () => {
               aria-label="Search"
               icon={<SearchIcon />}
               onClick={handleSearch}
-              colorScheme="teal"
-
+              bg="rgba(253, 222, 176, 1)"
               ml={2}
             />
             {searchTerm && (
@@ -124,13 +123,18 @@ const PetList = () => {
                 aria-label="Clear filter"
                 icon={<CloseIcon />}
                 onClick={handleClearFilter}
-                colorScheme="red"
+                bg="rgba(253, 222, 176, 1)"
                 ml={2}
               />
             )}
-            <Spacer />
             <FilterMenu applyFilters={applyFilters} />
-            <Button onClick={navigateToFavorites} mt={4} colorScheme="blue">Go to Favorites</Button>
+            <Spacer />
+            <Button 
+              onClick={navigateToFavorites}  
+              bg="rgba(253, 222, 176, 1)" 
+              fontSize={["0.70rem", "0.80rem", "0.95rem", "1rem"]}>
+              Favorites
+            </Button>
           </Flex>
           <Box display="flex" overflowX="auto">
             {filteredPets.map((pet) => (
@@ -139,7 +143,6 @@ const PetList = () => {
               </Box>
             ))}
           </Box>
-          {/* <Button onClick={navigateToFavorites} mt={4} colorScheme="blue">Go to Favorites</Button> */}
         </>
       )}
     </Box>

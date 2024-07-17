@@ -25,21 +25,25 @@ const HomePage = () => {
   };
 
   return (
-    <Flex height="100vh" alignItems="center" justifyContent="center">
+    <Flex height="95vh" alignItems="center" justifyContent="center">
       <Header />
-      <Flex direction="row" mt="10px" justifyContent="center" alignItems="center" gap="2.5%" p="20px" maxWidth="100%">
+      <Flex direction="row" mt="30px" justifyContent="center" alignItems="center" gap="2.5%" p="20px" maxWidth="100%">
         <VStack onClick={() => handleImageClick('/pages/pets')} cursor="pointer">
           <Box
             borderRadius="10px"
             padding="3%"
             paddingRight="10%"
             bg="rgba(255, 250, 245, 0.7)"
-            width={['50vw', '40vw', '30vw']}
-            minHeight={['65vh', '55vh', '55vh']}
+            width={['45vw', '30vw', '25vw']}
+            minHeight={['70vh', '50vh', '40vh']}
             textAlign="center"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
           >
             <Heading
-              fontSize="250%"
+              fontSize={['200%', '200%', '250%', '250%']}
               fontFamily="'Lilita One', cursive"
               fontWeight="bold"
               textAlign="center"
@@ -54,16 +58,20 @@ const HomePage = () => {
           <Box
             borderRadius="10px"
             paddingTop="3%"
-            paddingBottom="3%"
+            paddingBottom="%"
             paddingLeft="10%"
             paddingRight="10%"
             bg="rgba(255, 250, 245, 0.7)"
-            width={['50vw', '40vw', '30vw']}
-            minHeight={['65vh', '55vh', '55vh']}
+            width={['45vw', '30vw', '25vw']}
+            minHeight={['70vh', '50vh', '40vh']}
             textAlign="center"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
           >
             <Heading
-              fontSize={['200%', '200%', '250%', '250%']}
+              fontSize={['150%', '150%', '250%', '250%']}
               fontFamily="'Lilita One', cursive"
               fontWeight="bold"
               textAlign="center"
@@ -82,9 +90,13 @@ const HomePage = () => {
             paddingLeft="10%"
             paddingRight="10%"
             bg="rgba(255, 250, 245, 0.7)"
-            width={['50vw', '40vw', '30vw']}
-            minHeight={['65vh', '55vh', '55vh']}
+            width={['45vw', '30vw', '25vw']}
+            minHeight={['70vh', '50vh', '40vh']}
             textAlign="center"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
           >
             <Heading
               fontSize={['200%', '200%', '250%', '250%']}

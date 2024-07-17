@@ -43,7 +43,7 @@ const Header = () => {
 
   return (
     <>
-      <HStack position="fixed" top="2%" left="2%" zIndex="1">
+      <HStack position="fixed" top="2%" left="3px" zIndex="1">
         <Button bg={'transparent'} _hover={{ bg: 'transparent' }} onClick={() => router.push("/")}>
           <Image src="/pawprints.png" alt="Image" width={50} height={50} />
           <Heading fontSize="240%" fontFamily="Kaushan Script" fontStyle="italic">
@@ -51,7 +51,7 @@ const Header = () => {
           </Heading>
         </Button>
       </HStack>
-      <HStack position="fixed" top="2%" right="2%" zIndex="1">
+      <HStack position="fixed" top="1%" right="1%" zIndex="1">
         <Menu>
           <MenuButton
             as={Button}

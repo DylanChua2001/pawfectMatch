@@ -9,11 +9,14 @@ import Pets from "../../components/petList";
 const HomePage = () => {
   return (
     <>
-      <Flex direction="column" height="100vh">
-        <Box mt="80px">
+      <Flex direction="column" height="100vh" alignItems="center" justifyContent="center">
+        <Box>
           <Header />
         </Box>
-        <Box >
+        <Box 
+          maxW={["90%", "92%", "97%"]}
+          w="100%" 
+          maxHeight={["calc(100vh - 170px)", "calc(100vh - 150px)", "calc(100vh - 200px)"]}>
           <Pets />
         </Box>
       </Flex>

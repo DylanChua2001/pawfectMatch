@@ -95,7 +95,7 @@ const PetList = () => {
   };
 
   return (
-    <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={4}>
+    <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto"  pt= "10px" p={4}>
       {selectedPet ? (
         <Box>
           <Button onClick={handleBackToList} mb={4}>Back to List</Button>
@@ -130,6 +130,7 @@ const PetList = () => {
             )}
             <Spacer />
             <FilterMenu applyFilters={applyFilters} />
+            <Button onClick={navigateToFavorites} mt={4} colorScheme="blue">Go to Favorites</Button>
           </Flex>
           <Box display="flex" overflowX="auto">
             {filteredPets.map((pet) => (
@@ -138,7 +139,7 @@ const PetList = () => {
               </Box>
             ))}
           </Box>
-          <Button onClick={navigateToFavorites} mt={4} colorScheme="blue">Go to Favorites</Button>
+          {/* <Button onClick={navigateToFavorites} mt={4} colorScheme="blue">Go to Favorites</Button> */}
         </>
       )}
     </Box>

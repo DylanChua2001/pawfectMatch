@@ -10,6 +10,8 @@ import Cookie from 'js-cookie';
 const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   const [liked, setLiked] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [photo, setPhoto] = useState('')
+  const petID = pet.pet_id
   const sessionID = Cookie.get('userID');
   const [isAdmin, setIsAdmin] = useState(false); // State to check admin status
   const toast = useToast();
@@ -29,7 +31,27 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
     checkAdminStatus();
   }, [sessionID]);
 
+  useEffect(() => {
+    const fetchPhotoList = async() => {
+      try {
+        const photoresponse = await fetch(`http://localhost:3001/api/image/retrievePetImage/${petID}`, {
+          method: 'GET'
+        });
+        const photoresponsedata = await photoresponse.json();
+        const imageSrcUrl = photoresponsedata.petImage[0].photo_url;
+        console.log("Image Link :" , imageSrcUrl)
+        setPhoto(imageSrcUrl)
+
+      } catch (error) {
+        console.error('Error fetching image:', error)
+      }
+    }
+
+    fetchPhotoList()
+  },[petID])
+
   // Function to handle like button click
+
   const handleLikeButtonClick = async () => {
     const url = liked
       ? `http://localhost:3001/api/favourites/deleteFavPet/${sessionID}/delete/${pet.pet_id}`
@@ -116,8 +138,8 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
 
       <Box>
         <Image
-          src={pet.mainPhoto || pet.imageUrl}
-          alt={pet.pet_name}
+          src={photo || pet.imageUrl} // Adjust based on your data structure
+          alt={pet.pet_name} // Use pet_name for accessibility
           borderRadius="md"
           height="40vh"
           width="40vh"

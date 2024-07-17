@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from "react";
 import {
   HStack,
   Avatar,
@@ -15,6 +15,7 @@ import {
 import { useRouter } from 'next/navigation'; // Import useRouter hook from Next.js
 import Cookies from 'js-cookie';
 import axios from 'axios';
+
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,12 +41,36 @@ const Header = () => {
 
   // Check if userID exists in cookies
   const userID = Cookies.get('userID');
+  console.log(userID)
+
+  const [photo, setPhoto] = useState('')
+
+  useEffect(() => {
+    const fetchPhotoList = async() => {
+      try {
+        const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${userID}`, {
+          method: 'GET'
+        });
+        const photoresponsedata = await photoresponse.json();
+        const imageSrcUrl = photoresponsedata.userImage[0].photo_url;
+        console.log("Image Link :" , imageSrcUrl)
+        setPhoto(imageSrcUrl)
+
+      } catch (error) {
+        console.error('Error fetching image:', error)
+      }
+    }
+
+    fetchPhotoList()
+    
+  },[userID])
+
 
   return (
     <>
       <HStack position="fixed" top="2%" left="2%" zIndex="1">
         <Button bg={'transparent'} _hover={{ bg: 'transparent' }} onClick={() => router.push("/")}>
-          <Image src="/pawprints.png" alt="Image" width={50} height={50} />
+          <Image src= "/pawprints.png" alt="Image" width={50} height={50} />
           <Heading fontSize="240%" fontFamily="Kaushan Script" fontStyle="italic">
             PawfectMatch
           </Heading>
@@ -62,7 +87,7 @@ const Header = () => {
             <Avatar
               borderRadius="full"
               borderColor="black"
-              src="profileicon.png"
+              src={photo}
               width="50"
               height="50"
             />

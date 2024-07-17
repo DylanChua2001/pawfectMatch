@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { Box, Image, Text, VStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useToast } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Cookie from 'js-cookie';
 
@@ -17,7 +16,6 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   const sessionID = Cookie.get('userID');
   const [isAdmin, setIsAdmin] = useState(false); // State to check admin status
   const toast = useToast();
-  const router = useRouter();
 
   // Check admin status on component mount
   useEffect(() => {

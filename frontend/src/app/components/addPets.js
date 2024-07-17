@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { Box, Button, Input, FormLabel, Textarea, SimpleGrid, Image, VStack } from "@chakra-ui/react";
+import { useToast, Box, Button, Input, FormLabel, Textarea, Image, VStack } from "@chakra-ui/react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const AddPet = () => {
+  const toast = useToast();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     pet_name: "",
     pet_type: "",
@@ -14,23 +17,39 @@ const AddPet = () => {
     pet_character: "",
     pet_physical_trait: "",
     pet_description: "",
+    mainPhoto: null, // Added to handle file input
   });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    if (e.target.type === "file") {
+      setFormData({ ...formData, mainPhoto: e.target.files[0] });
+    } else {
+      setFormData({ ...formData, [e.target.id]: e.target.value });
+    }
   };
 
   const handleSubmit = async () => {
-    console.log(formData)
     try {
-      const response = await axios.post('http://localhost:3001/api/pets/createPet', formData, {
+      // Step 1: Create the pet
+      const createPetResponse = await axios.post('http://localhost:3001/api/pets/createPet', formData, {
         withCredentials: true
       });
+      console.log("Pet created:", createPetResponse.data);
 
-      console.log("Pet created:", response.data);
-      // Optionally handle response or redirect user after successful submission
+      // Step 2: Upload the main photo if selected
+      if (formData.mainPhoto) {
+        const formDataImage = new FormData();
+        formDataImage.append('image', formData.mainPhoto);
 
-      // Reset form fields after submission
+        const uploadImageResponse = await axios.post(`http://localhost:3001/api/image/uploadPetImage/${createPetResponse.data.pet_id}`, formDataImage, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        console.log("Image uploaded:", uploadImageResponse.data);
+      }
+
+      // Reset form fields after successful submission
       setFormData({
         pet_name: "",
         pet_type: "",
@@ -42,10 +61,28 @@ const AddPet = () => {
         pet_character: "",
         pet_physical_trait: "",
         pet_description: "",
+        mainPhoto: null,
       });
+
+      toast({
+        title: 'Pet Added',
+        description: 'Pet has been successfully added.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+
+      // Redirect to appropriate page or handle navigation
+
     } catch (error) {
       console.error("Error creating pet:", error);
-      // Handle error, show user feedback, etc.
+      toast({
+        title: 'Error',
+        description: 'Failed to add pet. Please try again later.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
@@ -59,27 +96,18 @@ const AddPet = () => {
         <FormLabel>Breed</FormLabel>
         <Input id="pet_breed" value={formData.pet_breed} onChange={handleChange} />
         <FormLabel>Age</FormLabel>
-        <Input id="pet_age" value={formData.pet_age} onChange={handleChange} />
+        <Input type="number" id="pet_age" value={formData.pet_age} onChange={handleChange} />
         <FormLabel>Price</FormLabel>
-        <Input id="pet_price" value={formData.pet_price} onChange={handleChange} />
-        {/* <FormLabel>Status</FormLabel>
-        <Input id="pet_status" value={formData.pet_status} onChange={handleChange} /> */}
+        <Input type="number" id="pet_price" value={formData.pet_price} onChange={handleChange} />
         <FormLabel>Size</FormLabel>
         <Input id="pet_size" value={formData.pet_size} onChange={handleChange} />
         <FormLabel>Description</FormLabel>
         <Textarea id="pet_description" value={formData.pet_description} onChange={handleChange} />
-        {/* <FormLabel>Main Photo</FormLabel>
+        <FormLabel>Main Photo</FormLabel>
         <Input id="mainPhoto" type="file" onChange={handleChange} />
         {formData.mainPhoto && (
           <Image src={URL.createObjectURL(formData.mainPhoto)} alt="Main Pet Photo" borderRadius="md" objectFit="contain" height="40vh" width="40vh" />
-        )} */}
-        {/* <FormLabel>Additional Photos</FormLabel>
-        <SimpleGrid columns={[2, 3]} spacing={5}>
-          {formData.additionalPhotos.map((photo, index) => (
-            <Image key={index} src={URL.createObjectURL(photo)} alt={`Additional Photo ${index + 1}`} borderRadius="md" objectFit="contain" height="30vh" width="100%" />
-          ))}
-        </SimpleGrid> */}
-        {/* <Input id="additionalPhotos" type="file" multiple onChange={handleChange} /> */}
+        )}
         <FormLabel>Pet Character</FormLabel>
         <Input id="pet_character" value={formData.pet_character} onChange={handleChange} />
         <FormLabel>Pet Physical Trait</FormLabel>

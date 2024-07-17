@@ -22,21 +22,19 @@ const getPetByID = async (id) => {
 };
 
 const createPet = async (pet) => {
-    const { 
-        pet_name, 
-        pet_type, 
-        pet_breed, 
-        pet_age, 
-        pet_price, 
-        pet_status, 
-        pet_size, 
-        pet_character, 
+    const {
+        pet_name,
+        pet_type,
+        pet_breed,
+        pet_age,
+        pet_price,
+        pet_status,
+        pet_size,
+        pet_character,
         pet_physical_trait,
         pet_image_id,
         pet_description
     } = pet;
-
-    // Split comma-separated strings into arrays
     const petCharacterArray = pet_character.split(',').map(trait => trait.trim());
     const petPhysicalTraitArray = pet_physical_trait.split(',').map(trait => trait.trim());
 
@@ -59,19 +57,18 @@ const createPet = async (pet) => {
 
     try {
         const { rows } = await db.query(queryText, [
-            pet_name, 
-            pet_type, 
-            pet_breed, 
-            pet_age, 
-            pet_price, 
-            pet_status, 
-            pet_size, 
+            pet_name,
+            pet_type,
+            pet_breed,
+            pet_age,
+            pet_price,
+            pet_status,
+            pet_size,
             petCharacterArray,  // Array of text (text[])
             petPhysicalTraitArray,  // Array of text (text[])
             pet_image_id,
             pet_description
         ]);
-        
         return rows[0];
     } catch (error) {
         throw error;

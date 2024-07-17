@@ -5,7 +5,7 @@ const port = 3001
 const cors = require('cors');
 const corsOptions = require('./config/corsOptions');
 const session = require('express-session');
-const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser')
 
 app.use(bodyParser.json());
 app.use(cors(corsOptions));

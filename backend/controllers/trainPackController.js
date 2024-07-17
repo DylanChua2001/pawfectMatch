@@ -126,6 +126,74 @@ const trainPackController = {
                 error: error.message
             })
         }
+    },
+
+    uploadTrainingImageID : async(req,res) => {
+        try {
+            const {trainID} = req.params
+            const {photoID} = req.body
+    
+            const queryText = `UPDATE train_table 
+            SET train_image_id = $1
+            WHERE train_id = $2
+            RETURNING train_image_id`
+    
+            const values = [photoID, trainID]
+    
+            const{rows} = await db.query(queryText, values)
+    
+            if (rows.length > 0) {
+                res.status(200).json({
+    
+                    message : `Photo for Training ID ${trainID} has been uploaded successfully`,
+                    trainImage : rows[0].train_photo
+    
+                })
+            } else {
+                res.status(404).json({
+                    message: `Photo for Training ID ${trainID} has not been uploaded.`
+                });
+            }
+    
+        } catch (error) {
+    
+            res.status(500).json({ 
+                message: 'Internal Server Error' 
+            });
+    
+        }
+    },
+
+    retrieveTrainingImageID : async(req,res) => {
+        try {
+            const {trainID} = req.params
+    
+            const queryText = 'SELECT train_image_id FROM train_table WHERE train_id = $1';
+    
+            const values = [trainID]
+    
+            const{rows} = await db.query(queryText, values)
+    
+            if (rows.length > 0) {
+                res.status(200).json({
+    
+                    message : `Photo for Training ID ${trainID} has been retrieved successfully`,
+                    trainImage : rows
+    
+                })
+            } else {
+                res.status(404).json({
+                    message: `Photo for Training ID ${trainID} has failed to retrieve.`
+                });
+            }
+    
+        } catch (error) {
+    
+            res.status(500).json({ 
+                message: 'Internal Server Error' 
+            });
+    
+        }
     }
 }
 

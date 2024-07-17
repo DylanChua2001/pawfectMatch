@@ -31,6 +31,25 @@ const matchController = {
 
     },
 
+    checkUserMatch: async (req, res) => {
+        const { userID } = req.params;
+        try {
+            const queryText = 'SELECT * FROM adoption_table WHERE user_id = $1';
+            const { rows } = await db.query(queryText, [userID]);
+
+            if (rows.length > 0) {
+                res.status(200).json({ matchedPetId: rows[0].pet_id });
+            } else {
+                res.status(200).json({ matchedPetId: null });
+            }
+        } catch (error) {
+            res.status(500).json({
+                message: 'Error checking user match',
+                error: error.message
+            });
+        }
+    },
+
     addAMatch: async (req, res) => {
         try {
             const {userID, petID} = req.params

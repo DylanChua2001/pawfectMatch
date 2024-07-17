@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   HStack,
   Avatar,
@@ -17,8 +17,10 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 
 const Header = () => {
+  const userID = Cookies.get('userID'); // Assuming 'userID' is the cookie key storing the ID
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter(); // Initialize useRouter hook
+  const [imageSrcUrl, setImageSrcUrl] = useState(''); // State for profile image URL
 
   const handleMenuToggle = () => {
     setIsOpen(!isOpen);
@@ -38,14 +40,29 @@ const Header = () => {
     router.push('/pages/login');
   };
 
-  // Check if userID exists in cookies
-  const userID = Cookies.get('userID');
+  useEffect(() => {
+    fetchProfile(); // Fetch profile data when component mounts
+  }, []);
+
+  const fetchProfile = async () => {
+    try {
+      const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${userID}`, {
+        method: 'GET'
+      });
+
+      const photoresponsedata = await photoresponse.json();
+      const fetchedImageSrcUrl = photoresponsedata.userImage[0].photo_url;
+      setImageSrcUrl(fetchedImageSrcUrl); // Set the fetched image URL to state
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    }
+  };
 
   return (
     <>
       <HStack position="fixed" top="2%" left="2%" zIndex="1">
         <Button bg={'transparent'} _hover={{ bg: 'transparent' }} onClick={() => router.push("/")}>
-          <Image src="/pawprints.png" alt="Image" width={50} height={50} />
+          <Image src='/pawprints.png' alt="Image" width={50} height={50} />
           <Heading fontSize="240%" fontFamily="Kaushan Script" fontStyle="italic">
             PawfectMatch
           </Heading>
@@ -62,7 +79,7 @@ const Header = () => {
             <Avatar
               borderRadius="full"
               borderColor="black"
-              src="profileicon.png"
+              src={imageSrcUrl}
               width="50"
               height="50"
             />

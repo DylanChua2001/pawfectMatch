@@ -19,6 +19,7 @@ const PetList = () => {
       try {
         const response = await fetch('http://localhost:3001/api/pets/getAllPets');
         const data = await response.json();
+        console.log(data)
         setPetsData(data);
         setFilteredPets(data);
       } catch (error) {

@@ -116,7 +116,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
 
       <Box>
         <Image
-          src={pet.mainPhoto || pet.imageUrl}
+          src={pet.imageSrcUrl || pet.imageUrl}
           alt={pet.pet_name}
           borderRadius="md"
           height="40vh"

@@ -1,10 +1,10 @@
 const db = require('../config/db');
 
 const getAllPets = async () => {
-    const queryText = 'SELECT * FROM pet_table order by pet_name';
+    const queryText = 'SELECT * FROM pet_table WHERE pet_status = $1 order by pet_name';
 
     try {
-        const { rows } = await db.query(queryText);
+        const { rows } = await db.query(queryText, ['Available']);
         return rows;
     } catch (error) {
         throw error;

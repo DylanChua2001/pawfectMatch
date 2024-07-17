@@ -155,7 +155,7 @@ const s3Controller = {
             const fileBuffer = await sharp(req.file.buffer).resize({
                 height : 500, 
                 width : 500,
-                fit: 'contain',
+                fit: 'fill',
             }).toBuffer()
                             
             const params = {
@@ -257,7 +257,7 @@ const s3Controller = {
             const fileBuffer = await sharp(req.file.buffer).resize({
                 height : 500, 
                 width : 500,
-                fit: 'contain',
+                fit: 'fill',
             }).toBuffer()
                             
             const params = {

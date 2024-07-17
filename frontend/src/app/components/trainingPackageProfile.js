@@ -61,15 +61,14 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
 
   return (
     <Box
-      maxW="80vw"
-      mx="auto"
-      my={10}
-      p={5}
-      borderWidth="1px"
-      borderRadius="lg"
-      boxShadow="md"
+      maxW="100vw" 
+      mx="auto" 
+      borderRadius="15px" 
+      position="relative"
+      pb= "90px"
+      pt= "100px"
     >
-      <HStack spacing={5} align="start">
+      <HStack spacing={5} align="start" pl='10px'>
         <VStack align="start" justify="center" spacing={3}>
           <Text fontSize="4xl" fontWeight="bold">
             {trainingPackage.train_name}
@@ -79,15 +78,19 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
               variant="ghost"
               colorScheme="red"
               aria-label="Like button"
-              fontSize="6xl"
+              fontSize={["3xl", "3xl", "4xl", "4xl"]}
             />
           </Text>
-          <Text fontSize="3xl">Price: ${trainingPackage.train_price}</Text>
-          <Text fontSize="3xl">Description: {trainingPackage.train_desc}</Text>
+          <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Price: ${trainingPackage.train_price}</Text>
+          <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Description: {trainingPackage.train_desc}</Text>
           <Button
-            colorScheme="teal"
+            bg="rgba(253, 222, 176, 1)" 
+            color='black' 
             onClick={handleAddToCart}
             mt={4}
+            position="absolute"
+            bottom={4}
+            left={2}
           >
             Add to Cart
           </Button>

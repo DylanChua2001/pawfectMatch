@@ -97,8 +97,15 @@ const PetList = () => {
   return (
     <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" px="20px">
       {selectedPet ? (
-        <Box>
-          <Button onClick={handleBackToList} mb={4}>Back to Pets</Button>
+        <Box pt="70px">
+          <Button 
+            onClick={handleBackToList} 
+            mb={4} 
+            position="absolute"
+            top="20px"
+            right="25px"
+            >
+            Back to Pets</Button>
           <PetProfile pet={selectedPet} onLike={handleLikePet} />
         </Box>
       ) : (
@@ -136,7 +143,20 @@ const PetList = () => {
               Favorites
             </Button>
           </Flex>
-          <Box display="flex" overflowX="auto">
+          <Box
+            paddingBottom= "10px"
+            display="flex" 
+            overflowX="auto"
+            sx={{
+              overflowX: 'hidden', // Hide horizontal scrollbar
+              '&::-webkit-scrollbar': {
+                display: 'none',  // Hide scrollbar for Chrome, Safari, and Edge
+              },
+              '-ms-overflow-style': 'none',  // Hide scrollbar for Internet Explorer and Edge
+              'scrollbar-width': 'none',     // Hide scrollbar for Firefox
+              'overflow-x': 'auto',  
+            }}
+            >
             {filteredPets.map((pet) => (
               <Box key={pet.pet_id} flex="0 0 auto" maxW="sm" p={2}>
                 <PetCard pet={pet} onClick={() => handlePetCardClick(pet)} />

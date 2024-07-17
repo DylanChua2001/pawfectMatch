@@ -192,7 +192,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                             <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Breed: {pet.pet_breed}</Text>
                             <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Age: {pet.pet_age} years</Text>
                             <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Description: {pet.pet_description || "No description available"}</Text>
-                            <Button bg="rgba(253, 222, 176, 1)" color='black' mt={4} position="absolute" bottom={2} left={2}>Match</Button>
+                            <Button bg="rgba(253, 222, 176, 1)" onClick={handleModalOpen} color='black' mt={4} position="absolute" bottom={2} left={2}>Match</Button>
                         </VStack>
                     )}
                 </Box>

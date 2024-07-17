@@ -38,7 +38,7 @@ const TrainingPackageCard = ({ trainingPackage, onClick, onAddToCart }) => {
       _hover={{ boxShadow: 'lg' }}
       onClick={onClick}
     >
-      <Image src={photo} alt={trainingPackage.train_name} boxSize="sm" objectFit="contain" />
+      <Image src={photo} alt={trainingPackage.train_name} boxSize="sm"/>
       <Box>
         <Box d="flex" alignItems="baseline">
           <Text fontWeight="semibold" as="h4" lineHeight="tight" isTruncated textAlign="center">

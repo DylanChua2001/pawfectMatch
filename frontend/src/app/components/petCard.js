@@ -37,7 +37,7 @@ const PetCard = ({ pet, onClick }) => {
       cursor="pointer"
       _hover={{ boxShadow: 'lg' }}
     >
-      <Image src={photo} alt={pet.name} boxSize="250px" objectFit="contain"/>
+      <Image src={photo} alt={pet.name} boxSize="250px"/>
       <Box>
         <Box d="flex" alignItems="baseline" mt="10px">
           <Text fontWeight="semibold" as="h4" lineHeight="tight" isTruncated textAlign="center">

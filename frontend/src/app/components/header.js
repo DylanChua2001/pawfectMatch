@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   HStack,
   Avatar,
@@ -15,6 +15,7 @@ import {
 import { useRouter } from 'next/navigation'; // Import useRouter hook from Next.js
 import Cookies from 'js-cookie';
 import axios from 'axios';
+
 
 const Header = () => {
   const userID = Cookies.get('userID'); // Assuming 'userID' is the cookie key storing the ID

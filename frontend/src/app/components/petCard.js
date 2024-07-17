@@ -1,7 +1,30 @@
 // components/PetCard.js
 import { Box, Image, Text } from '@chakra-ui/react';
+import { useState, useEffect } from "react";
 
 const PetCard = ({ pet, onClick }) => {
+  const petID = pet.pet_id
+  const [photo, setPhoto] = useState('')
+
+  useEffect(() => {
+    const fetchPhotoList = async() => {
+      try {
+        const photoresponse = await fetch(`http://localhost:3001/api/image/retrievePetImage/${petID}`, {
+          method: 'GET'
+        });
+        const photoresponsedata = await photoresponse.json();
+        const imageSrcUrl = photoresponsedata.petImage[0].photo_url;
+        console.log("Image Link :" , imageSrcUrl)
+        setPhoto(imageSrcUrl)
+
+      } catch (error) {
+        console.error('Error fetching image:', error)
+      }
+    }
+
+    fetchPhotoList()
+  },[petID])
+
   return (
     <>
     <Box
@@ -14,7 +37,7 @@ const PetCard = ({ pet, onClick }) => {
       cursor="pointer"
       _hover={{ boxShadow: 'lg' }}
     >
-      <Image src={pet.mainPhoto} alt={pet.name} boxSize="250px" objectFit="contain"/>
+      <Image src={photo} alt={pet.name} boxSize="250px" objectFit="contain"/>
       <Box>
         <Box d="flex" alignItems="baseline" mt="10px">
           <Text fontWeight="semibold" as="h4" lineHeight="tight" isTruncated textAlign="center">

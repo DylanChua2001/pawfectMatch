@@ -12,7 +12,7 @@ const HomePage = () => {
   const handleImageClick = (route) => {
     if (!userID) {
       toast({
-        title: 'Please Login to view our pets and training packages',
+        title: 'Please Login to view this page',
         description: 'Redirecting to login page',
         status: 'error',
         duration: 5000,

@@ -19,6 +19,7 @@ const PetList = () => {
       try {
         const response = await fetch('http://localhost:3001/api/pets/getAllPets');
         const data = await response.json();
+        console.log(data)
         setPetsData(data);
         setFilteredPets(data);
       } catch (error) {
@@ -66,14 +67,14 @@ const PetList = () => {
     }
   };
 
-  const handleRemoveFromFavorites = (petId) => {
-    const updatedFavorites = favoritePets.filter(pet => pet.pet_id !== petId);
-    setFavoritePets(updatedFavorites);
-  };
+  // const handleRemoveFromFavorites = (petId) => {
+  //   const updatedFavorites = favoritePets.filter(pet => pet.pet_id !== petId);
+  //   setFavoritePets(updatedFavorites);
+  // };
 
-  const handleFavoritePetClick = (pet) => {
-    setSelectedPet(pet);
-  };
+  // const handleFavoritePetClick = (pet) => {
+  //   setSelectedPet(pet);
+  // };
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {

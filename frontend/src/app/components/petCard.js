@@ -54,7 +54,7 @@ const PetCard = ({ pet, onClick }) => {
     >
       <Image src={photo} alt={petName} boxSize="250px" objectFit="contain" />
       <Box>
-        <Box d="flex" alignItems="baseline" mt="10px">
+        <Box d="flex" alignItems="baseline" mt="-10px">
           <Text fontWeight="semibold" as="h4" lineHeight="tight" isTruncated textAlign="center">
             {petName}
           </Text>

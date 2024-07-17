@@ -1,6 +1,7 @@
+// components/Header.js
 'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   HStack,
   Avatar,
@@ -16,12 +17,12 @@ import { useRouter } from 'next/navigation'; // Import useRouter hook from Next.
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
-
 const Header = () => {
-  const userID = Cookies.get('userID'); // Assuming 'userID' is the cookie key storing the ID
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter(); // Initialize useRouter hook
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [userID, setUserID] = useState(null); // Add userID state
   const [imageSrcUrl, setImageSrcUrl] = useState(''); // State for profile image URL
+  const router = useRouter(); // Initialize useRouter hook
 
   const handleMenuToggle = () => {
     setIsOpen(!isOpen);
@@ -47,7 +48,9 @@ const Header = () => {
 
   const fetchProfile = async () => {
     try {
-      const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${userID}`, {
+      const id = Cookies.get('userID'); // Assuming 'userID' is the cookie key storing the ID
+      setUserID(id); // Set userID state
+      const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${id}`, {
         method: 'GET'
       });
 
@@ -56,8 +59,14 @@ const Header = () => {
       setImageSrcUrl(fetchedImageSrcUrl); // Set the fetched image URL to state
     } catch (error) {
       console.error('Error fetching profile:', error);
+    } finally {
+      setIsLoading(false); // Set loading state to false regardless of success or failure
     }
   };
+
+  if (isLoading) {
+    return null; // Return null or a loading spinner while loading
+  }
 
   return (
     <>
@@ -80,7 +89,7 @@ const Header = () => {
             <Avatar
               borderRadius="full"
               borderColor="black"
-              src={imageSrcUrl}
+              src={imageSrcUrl || "profileicon.png"}
               width="50"
               height="50"
             />
@@ -89,8 +98,6 @@ const Header = () => {
             {!userID && <MenuItem onClick={() => navigateTo('/pages/login')}>Login</MenuItem>}
             {userID && <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/profile')}>Profile</MenuItem>}
-            {/* <MenuItem onClick={() => navigateTo('/pages/pets')}>Pets</MenuItem> */}
-            {/* <MenuItem onClick={() => navigateTo('/pages/training')}>Training Packages</MenuItem> */}
             <MenuItem onClick={() => navigateTo('/pages/about')}>About Us</MenuItem>
             {userID && <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training</MenuItem>}

@@ -8,7 +8,7 @@ router.get('/getOneTrainingPackIdNameMoney/:trainID', trainPackController.getOne
 router.post('/createNewTrainingPack', verifyToken,trainPackController.createNewTrainingPack)
 router.put('/updateTrainingPack/:trainID', verifyToken, trainPackController.updateTrainingPack)
 router.delete('/deleteTrainingPack/:trainID', verifyToken, trainPackController.deleteTrainingPack)
-router.put('/uploadTrainingImageID/:trainID', verifyToken, trainPackController.uploadTrainingImageID)
-router.get('/retrieveTrainingImageID/:trainID', verifyToken, trainPackController.retrieveTrainingImageID)
+router.put('/uploadTrainingImageID/:trainID', trainPackController.uploadTrainingImageID)
+router.get('/retrieveTrainingImageID/:trainID', trainPackController.retrieveTrainingImageID)
 
 module.exports = router

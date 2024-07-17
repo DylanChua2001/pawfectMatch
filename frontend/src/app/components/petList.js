@@ -67,14 +67,14 @@ const PetList = () => {
     }
   };
 
-  const handleRemoveFromFavorites = (petId) => {
-    const updatedFavorites = favoritePets.filter(pet => pet.pet_id !== petId);
-    setFavoritePets(updatedFavorites);
-  };
+  // const handleRemoveFromFavorites = (petId) => {
+  //   const updatedFavorites = favoritePets.filter(pet => pet.pet_id !== petId);
+  //   setFavoritePets(updatedFavorites);
+  // };
 
-  const handleFavoritePetClick = (pet) => {
-    setSelectedPet(pet);
-  };
+  // const handleFavoritePetClick = (pet) => {
+  //   setSelectedPet(pet);
+  // };
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {

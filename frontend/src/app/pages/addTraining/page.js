@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Box , Flex, useToast }  from "@chakra-ui/react";
+import { Box , Flex, useToast, Spinner, Text }  from "@chakra-ui/react";
 import Header from "../../components/header";
 import AddTraining from "../../components/addTraining";
 import { useRouter } from "next/navigation";
@@ -28,7 +28,21 @@ const HomePage = () => {
   }, [router, toast]);
 
   if (!isAdmin) {
-    return null; // Render nothing or a loading indicator
+    return (
+      <Box
+        minHeight="100vh"
+        display="flex"
+        flexDirection="column" // Stack elements vertically
+        alignItems="center"
+        justifyContent="center"
+        backgroundImage="url('/background.png')"
+        backgroundSize="cover"
+        backgroundPosition="center"
+      >
+        <Spinner size="xl" />
+        <Text fontSize="xl" color="black" mt={4}>Redirecting to the home page...</Text> {/* Add margin-top */}
+      </Box>
+    );
   }
   return (
     <>

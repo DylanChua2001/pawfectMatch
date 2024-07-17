@@ -1,4 +1,3 @@
-'use client'
 import { useState, useEffect } from "react";
 import {
   Box,
@@ -58,6 +57,7 @@ const Profile = () => {
 
   const handleImageChange = (e) => {
     setSelectedImage(e.target.files[0]); // Store the selected image file
+    setProfile({ ...profile, imageSrcUrl: URL.createObjectURL(e.target.files[0]) }); // Update preview immediately
   };
 
   const handleInputChange = (e) => {
@@ -68,7 +68,6 @@ const Profile = () => {
   const handleSave = async () => {
     try {
       const id = Cookie.get('userID');
-      console.log(profile);
       if (selectedImage) {
         const formData = new FormData();
         formData.append('image', selectedImage);
@@ -90,6 +89,7 @@ const Profile = () => {
       console.log('Profile updated:', response.data);
       setIsEditing(false);
       window.location.reload();
+
     } catch (error) {
       console.error('Error updating profile:', error);
       // Handle error updating profile (e.g., show error message)
@@ -108,7 +108,7 @@ const Profile = () => {
           boxSize="150px"
           src={profile.imageSrcUrl}
         />
-                {isEditing && (
+        {isEditing && (
           <FormControl>
             <FormLabel>Change Profile Picture</FormLabel>
             <Input type="file" onChange={handleImageChange} />
@@ -125,7 +125,7 @@ const Profile = () => {
           <FormLabel>Age</FormLabel>
           <Editable value={profile.user_age} isDisabled={!isEditing}>
             <EditablePreview />
-            <Input as={EditableInput} name="age" onChange={handleInputChange} value={profile.user_age} />
+            <Input as={EditableInput} name="user_age" onChange={handleInputChange} value={profile.user_age} />
           </Editable>
         </FormControl>
         <FormControl>
@@ -139,7 +139,7 @@ const Profile = () => {
           <FormLabel>Email</FormLabel>
           <Editable value={profile.email_add} isDisabled={!isEditing}>
             <EditablePreview />
-            <Input as={EditableInput} name="email" onChange={handleInputChange} value={profile.email_add} />
+            <Input as={EditableInput} name="email_add" onChange={handleInputChange} value={profile.email_add} />
           </Editable>
         </FormControl>
         <Button onClick={isEditing ? handleSave : () => setIsEditing(true)}>

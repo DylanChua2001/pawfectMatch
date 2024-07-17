@@ -3,30 +3,45 @@ import { Box, Image, Text } from '@chakra-ui/react';
 import { useState, useEffect } from "react";
 
 const PetCard = ({ pet, onClick }) => {
-  const petID = pet.pet_id
-  const [photo, setPhoto] = useState('')
+  const petID = pet.pet_id;
+  const [photo, setPhoto] = useState('');
+  const [petName, setPetName] = useState('');
 
   useEffect(() => {
-    const fetchPhotoList = async() => {
+    const fetchPhotoList = async () => {
       try {
-        const photoresponse = await fetch(`http://localhost:3001/api/image/retrievePetImage/${petID}`, {
+        const photoResponse = await fetch(`http://localhost:3001/api/image/retrievePetImage/${petID}`, {
           method: 'GET'
         });
-        const photoresponsedata = await photoresponse.json();
-        const imageSrcUrl = photoresponsedata.petImage[0].photo_url;
-        console.log("Image Link :" , imageSrcUrl)
-        setPhoto(imageSrcUrl)
-
+        const photoResponseData = await photoResponse.json();
+        const imageSrcUrl = photoResponseData.petImage[0].photo_url;
+        console.log("Image Link:", imageSrcUrl);
+        setPhoto(imageSrcUrl);
       } catch (error) {
-        console.error('Error fetching image:', error)
+        console.error('Error fetching image:', error);
       }
-    }
+    };
 
-    fetchPhotoList()
-  },[petID])
+    const fetchPetName = async () => {
+      try {
+        const petResponse = await fetch('http://localhost:3001/api/pets/getAllPets', {
+          method: 'GET'
+        });
+        const petResponseData = await petResponse.json();
+        const petData = petResponseData.find(p => p.pet_id === petID);
+        if (petData) {
+          setPetName(petData.pet_name);
+        }
+      } catch (error) {
+        console.error('Error fetching pet name:', error);
+      }
+    };
+
+    fetchPhotoList();
+    fetchPetName();
+  }, [petID]);
 
   return (
-    <>
     <Box
       maxW="250px"
       bg="gray.100"
@@ -37,19 +52,15 @@ const PetCard = ({ pet, onClick }) => {
       cursor="pointer"
       _hover={{ boxShadow: 'lg' }}
     >
-      <Image src={photo} alt={pet.name} boxSize="250px" objectFit="contain"/>
+      <Image src={photo} alt={petName} boxSize="250px" objectFit="contain" />
       <Box>
         <Box d="flex" alignItems="baseline" mt="10px">
           <Text fontWeight="semibold" as="h4" lineHeight="tight" isTruncated textAlign="center">
-            {pet.name}
+            {petName}
           </Text>
         </Box>
-        <Text mt={1} color="gray.500" noOfLines={2} textAlign="center" fontSize={["0.65rem", "0.70rem", "0.75rem", "0.75rem"]} >
-          {pet.description}
-        </Text>
       </Box>
     </Box>
-    </>
   );
 };
 

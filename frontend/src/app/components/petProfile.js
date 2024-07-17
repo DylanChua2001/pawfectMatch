@@ -9,6 +9,7 @@ import Cookie from 'js-cookie';
 const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   const [liked, setLiked] = useState(false); //liked is a boolean, while setLiked sets the value of liked
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUserMatched, setIsUserMatched] = useState(false);
 
   const sessionID = Cookie.get('userID'); 
   console.log(sessionID)
@@ -35,6 +36,22 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
     checkIfLiked();
   }, [sessionID, pet.pet_id]);
 
+  useEffect(() => {
+    const checkUserMatch = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/api/match/checkUserMatch/${sessionID}`);
+        const { matchedPetId } = response.data;
+        setIsUserMatched(!!matchedPetId && matchedPetId !== pet.pet_id);
+      } catch (error) {
+        console.error('Error checking user match:', error);
+      }
+    };
+
+    if (sessionID) {
+      checkUserMatch();
+    }
+  }, [sessionID, pet.pet_id]);
+
   const handleLikeButtonClick = async () => {
     const url = liked
       ? `http://localhost:3001/api/favourites/deleteFavPet/${sessionID}/delete/${pet.pet_id}`
@@ -54,8 +71,21 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
     }
   };
 
-  const handleModalOpen = () => {
+  const handleModalOpen = async() => {
+    if (isUserMatched) {
+      alert('You are already matched with another pet.');
+      return;
+    }
+
     setIsModalOpen(true);
+
+    try {
+      const response = await axios.post(`http://localhost:3001/api/match/addAMatch/${sessionID}/${pet.pet_id}`);
+      console.log('Response from API:', response.data);
+
+    } catch (error) {
+      console.error('Error updating like status:', error);
+    }
   };
 
   const handleModalClose = () => {
@@ -90,7 +120,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
             <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Breed: {pet.pet_breed}</Text> {/* Use pet_breed */}
             <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Age: {pet.pet_age} years</Text> {/* Use pet_age */}
             <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Description: {pet.pet_description || "No description available"}</Text> {/* Adjust as necessary */}
-            <Button colorScheme="blue" mt={4}>Match</Button>
+            <Button colorScheme="blue" mt={4} onClick={handleModalOpen}>Match</Button>
           </VStack>
         )}
 

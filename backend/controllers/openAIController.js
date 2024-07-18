@@ -17,6 +17,11 @@ async function reccomendPet(req, res) {
         const llm = new ChatOpenAI({ model: "gpt-4", temperature: 0 });
         const executeQuery = new QuerySqlTool(db);
         const pool = await createDatabasePool();
+        const userID = req.cookies.token ? jwt.verify(req.cookies.token, JWT_SECRET).userID : null;
+        
+        if (!userID) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
 
         const prompt = ChatPromptTemplate.fromMessages([
             [
@@ -52,11 +57,12 @@ async function reccomendPet(req, res) {
                 return chatHistory;
             },
         });
+
         const response = await chainWithHistory.invoke(
             {
                 input: req.body.question,
             },
-            { configurable: { sessionId: req.cookies.userID } }
+            { configurable: { sessionId: userID } }
         );
         console.log(response);
         await pool.end();

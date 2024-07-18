@@ -9,7 +9,7 @@
     "routes": [
         {
             "src": "/api/pets",
-            "dest": "/server.js"
+            "dest": "/index.js"
         }, {
             "src": "/api/user-profile",
             "dest": "/server.js"

@@ -17,7 +17,7 @@ const PetList = () => {
   useEffect(() => {
     const fetchPetsData = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/pets/getAllPets');
+        const response = await fetch('https://pawfect-match-backend-six.vercel.app/api/pets/getAllPets');
         const data = await response.json();
         console.log(data)
         setPetsData(data);

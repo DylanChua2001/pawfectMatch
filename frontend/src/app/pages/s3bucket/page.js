@@ -23,7 +23,7 @@ function s3Page() {
         formData.append("userID", userID)
 
         try {
-            const response = await axios.post(`http://localhost:3001/api/image/uploadImage/${userID}`, formData, {
+            const response = await axios.post(`https://pawfect-match-backend-six.vercel.app/api/image/uploadImage/${userID}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
@@ -41,7 +41,7 @@ function s3Page() {
         formData.append("petID", petID)
 
         try {
-            const response = await axios.post(`http://localhost:3001/api/image/uploadPetImage/${petID}`, formData, {
+            const response = await axios.post(`https://pawfect-match-backend-six.vercel.app/api/image/uploadPetImage/${petID}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
@@ -59,7 +59,7 @@ function s3Page() {
         formData.append("trainID", trainID)
 
         try {
-            const response = await axios.post(`http://localhost:3001/api/image/uploadTrainingImage/${trainID}`, formData, {
+            const response = await axios.post(`https://pawfect-match-backend-six.vercel.app/api/image/uploadTrainingImage/${trainID}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 

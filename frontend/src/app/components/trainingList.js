@@ -19,7 +19,7 @@ const TrainingPackagesList = () => {
   useEffect(() => {
     const fetchTrainingPackages = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/trainPack/getAllTrainingPack');
+        const response = await fetch('https://pawfect-match-backend-six.vercel.app/api/trainPack/getAllTrainingPack');
         const data = await response.json();
         setFilteredTrainingPackages(data.allTrainPack);
       } catch (error) {
@@ -33,7 +33,7 @@ const TrainingPackagesList = () => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/cart/getCart/${userId}`);
+        const response = await axios.get(`https://pawfect-match-backend-six.vercel.app/api/cart/getCart/${userId}`);
         setCart(response.data.cart || []); // Ensure cart is an array
       } catch (error) {
         console.error('Error fetching cart:', error);
@@ -74,7 +74,7 @@ const TrainingPackagesList = () => {
 
   const handleAddToCart = async (trainingPackage) => {
     try {
-      await axios.put(`http://localhost:3001/api/cart/addCart/${userId}/add/${trainingPackage.train_id}`);
+      await axios.put(`https://pawfect-match-backend-six.vercel.app/api/cart/addCart/${userId}/add/${trainingPackage.train_id}`);
       setCart(prevCart => [...prevCart, trainingPackage]);
     } catch (error) {
       console.error('Error adding to cart:', error);

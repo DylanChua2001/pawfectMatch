@@ -19,6 +19,7 @@ const PetList = () => {
       try {
         const response = await fetch('http://localhost:3001/api/pets/getAllPets');
         const data = await response.json();
+        console.log(data)
         setPetsData(data);
         setFilteredPets(data);
       } catch (error) {
@@ -66,14 +67,14 @@ const PetList = () => {
     }
   };
 
-  const handleRemoveFromFavorites = (petId) => {
-    const updatedFavorites = favoritePets.filter(pet => pet.pet_id !== petId);
-    setFavoritePets(updatedFavorites);
-  };
+  // const handleRemoveFromFavorites = (petId) => {
+  //   const updatedFavorites = favoritePets.filter(pet => pet.pet_id !== petId);
+  //   setFavoritePets(updatedFavorites);
+  // };
 
-  const handleFavoritePetClick = (pet) => {
-    setSelectedPet(pet);
-  };
+  // const handleFavoritePetClick = (pet) => {
+  //   setSelectedPet(pet);
+  // };
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -95,15 +96,22 @@ const PetList = () => {
   };
 
   return (
-    <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={4}>
+    <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" px="20px">
       {selectedPet ? (
-        <Box>
-          <Button onClick={handleBackToList} mb={4}>Back to List</Button>
+        <Box pt="70px">
+          <Button 
+            onClick={handleBackToList} 
+            mb={4} 
+            position="absolute"
+            top="20px"
+            right="25px"
+            >
+            Back to Pets</Button>
           <PetProfile pet={selectedPet} onLike={handleLikePet} />
         </Box>
       ) : (
         <>
-          <Flex mb={4} alignItems="center">
+          <Flex alignItems="center">
             <Input
               placeholder="Search pets..."
               value={searchTerm}
@@ -115,8 +123,7 @@ const PetList = () => {
               aria-label="Search"
               icon={<SearchIcon />}
               onClick={handleSearch}
-              colorScheme="teal"
-
+              bg="rgba(253, 222, 176, 1)"
               ml={2}
             />
             {searchTerm && (
@@ -124,21 +131,39 @@ const PetList = () => {
                 aria-label="Clear filter"
                 icon={<CloseIcon />}
                 onClick={handleClearFilter}
-                colorScheme="red"
+                bg="rgba(253, 222, 176, 1)"
                 ml={2}
               />
             )}
-            <Spacer />
             <FilterMenu applyFilters={applyFilters} />
+            <Spacer />
+            <Button 
+              onClick={navigateToFavorites}  
+              bg="rgba(253, 222, 176, 1)" 
+              fontSize={["0.70rem", "0.80rem", "0.95rem", "1rem"]}>
+              Favorites
+            </Button>
           </Flex>
-          <Box display="flex" overflowX="auto">
+          <Box
+            paddingBottom= "10px"
+            display="flex" 
+            overflowX="auto"
+            sx={{
+              overflowX: 'hidden', // Hide horizontal scrollbar
+              '&::-webkit-scrollbar': {
+                display: 'none',  // Hide scrollbar for Chrome, Safari, and Edge
+              },
+              '-ms-overflow-style': 'none',  // Hide scrollbar for Internet Explorer and Edge
+              'scrollbar-width': 'none',     // Hide scrollbar for Firefox
+              'overflow-x': 'auto',  
+            }}
+            >
             {filteredPets.map((pet) => (
               <Box key={pet.pet_id} flex="0 0 auto" maxW="sm" p={2}>
                 <PetCard pet={pet} onClick={() => handlePetCardClick(pet)} />
               </Box>
             ))}
           </Box>
-          <Button onClick={navigateToFavorites} mt={4} colorScheme="blue">Go to Favorites</Button>
         </>
       )}
     </Box>

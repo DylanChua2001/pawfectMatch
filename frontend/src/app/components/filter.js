@@ -40,7 +40,7 @@ const FilterMenu = ({
   const labelStyles = {
     mt: '2',
     ml: '-2.5',
-    fontSize: 'sm',
+    fontSize:["0.70rem", "0.70rem", "0.80rem", "0.90rem"],
   };
 
   const handleAgeChange = (val) => {
@@ -63,7 +63,7 @@ const FilterMenu = ({
 
   return (
     <>
-      <Box p={4}>
+      <Box mb= "40px">
         <Box mt={-2} mb={4}>
           <Text>Pet</Text>
           <Box>
@@ -71,8 +71,9 @@ const FilterMenu = ({
               <Button
                 key={petName}
                 onClick={() => handlePetChange(petName)}
-                bg={selectedPet === petName ? 'blue.500' : 'gray.200'}
-                color={selectedPet === petName ? 'white' : 'black'}
+                bg={selectedPet === petName ? "rgba(253, 222, 176, 1)"  : 'gray.200'}
+                color={selectedPet === petName ? 'black' : 'black'}
+                fontSize= "15px"
                 mr={4}
               >
                 {petName}
@@ -80,15 +81,16 @@ const FilterMenu = ({
             ))}
           </Box>
         </Box>
-        <Box mt={4} mb={8}>
+        <Box mt={4} mb={4}>
           <Text>Size</Text>
           <Box>
             {sizeRanges.map((size) => (
               <Button
                 key={size}
                 onClick={() => handleSizeChange(size)}
-                bg={selectedSize === size ? 'blue.500' : 'gray.200'}
-                color={selectedSize === size ? 'white' : 'black'}
+                bg={selectedSize === size ? "rgba(253, 222, 176, 1)"  : 'gray.200'}
+                color={selectedSize === size ? 'black' : 'black'}
+                fontSize= "15px"
                 mr={4}
               >
                 {size}
@@ -96,7 +98,7 @@ const FilterMenu = ({
             ))}
           </Box>
         </Box>
-        <Box mb={10}>
+        <Box mb={6}>
           <Text mb={8}>Age</Text>
           <Box pr={8}>
             <RangeSlider
@@ -106,6 +108,7 @@ const FilterMenu = ({
               step={1}
               value={ageValue}
               onChange={handleAgeChange}
+              colorScheme="yellow"
               ml={4} // Add ml={4} for left padding
               mr={4} // Add mr={4} for right padding
               width="calc(100% - 40px)" // Adjust width for equal length
@@ -122,26 +125,30 @@ const FilterMenu = ({
               <RangeSliderMark
                 value={ageValue[0]}
                 textAlign='center'
-                bg='blue.500'
-                color='white'
+                bg="rgba(253, 222, 176, 1)" 
+                color='black'
                 mt='-10'
                 ml='-5'
-                w='20'
+                w='10'
                 h='25'
                 borderRadius='5px'
+                fontSize={["0.70rem", "0.70rem", "0.80rem", "0.90rem"]}
+                lineHeight= "25px"
               >
                 {ageValue[0]}
               </RangeSliderMark>
               <RangeSliderMark
                 value={ageValue[1]}
                 textAlign='center'
-                bg='blue.500'
-                color='white'
+                bg="rgba(253, 222, 176, 1)" 
+                color='black'
                 mt='-10'
                 ml='-5'
-                w='20'
+                w='10'
                 h='25'
                 borderRadius='5px'
+                fontSize={["0.70rem", "0.70rem", "0.80rem", "0.90rem"]}
+                lineHeight= "25px"
               >
                 {ageValue[1]}
               </RangeSliderMark>
@@ -163,6 +170,7 @@ const FilterMenu = ({
               step={100}
               value={priceValue}
               onChange={handlePriceChange}
+              colorScheme="yellow"
               ml={4} // Add ml={4} for left padding
               mr={4} // Add mr={4} for right padding
               width="calc(100% - 40px)" // Adjust width for equal length
@@ -188,26 +196,30 @@ const FilterMenu = ({
               <RangeSliderMark
                 value={priceValue[0]}
                 textAlign='center'
-                bg='blue.500'
-                color='white'
+                bg="rgba(253, 222, 176, 1)" 
+                color='black'
                 mt='-10'
                 ml='-5'
-                w='20'
+                w='10'
                 h='25'
                 borderRadius='5px'
+                fontSize={["0.70rem", "0.70rem", "0.80rem", "0.90rem"]}
+                lineHeight= "25px"
               >
                 ${priceValue[0]}
               </RangeSliderMark>
               <RangeSliderMark
                 value={priceValue[1]}
                 textAlign='center'
-                bg='blue.500'
-                color='white'
+                bg="rgba(253, 222, 176, 1)" 
+                color='black'
                 mt='-10'
                 ml='-5'
-                w='20'
+                w='18'
                 h='25'
                 borderRadius='5px'
+                fontSize={["0.70rem", "0.70rem", "0.80rem", "0.90rem"]}
+                lineHeight= "25px"
               >
                 ${priceValue[1]}
               </RangeSliderMark>
@@ -279,10 +291,16 @@ const App = ({ applyFilters }) => {
   return (
     <Box p={6}>
       <Menu isOpen={isOpen}>
-        <MenuButton as={Button} onClick={isOpen ? onClose : onOpen}>
-          Filters
+        <MenuButton as={Button} onClick={isOpen ? onClose : onOpen} fontSize= "17px">
+          Filter
         </MenuButton>
-        <MenuList ref={menuRef} p={4} minW="100vh" h="75vh" position="relative">
+        <MenuList 
+          ref={menuRef} 
+          p={4} 
+          minW={["70vw", "60vw", "50vw"]} 
+          h={["60vh", "65vh", "70vh"]} 
+          position="relative"
+          overflowX="auto">
           <FilterMenu
             onSelectAge={setSelectedAge}
             onSelectSize={setSelectedSize}
@@ -295,9 +313,9 @@ const App = ({ applyFilters }) => {
             priceMin={0}
             priceMax={5000}
           />
-          <Box position="absolute" right="4" bottom="1">
-            <Button onClick={handleSaveChanges} mr={4}>Show me the pets!</Button>
-            <Button onClick={handleClearFilters}>Clear Filters</Button>
+          <Box display="flex" justifyContent="flex-end">
+            <Button onClick={handleSaveChanges} mr={3} fontSize= "15px">Show me the pets!</Button>
+            <Button onClick={handleClearFilters}  fontSize= "15px">Clear Filter</Button>
           </Box>
         </MenuList>
       </Menu>

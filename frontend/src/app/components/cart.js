@@ -1,5 +1,5 @@
 'use client'
-import { Box, Button, Text, VStack, HStack } from '@chakra-ui/react';
+import { Box, Button, Spinner, Text, VStack, HStack, useToast} from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -11,6 +11,7 @@ const stripe = require('stripe')('sk_test_51PMUR2Rp0e1tw1uxH3gNUIUwoaAzGOirfCDrk
 
 const Cart = () => {
   const router = useRouter();
+  const toast = useToast();
   const [cart, setCart] = useState([]);
   const [trainingPackages, setTrainingPackages] = useState([]);
   const userId = Cookie.get('userID');
@@ -176,6 +177,7 @@ const Cart = () => {
       if (session.url) {
         console.log("Redirecting to Stripe Checkout:", session.url)
         window.location.href = session.url;
+        setCart([]);
       } else {
         console.error('Error creating checkout session:', session);
       }
@@ -241,6 +243,13 @@ const Cart = () => {
         localStorage.setItem('orderConfirmation', 'Order placed! You will receive an email confirmation.');
         logTxnData(storedTransactionData);
         emptyUserCart()
+        toast({
+          title: 'Transaction Successful',
+          description: 'Your order has been placed successfully!',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
       } else {
         console.error('No transaction data found in localStorage.');
       }
@@ -248,6 +257,13 @@ const Cart = () => {
 
     if (query.get('canceled')) {
       console.log('Order canceled -- continue to shop around and checkout when you’re ready.');
+      toast({
+        title: 'Transaction Failed',
+        description: 'Checkout your order when you’re ready!',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
     }
   }, [cartItems, calculateGrandTotal]);
   

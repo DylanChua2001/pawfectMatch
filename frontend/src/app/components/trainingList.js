@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { Box, Button, Input, Flex, IconButton } from '@chakra-ui/react';
+import { Box, Button, Input, Flex, IconButton, Spacer} from '@chakra-ui/react';
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
 import TrainingPackageCard from './trainingCard';
 import TrainingPackageProfile from './trainingPackageProfile';
@@ -87,10 +87,10 @@ const TrainingPackagesList = () => {
 
   return (
     <>
-      <Box maxW="100vw" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={4}>
+      <Box maxW="100vw"  borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" px= "20px">
         {selectedTrainingPackage ? (
           <Box>
-            <Button onClick={handleBackToList} mb={4}>Back to List</Button>
+            <Button onClick={handleBackToList} mb={4} position="absolute" top="20px" right="25px">Back to Training</Button>
             <TrainingPackageProfile
               trainingPackage={selectedTrainingPackage}
               onAddToCart={handleAddToCart}
@@ -98,7 +98,7 @@ const TrainingPackagesList = () => {
           </Box>
         ) : (
           <>
-            <Flex mb={4} alignItems="center">
+            <Flex mt="15px" alignItems="center">
               <Input
                 placeholder="Search training packages..."
                 value={searchTerm}
@@ -110,7 +110,7 @@ const TrainingPackagesList = () => {
                 aria-label="Search"
                 icon={<SearchIcon />}
                 onClick={handleSearch}
-                colorScheme="teal"
+                bg="rgba(253, 222, 176, 1)"
                 ml={2}
               />
               {searchTerm && (
@@ -118,12 +118,31 @@ const TrainingPackagesList = () => {
                   aria-label="Clear filter"
                   icon={<CloseIcon />}
                   onClick={handleClearFilter}
-                  colorScheme="red"
+                  bg="rgba(253, 222, 176, 1)"
                   ml={2}
                 />
               )}
+              <Spacer/>
+              <Button 
+                onClick={navigateToCart}
+                bg="rgba(253, 222, 176, 1)" 
+                fontSize={["0.70rem", "0.80rem", "0.95rem", "1rem"]}>
+              Cart
+            </Button>
             </Flex>
-            <Box display="flex" overflowX="auto">
+            <Box 
+            paddingBottom= "10px"
+            display="flex" 
+            overflowX="auto"
+            sx={{
+              overflowX: 'hidden', // Hide horizontal scrollbar
+              '&::-webkit-scrollbar': {
+                display: 'none',  // Hide scrollbar for Chrome, Safari, and Edge
+              },
+              '-ms-overflow-style': 'none',  // Hide scrollbar for Internet Explorer and Edge
+              'scrollbar-width': 'none',     // Hide scrollbar for Firefox
+              'overflow-x': 'auto',  
+            }}>
               {filteredTrainingPackages.map((trainingPackage) => (
                 <Box key={trainingPackage.train_id} flex="0 0 auto" maxW="sm" p={2}>
                   <TrainingPackageCard
@@ -133,7 +152,7 @@ const TrainingPackagesList = () => {
                 </Box>
               ))}
             </Box>
-            <Button onClick={navigateToCart} mt={4} colorScheme="blue">Go to Cart</Button>
+            {/* <Button onClick={navigateToCart} mt={4} colorScheme="blue">Go to Cart</Button> */}
           </>
         )}
       </Box>

@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { Spinner, Box, Image, Text, VStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useToast } from '@chakra-ui/react';
+import { Spinner, Box, Image, Text, VStack, HStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useToast } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
@@ -160,50 +160,39 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
 
     return (
         <>
-            <Box mb='70px'>
-                <Header />
-            </Box>
-            <Box backgroundColor="rgba(255, 255, 255, 0.7)" maxW="80vw" mx="auto" my={10} p={5} borderWidth="1px" borderRadius="lg" boxShadow="md" position="relative">
-                {isAdmin && (
-                    <Button
-                        onClick={handleDeleteButtonClick}
-                        position="absolute"
-                        bottom={2}
-                        right={2}
-                        colorScheme="red"
-                        aria-label="Delete button"
-                    >
-                        Delete Pet
-                    </Button>
-                )}
-
+            <Header />
+            <Box>
                 <Box>
                     <Image
                         src={photo || pet.imageUrl}
                         alt={pet.pet_name}
                         borderRadius="md"
-                        height="40vh"
-                        width="40vh"
+                        height={["40vh", "40vh", "50vh"]}
+                        width={["40vh", "40vh", "50vh"]}
                         objectFit="contain"
+                        mr= {["20px", "30px", "50px" ]}
+                        ml= {["20px", "30px", "40px" ]}
                     />
                     {!showNameAndPhotoOnly && (
                         <VStack align="start" mt={4}>
-                            <Text fontSize="4xl" fontWeight="bold">
-                                {pet.pet_name}
+                            <HStack>
+                                <Text fontSize={["1.2rem", "1.5rem", "1.7rem", "2rem"]} fontWeight="bold">
+                                    {pet.pet_name} {/* Use pet_name */}
+                                </Text>
                                 <IconButton
                                     icon={liked ? <AiFillHeart /> : <AiOutlineHeart />}
                                     onClick={handleLikeButtonClick}
                                     variant="ghost"
                                     colorScheme="red"
                                     aria-label="Like button"
-                                    fontSize="6xl"
+                                    fontSize={["3xl", "3xl", "4xl", "4xl"]}
                                     ml={2}
                                 />
-                            </Text>
-                            <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Breed: {pet.pet_breed}</Text>
-                            <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Age: {pet.pet_age} years</Text>
-                            <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Description: {pet.pet_description || "No description available"}</Text>
-                            <Button colorScheme="blue" mt={4} onClick={handleModalOpen}>Match</Button>
+                            </HStack>
+                            <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Breed: {pet.pet_breed}</Text>
+                            <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Age: {pet.pet_age} years</Text>
+                            <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Description: {pet.pet_description || "No description available"}</Text>
+                            <Button bg="rgba(253, 222, 176, 1)" onClick={handleModalOpen} color='black' mt={4} position="absolute" bottom={2} left={2}>Match</Button>
                         </VStack>
                     )}
                 </Box>

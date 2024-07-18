@@ -12,28 +12,28 @@
             "dest": "/index.js"
         }, {
             "src": "/api/user-profile",
-            "dest": "/server.js"
+            "dest": "/index.js"
         }, {
             "src": "/api/address",
-            "dest": "/server.js"
+            "dest": "/index.js"
         }, {
             "src": "/api/product",
-            "dest": "/server.js"
+            "dest": "/index.js"
         }, {
             "src": "/api/wishlist",
-            "dest": "/server.js"
+            "dest": "/index.js"
         }, {
             "src": "/api/cart",
-            "dest": "/server.js"
+            "dest": "/index.js"
         }, {
             "src": "/api/mypurchases",
-            "dest": "/server.js"
+            "dest": "/index.js"
         }, {
             "src": "/api/mysales",
-            "dest": "/server.js"
+            "dest": "/index.js"
         }, {
             "src": "/api/(.*)",
-            "dest": "/server.js"
+            "dest": "/index.js"
         }
     ]
 }

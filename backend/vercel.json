@@ -10,28 +10,52 @@
         {
             "src": "/api/pets",
             "dest": "/index.js"
-        }, {
-            "src": "/api/user-profile",
+        },
+        {
+            "src": "/api/filterPets",
             "dest": "/index.js"
-        }, {
-            "src": "/api/address",
+        },
+        {
+            "src": "/api/users",
             "dest": "/index.js"
-        }, {
-            "src": "/api/product",
+        },
+        {
+            "src": "/api/openai",
             "dest": "/index.js"
-        }, {
-            "src": "/api/wishlist",
+        },
+        {
+            "src": "/api/txn",
             "dest": "/index.js"
-        }, {
+        },
+        {
+            "src": "/api/trainPack",
+            "dest": "/index.js"
+        },
+        {
             "src": "/api/cart",
             "dest": "/index.js"
-        }, {
-            "src": "/api/mypurchases",
+        },
+        {
+            "src": "/api/chat",
             "dest": "/index.js"
-        }, {
-            "src": "/api/mysales",
+        },
+        {
+            "src": "/api/favourites",
             "dest": "/index.js"
-        }, {
+        },
+        {
+            "src": "/api/match",
+            "dest": "/index.js"
+        },
+        {
+            "src": "/api/auth",
+            "dest": "/index.js"
+        },
+        {
+            "src": "/api/image",
+            "dest": "/index.js"
+        },
+        {
             "src": "/api/(.*)",
             "dest": "/index.js"
         }

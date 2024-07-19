@@ -43,7 +43,7 @@ const Profile = () => {
         setProfile({
           user_name: data.user_name || '',
           user_age: data.user_age || '',
-          person_traits: data.person_traits ? data.person_traits.join(', ') : '',
+          // person_traits: data.person_traits ? data.person_traits.join(', ') : '',
           email_add: data.email_add || '',
           imageSrcUrl: imageSrcUrl || '' // Ensure it's set even if undefined
         });
@@ -162,7 +162,7 @@ const Profile = () => {
           </HStack>
         </FormControl>
 
-        <FormControl>
+        {/* <FormControl>
           <HStack>
             <FormLabel fontSize="sm" minWidth="100px" marginBottom={0}>Your traits</FormLabel>
             <Box flex="1" minWidth="0" // Allow the box to shrink if necessary
@@ -183,7 +183,7 @@ const Profile = () => {
               </Editable>
             </Box>
           </HStack>
-        </FormControl>
+        </FormControl> */}
         <FormControl>
         <HStack>
             <FormLabel fontSize="sm" minWidth="100px" marginBottom={0}>Email</FormLabel>

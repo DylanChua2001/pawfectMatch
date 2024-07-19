@@ -13,6 +13,30 @@ const Chatbot = () => {
   const messageContainerRef = useRef(null);
   const userID = Cookie.get('userID');
   const toast = useToast();
+  const [photo, setPhoto] = useState('');
+  const id = Cookie.get('userID');
+
+  useEffect(() => {
+    const fetchPhotoList = async () => {
+      try {
+        console.log(id)
+        const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${id}`, {
+          method: 'GET'
+        });
+        console.log(photoresponse)
+        const photoresponsedata = await photoresponse.json();
+        const imageSrcUrl = photoresponsedata.userImage[0].photo_url;
+        console.log("Image Link :", imageSrcUrl)
+        setPhoto(imageSrcUrl)
+
+      } catch (error) {
+        console.error('Error fetching image:', error)
+      }
+    }
+
+    fetchPhotoList()
+  }, [id])
+
 
   useEffect(() => {
     if (!userID) {
@@ -219,7 +243,7 @@ const Chatbot = () => {
                   <Avatar
                     borderRadius="full"
                     borderColor="black"
-                    src="../profile.jpg"
+                    src= {photo}
                     width="50"
                     height="50"
                     marginLeft="5px"

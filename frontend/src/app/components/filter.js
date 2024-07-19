@@ -264,7 +264,7 @@ const App = ({ applyFilters }) => {
     }
     console.log(query)
     try {
-      const response = await axios.get(`https://pawfect-match-backend-six.vercel.app/api/filterPets?${query}`);
+      const response = await axios.get(`http://localhost:3001/api/filterPets?${query}`);
       const petIDs = response.data.map(pet => pet.pet_id);
       applyFilters(petIDs); // Pass petIDs to parent component
       onClose(); // Close the filter menu

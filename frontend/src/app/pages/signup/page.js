@@ -40,7 +40,7 @@ export default function RegisterCard() {
 
   const handleSignUp = async () => {
     try {
-      const response = await axios.post("https://pawfect-match-backend-six.vercel.app/api/users/createNewUser", formData);
+      const response = await axios.post("http://localhost:3001/api/users/createNewUser", formData);
       toast({
         title: 'Account Created Successfully',
         description: 'Taking you to the login page',

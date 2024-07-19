@@ -92,14 +92,14 @@ export default function SimpleCard() {
         align={'center'}
         mx={'auto'}
         maxW={'xl'}
-        mt="40px">
+        mt={['30px', '40px', '40px']}>
         <Box
           borderRadius="10px"
           paddingLeft="8%"
           paddingRight="8%"
           bg="rgba(255, 250, 245, 0.7)"
           width={['90vw', '70vw', '50vw']}
-          minHeight={['70vh', '85vh', '85vh']}
+          minHeight={['80vh', '85vh', '85vh']}
         >
           <Heading
             fontSize="180%"

@@ -33,9 +33,6 @@ const FavPetsPage = () => {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        backgroundImage="url('/background.png')"
-        backgroundSize="cover"
-        backgroundPosition="center"
       >
         <Spinner size="xl" />
         <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>
@@ -60,15 +57,29 @@ const FavPetsPage = () => {
       <Box mt="60px">
         <Header />
       </Box>
-      <Flex justifyContent="center">
-        <Box
-          maxW={["90%", "92%", "97%"]}
-          w="100%"
-          maxHeight={["calc(100vh - 200px)", "calc(100vh - 150px)", "calc(100vh - 180px)"]}
+      <Box
+        position="fixed"
+        borderRadius= "15px"
+        backgroundColor="rgba(255, 255, 255, 0.7)"
+        top="70px" // Adjust the top position as needed for different screen sizes
+        left="0"
+        right="0"
+        margin="auto"
+        maxW={["70%", "70%", "50%"]}
+        w="100%"
+        h="calc(100vh - 90px)"
+        sx={{
+          overflowY: 'hidden', // Hide horizontal scrollbar
+          '&::-webkit-scrollbar': {
+            display: 'none',  // Hide scrollbar for Chrome, Safari, and Edge
+          },
+          '-ms-overflow-style': 'none',  // Hide scrollbar for Internet Explorer and Edge
+          'scrollbar-width': 'none',     // Hide scrollbar for Firefox
+          'overflow-y': 'auto',  
+        }}
         >
           <FavoritePets favoritePets={favoritePets} onRemove={handleRemoveFromFavorites} />
-        </Box>
-      </Flex>
+      </Box>
     </Flex>
   );
 };

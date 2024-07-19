@@ -71,8 +71,8 @@ const AddTrainingPackage = () => {
   };
 
   return (
-    <Box maxW="80vw" mx="auto" my={10} p={5} borderWidth="1px" borderRadius="lg" boxShadow="md" backgroundColor="rgba(255, 255, 255, 0.7)">
-      <VStack align="start" spacing={5}>
+    <Box px={4} py={2} mx="auto">
+      <VStack align="start" spacing={1}>
         <FormLabel>Name</FormLabel>
         <Input id="train_name" value={formData.train_name} onChange={handleChange} />
         <FormLabel>Price</FormLabel>
@@ -80,13 +80,13 @@ const AddTrainingPackage = () => {
         <FormLabel>Description</FormLabel>
         <Textarea id="train_desc" value={formData.train_desc} onChange={handleChange} />
         <FormLabel>Main Photo</FormLabel>
-        <Input id="train_image" type="file" onChange={handleChange} />
+        <Input id="train_image" type="file" onChange={handleChange} pl="1px"/>
         {formData.train_image && (
           <Image src={URL.createObjectURL(formData.train_image)} alt="Main Training Package Photo" borderRadius="md" objectFit="contain" height="40vh" width="40vh" />
         )}
       </VStack>
       <Divider my={5} />
-      <Button onClick={handleSubmit} mt={4} colorScheme="teal" variant="solid">
+      <Button onClick={handleSubmit} mt={4} background="rgba(253, 222, 176, 1)" variant="solid">
         Add Training Package
       </Button>
     </Box>

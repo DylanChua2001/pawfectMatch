@@ -2,15 +2,15 @@
 import { useState, useEffect } from 'react';
 import { Box, Flex, useToast, Spinner, Text } from "@chakra-ui/react";
 import Header from "../../components/header"; // Replace with your header component
-import FavoritePets from '../../components/favpets'; // Assuming FavoritePets component exists
+import FavoriteTrainPacks from '../../components/favtrains'; // Assuming FavoritePets component exists
 import Cookie from 'js-cookie';
 import { useRouter } from 'next/navigation';
 
 
-const FavPetsPage = () => {
-  const [favoritePets, setFavoritePets] = useState([]);
+const FavTrainingPacksPage = () => {
+  const [favoriteTrainPacks, setFavoriteTrainPacks] = useState([]);
   const userID = Cookie.get('userID');
-  const toast = useToast();
+  const toast = useToast(); 
   const router = useRouter();
 
   useEffect(() => {
@@ -46,24 +46,24 @@ const FavPetsPage = () => {
 
   useEffect(() => {
     // Load favorite pets from API
-    const fetchFavPetsData = async () => {
+    const fetchFavTrainPacksData = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/favourites/getAllFavPets/${userID}`);
+        const response = await fetch(`http://localhost:3001/api/favourites/getAllFavTrainPacks/${userID}`);
         const data = await response.json();
         console.log(data)
-        setFavoritePets(data.userFavPets)
+        setFavoriteTrainPacks(data.userFavTrainPacks)
       } catch (error) {
         console.error('Error fetching pets data:', error);
       }
     };
 
-    fetchFavPetsData();
+    fetchFavTrainPacksData();
   }, []);
 
 
-  const handleRemoveFromFavorites = async (petID) => {
+  const handleRemoveFromFavorites = async (trainPackID) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/favourites/deleteFavPet/${userID}/delete/${petID}`, {
+      const response = await fetch(`http://localhost:3001/api/favourites/deleteFavTrainPack/${userID}/delete/${trainPackID}`, {
         method: 'PUT', // Use PUT method for update
         headers: {
           'Content-Type': 'application/json',
@@ -77,9 +77,9 @@ const FavPetsPage = () => {
   
       const data = await response.json();
       console.log(data);
-      const responseUpdate = await fetch(`http://localhost:3001/api/favourites/getAllFavPets/${userID}`);
+      const responseUpdate = await fetch(`http://localhost:3001/api/favourites/getAllFavTrainPacks/${userID}`);
       const dataUpdate = await responseUpdate.json();
-      setFavoritePets(dataUpdate.userFavPets);
+      setFavoriteTrainPacks(dataUpdate.userFavTrainPacks);
 
     } catch (error) {
       console.error('Error fetching deleting data:', error);
@@ -98,7 +98,7 @@ const FavPetsPage = () => {
           w="100%"
           maxHeight={["calc(100vh - 200px)", "calc(100vh - 150px)", "calc(100vh - 180px)"]}
         >
-          <FavoritePets favoritePets={favoritePets} onRemove={handleRemoveFromFavorites} />
+          <FavoriteTrainPacks favoriteTrainPacks={favoriteTrainPacks} onRemove={handleRemoveFromFavorites} />
         </Box>
       </Flex>
     </Flex>
@@ -106,5 +106,5 @@ const FavPetsPage = () => {
 };
 
 
-export default FavPetsPage;
+export default FavTrainingPacksPage;
 

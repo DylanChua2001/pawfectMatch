@@ -39,7 +39,7 @@ const favouritesController = {
             const checkQuery = `
                 SELECT user_pet_fav 
                 FROM user_table 
-                WHERE user_id = $1;
+                WHERE user_id = $1
             `;
 
             const checkResult = await db.query(checkQuery, [userID]);
@@ -47,6 +47,14 @@ const favouritesController = {
             if (checkResult.rows.length === 0) {
                 return res.status(404).json({
                     message: `User with ID ${userID} not found`
+                });
+            }
+
+            const userFavPets = checkResult.rows[0].user_pet_fav;
+
+            if (userFavPets.includes(petID)) {
+                return res.status(400).json({
+                    message: `Pet with ID ${petID} is already in favorites`
                 });
             }
             
@@ -150,7 +158,7 @@ const favouritesController = {
                 res.status(200).json({
 
                     message : `List of Favourite Training Packages for User with ID ${userID}`,
-                    userFavPets : rows[0]
+                    userFavTrainPacks : rows[0]
 
                 })
             } else {

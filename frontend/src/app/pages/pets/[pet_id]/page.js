@@ -17,6 +17,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
     const userID = Cookie.get('userID');
     const toast = useToast();
     const router = useRouter();
+    const sessionID = Cookie.get('userID');
   
     useEffect(() => {
       if (!userID) {
@@ -83,9 +84,13 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
     }, [pet_id]);
 
     const handleLikeButtonClick = async () => {
+        if (!sessionID || !pet_id) {
+            console.error('Invalid session ID or pet ID:', { sessionID, pet_id });
+            return;
+          }
         const url = liked
-            ? `http://localhost:3001/api/favourites/deleteFavPet/${sessionID}/delete/${pet.pet_id}`
-            : `http://localhost:3001/api/favourites/addFavPet/${sessionID}/add/${pet.pet_id}`;
+            ? `http://localhost:3001/api/favourites/deleteFavPet/${sessionID}/delete/${pet_id}`
+            : `http://localhost:3001/api/favourites/addFavPet/${sessionID}/add/${pet_id}`;
 
         try {
             await axios.put(url, { liked: !liked });

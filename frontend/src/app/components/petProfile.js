@@ -149,6 +149,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
     });
     console.log('Delete button clicked');
   };
+  
 
   return (
     <Box 
@@ -158,6 +159,8 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
       position="relative"
       pb= "90px"
       pt= "20px"
+      onClick={onLike} // Attach onClick here
+      cursor="pointer"
       >
       {isAdmin && (
         <Button
@@ -173,6 +176,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
       )}
 
         <HStack>
+        <Box onClick={onLike} cursor="pointer">
           <Image
             src={photo || pet.imageUrl} // Adjust based on your data structure
             alt={pet.pet_name} // Use pet_name for accessibility
@@ -183,6 +187,10 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
             mr= {["20px", "30px", "50px" ]}
             ml= {["20px", "30px", "40px" ]}
           />
+          <Text fontWeight="bold" fontSize="lg">
+              {pet.pet_name}
+            </Text>
+          </Box>
           {!showNameAndPhotoOnly && (
             <VStack align="start" mt={4}>
               <HStack>

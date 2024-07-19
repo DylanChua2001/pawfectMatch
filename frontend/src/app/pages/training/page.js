@@ -32,9 +32,6 @@ const HomePage = () => {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        backgroundImage="url('/background.png')"
-        backgroundSize="cover"
-        backgroundPosition="center"
       >
         <Spinner size="xl" />
         <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>

@@ -22,7 +22,6 @@ const Profile = () => {
   const [profile, setProfile] = useState({
     user_name: '',
     user_age: '',
-    person_traits: '',
     email_add: '',
     imageSrcUrl: ''
   });

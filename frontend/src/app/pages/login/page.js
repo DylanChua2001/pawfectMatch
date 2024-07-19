@@ -41,7 +41,7 @@ export default function SimpleCard() {
       Cookie.set('userID', userID);
       Cookie.set('isAdmin', isAdmin);
 
-      router.push("/");
+      router.push("/pages/loginLoading");
     } catch (error) {
       console.error('Axios Error:', error);
 

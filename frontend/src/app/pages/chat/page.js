@@ -35,9 +35,6 @@ const Chatbot = () => {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        backgroundImage="url('/background.png')"
-        backgroundSize="cover"
-        backgroundPosition="center"
       >
         <Spinner size="xl" />
         <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>
@@ -149,16 +146,29 @@ const Chatbot = () => {
       <Header />
       <Flex direction="row" mt="10px" justifyContent="center" alignItems="center" gap='10%' p='20px' maxWidth="100%">
         <Box
-          borderRadius="50px"
-          padding="3%"
-          bg="rgba(255, 250, 245, 0.7)"
-          textAlign="center"
-          overflow="auto"
-          maxHeight="80vh"
-          width="100%" // Ensure full width for message container
+          padding= "15px"
+          position="fixed"
+          borderRadius= "15px"
+          backgroundColor="rgba(255, 255, 255, 0.7)"
+          top="70px" // Adjust the top position as needed for different screen sizes
+          left="0"
+          right="0"
+          margin="auto"
+          maxW={["92%", "90%", "97%"]}
+          w="100%"
+          h={["calc(100vh - 90px)", "calc(100vh - 100px)", "calc(100vh - 110px)"]}
+          sx={{
+            overflowY: 'hidden', // Hide vertical scrollbar
+            '&::-webkit-scrollbar': {
+              display: 'none',  // Hide scrollbar for Chrome, Safari, and Edge
+            },
+            '-ms-overflow-style': 'none',  // Hide scrollbar for Internet Explorer and Edge
+            'scrollbar-width': 'none',     // Hide scrollbar for Firefox
+            'overflow-y': 'auto',  
+          }}
           ref={messageContainerRef} // Ref to scroll container
         >
-          <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+          <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch'}}>
             {/* Display messages */}
             {messages.map((msg, index) => (
               <Flex
@@ -219,27 +229,29 @@ const Chatbot = () => {
               </Flex>
             ))}
           </Box>
-          <Flex justifyContent="space-between" alignItems="center" marginTop="10px">
-            <Input
-              flex="1"
-              type="text"
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              placeholder="Type your message..."
-              borderRadius="20px"
-              padding="15px"
-              marginRight="10px"
-              onKeyDown={handleKeyDown}
-            />
-            <Button
-              onClick={sendMessage}
-              colorScheme="yellow"
-              borderRadius="20px"
-              padding="15px"
-            >
-              Send
-            </Button>
-          </Flex>
+          <Box position= "sticky">
+            <Flex justifyContent="space-between" alignItems="center" marginTop="10px">
+              <Input
+                flex="1"
+                type="text"
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                placeholder="Type your message..."
+                borderRadius="20px"
+                padding="15px"
+                marginRight="10px"
+                onKeyDown={handleKeyDown}
+              />
+              <Button
+                onClick={sendMessage}
+                colorScheme="yellow"
+                borderRadius="20px"
+                padding="15px"
+              >
+                Send
+              </Button>
+            </Flex>
+          </Box>
         </Box>
       </Flex>
     </Flex>

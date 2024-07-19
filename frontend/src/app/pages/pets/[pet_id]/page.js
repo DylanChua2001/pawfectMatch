@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { Spinner, Box, Image, Text, VStack, HStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useToast } from '@chakra-ui/react';
+import { Spinner, Box, Image, Text, VStack, HStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useToast, Flex} from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
@@ -39,9 +39,6 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
-          backgroundImage="url('/background.png')"
-          backgroundSize="cover"
-          backgroundPosition="center"
         >
           <Spinner size="xl" />
           <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>
@@ -161,8 +158,22 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
     return (
         <>
             <Header />
-            <Box>
-                <Box>
+            <Box
+                position="fixed"
+                top={["100px", "100px", "100px"]} // Adjust the top position as needed for different screen sizes
+                left="0"
+                right="0"
+                margin="auto"
+                maxW={["90%", "92%", "97%"]}
+                w="100%"
+                h={["calc(100vh - 200px)", "calc(100vh - 180px)", "calc(100vh - 150px)"]}
+                overflowY="auto"
+                bg="rgba(255, 250, 245, 0.7)"
+                borderRadius= "15px"
+                pl= "20px"
+                pt= "40px"
+            >
+                <HStack>
                     <Image
                         src={photo || pet.imageUrl}
                         alt={pet.pet_name}
@@ -192,10 +203,11 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                             <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Breed: {pet.pet_breed}</Text>
                             <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Age: {pet.pet_age} years</Text>
                             <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Description: {pet.pet_description || "No description available"}</Text>
-                            <Button bg="rgba(253, 222, 176, 1)" onClick={handleModalOpen} color='black' mt={4} position="absolute" bottom={2} left={2}>Match</Button>
+                            <Button bg="rgba(253, 222, 176, 1)" onClick={handleModalOpen} color='black'  position="absolute" bottom={4} left={4}>Match</Button>
                         </VStack>
                     )}
-                </Box>
+                </HStack>
+          
 
                 <Modal isOpen={isModalOpen} onClose={handleModalClose}>
                     <ModalOverlay />
@@ -220,3 +232,4 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
 };
 
 export default PetProfile;
+

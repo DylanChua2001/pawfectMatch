@@ -1,5 +1,5 @@
 'use client';
-import { Box, Avatar, Flex, Input, Button } from "@chakra-ui/react";
+import { Box, Avatar, Flex, Input, Button, useToast, Spinner, Text } from "@chakra-ui/react";
 import React, { useState, useEffect, useRef } from 'react';
 import Header from "../../components/header"
 import axios from 'axios';
@@ -11,6 +11,39 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const messageContainerRef = useRef(null);
+  const userID = Cookie.get('userID');
+  const toast = useToast();
+
+  useEffect(() => {
+    if (!userID) {
+      toast({
+        title: 'Please login to view this page',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        onCloseComplete: () => router.push('/pages/login'), // Replace with your actual login page route
+      });
+      return;
+    }
+  }, [userID, router, toast]); // Added the dependency array
+
+  if (!userID) {
+    return (
+      <Box
+        minHeight="100vh"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        backgroundImage="url('/background.png')"
+        backgroundSize="cover"
+        backgroundPosition="center"
+      >
+        <Spinner size="xl" />
+        <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>
+      </Box>
+    );
+  }
 
   // Function to fetch messages from backend
   const fetchMessages = async () => {

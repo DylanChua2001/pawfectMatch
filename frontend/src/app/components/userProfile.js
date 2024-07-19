@@ -1,4 +1,3 @@
-'use client'
 import { useState, useEffect } from "react";
 import {
   Box,
@@ -8,7 +7,7 @@ import {
   EditablePreview,
   FormControl,
   FormLabel,
-  Image,
+  Avatar,
   Input,
   VStack,
 } from "@chakra-ui/react";
@@ -23,28 +22,21 @@ const Profile = () => {
     user_age: '',
     person_traits: '',
     email_add: '',
+    imageSrcUrl: ''
   });
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const id = Cookie.get('userID'); // Assuming 'userID' is the cookie key storing the ID
         const response = await axios.get(`http://localhost:3001/api/users/id/${id}`);
-
         const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${id}`, {
           method: 'GET'
         });
 
-        console.log('Photo Response:', photoresponse); // Check the response object
-
         const photoresponsedata = await photoresponse.json();
-
-        console.log('Photo Response Data:', photoresponsedata); // Check the parsed JSON data
-
         const imageSrcUrl = photoresponsedata.userImage[0].photo_url;
-
-        console.log("Image Link :" , imageSrcUrl)
-
         const { data } = response;
         setProfile({
           user_name: data.user_name || '',
@@ -63,6 +55,11 @@ const Profile = () => {
     fetchProfile();
   }, []);
 
+  const handleImageChange = (e) => {
+    setSelectedImage(e.target.files[0]); // Store the selected image file
+    setProfile({ ...profile, imageSrcUrl: URL.createObjectURL(e.target.files[0]) }); // Update preview immediately
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProfile({ ...profile, [name]: value });
@@ -71,10 +68,28 @@ const Profile = () => {
   const handleSave = async () => {
     try {
       const id = Cookie.get('userID');
-      console.log(profile);
+      if (selectedImage) {
+        const formData = new FormData();
+        formData.append('image', selectedImage);
+
+        const imageResponse = await axios.post(`http://localhost:3001/api/image/uploadImage/${id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+
+        // Update profile image URL after successful upload
+        setProfile((prevProfile) => ({
+          ...prevProfile,
+          imageSrcUrl: imageResponse.data.photo_url
+        }));
+      }
+
       const response = await axios.put(`http://localhost:3001/api/users/updateUser/${id}`, profile);
       console.log('Profile updated:', response.data);
       setIsEditing(false);
+      window.location.reload();
+
     } catch (error) {
       console.error('Error updating profile:', error);
       // Handle error updating profile (e.g., show error message)
@@ -88,12 +103,17 @@ const Profile = () => {
   return (
     <Box p={5} maxW="600px" mx="auto">
       <VStack spacing={4}>
-        <Image
+        <Avatar
           borderRadius="full"
           boxSize="150px"
-          src= {profile.imageSrcUrl}
-          alt="Profile Picture"
+          src={profile.imageSrcUrl}
         />
+        {isEditing && (
+          <FormControl>
+            <FormLabel>Change Profile Picture</FormLabel>
+            <Input type="file" onChange={handleImageChange} />
+          </FormControl>
+        )}
         <FormControl>
           <FormLabel>Username</FormLabel>
           <Editable value={profile.user_name} isDisabled={!isEditing}>
@@ -105,7 +125,7 @@ const Profile = () => {
           <FormLabel>Age</FormLabel>
           <Editable value={profile.user_age} isDisabled={!isEditing}>
             <EditablePreview />
-            <Input as={EditableInput} name="age" onChange={handleInputChange} value={profile.user_age} />
+            <Input as={EditableInput} name="user_age" onChange={handleInputChange} value={profile.user_age} />
           </Editable>
         </FormControl>
         <FormControl>
@@ -119,7 +139,7 @@ const Profile = () => {
           <FormLabel>Email</FormLabel>
           <Editable value={profile.email_add} isDisabled={!isEditing}>
             <EditablePreview />
-            <Input as={EditableInput} name="email" onChange={handleInputChange} value={profile.email_add} />
+            <Input as={EditableInput} name="email_add" onChange={handleInputChange} value={profile.email_add} />
           </Editable>
         </FormControl>
         <Button onClick={isEditing ? handleSave : () => setIsEditing(true)}>

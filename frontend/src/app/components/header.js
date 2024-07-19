@@ -1,6 +1,7 @@
+// components/Header.js
 'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   HStack,
   Avatar,
@@ -16,9 +17,11 @@ import { useRouter } from 'next/navigation'; // Import useRouter hook from Next.
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
-
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [userID, setUserID] = useState(null); // Add userID state
+  const [imageSrcUrl, setImageSrcUrl] = useState(''); // State for profile image URL
   const router = useRouter(); // Initialize useRouter hook
 
   const handleMenuToggle = () => {
@@ -39,44 +42,43 @@ const Header = () => {
     router.push('/pages/login');
   };
 
-  // Check if userID exists in cookies
-  const userID = Cookies.get('userID');
-  console.log(userID)
-
-  const [photo, setPhoto] = useState('')
-
   useEffect(() => {
-    const fetchPhotoList = async() => {
-      try {
-        const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${userID}`, {
-          method: 'GET'
-        });
-        const photoresponsedata = await photoresponse.json();
-        const imageSrcUrl = photoresponsedata.userImage[0].photo_url;
-        console.log("Image Link :" , imageSrcUrl)
-        setPhoto(imageSrcUrl)
+    fetchProfile(); // Fetch profile data when component mounts
+  }, []);
 
-      } catch (error) {
-        console.error('Error fetching image:', error)
-      }
+  const fetchProfile = async () => {
+    try {
+      const id = Cookies.get('userID'); // Assuming 'userID' is the cookie key storing the ID
+      setUserID(id); // Set userID state
+      const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${id}`, {
+        method: 'GET'
+      });
+
+      const photoresponsedata = await photoresponse.json();
+      const fetchedImageSrcUrl = photoresponsedata.userImage[0].photo_url;
+      setImageSrcUrl(fetchedImageSrcUrl); // Set the fetched image URL to state
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    } finally {
+      setIsLoading(false); // Set loading state to false regardless of success or failure
     }
+  };
 
-    fetchPhotoList()
-    
-  },[userID])
-
+  if (isLoading) {
+    return null; // Return null or a loading spinner while loading
+  }
 
   return (
     <>
-      <HStack position="fixed" top="2%" left="2%" zIndex="1">
+      <HStack position="fixed" top="2%" left="3px" zIndex="1">
         <Button bg={'transparent'} _hover={{ bg: 'transparent' }} onClick={() => router.push("/")}>
-          <Image src= "/pawprints.png" alt="Image" width={50} height={50} />
+          <Image src='/pawprints.png' alt="Image" width={50} height={50} />
           <Heading fontSize="240%" fontFamily="Kaushan Script" fontStyle="italic">
             PawfectMatch
           </Heading>
         </Button>
       </HStack>
-      <HStack position="fixed" top="2%" right="2%" zIndex="1">
+      <HStack position="fixed" top="1%" right="1%" zIndex="1">
         <Menu>
           <MenuButton
             as={Button}
@@ -87,7 +89,7 @@ const Header = () => {
             <Avatar
               borderRadius="full"
               borderColor="black"
-              src={photo}
+              src={imageSrcUrl || "profileicon.png"}
               width="50"
               height="50"
             />
@@ -96,15 +98,11 @@ const Header = () => {
             {!userID && <MenuItem onClick={() => navigateTo('/pages/login')}>Login</MenuItem>}
             {userID && <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/profile')}>Profile</MenuItem>}
-            {/* <MenuItem onClick={() => navigateTo('/pages/pets')}>Pets</MenuItem> */}
-            {/* <MenuItem onClick={() => navigateTo('/pages/training')}>Training Packages</MenuItem> */}
             <MenuItem onClick={() => navigateTo('/pages/about')}>About Us</MenuItem>
             {userID && <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>}
-            <MenuItem onClick={() => navigateTo('/pages/s3bucket')}>S3</MenuItem>
-            <MenuItem onClick={() => navigateTo('/pages/stripe')}>Stripe</MenuItem>
             {/* Add more MenuItems for additional pages */}
           </MenuList>
         </Menu>

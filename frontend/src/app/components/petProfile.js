@@ -1,9 +1,8 @@
 // components/PetProfile.js
 'use client'
 import { useState, useEffect } from 'react';
-import { Box, Image, Text, VStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useToast } from '@chakra-ui/react';
+import { Box, Image, Text, VStack, HStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useToast } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Cookie from 'js-cookie';
 
@@ -11,13 +10,12 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   const [liked, setLiked] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [photo, setPhoto] = useState('')
-  const petID = pet.pet_id  
+  const petID = pet.pet_id    
   const [isUserMatched, setIsUserMatched] = useState(false);
 
   const sessionID = Cookie.get('userID');
   const [isAdmin, setIsAdmin] = useState(false); // State to check admin status
   const toast = useToast();
-  const router = useRouter();
 
   // Check admin status on component mount
   useEffect(() => {
@@ -69,6 +67,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
       checkUserMatch();
     }
   }, [sessionID, pet.pet_id]);
+
 
   const handleLikeButtonClick = async () => {
     const url = liked
@@ -153,12 +152,19 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   };
 
   return (
-    <Box maxW="80vw" mx="auto" my={10} p={5} borderWidth="1px" borderRadius="lg" boxShadow="md" position="relative">
+    <Box 
+      maxW="100vw" 
+      mx="auto" 
+      borderRadius="15px" 
+      position="relative"
+      pb= "90px"
+      pt= "20px"
+      >
       {isAdmin && (
         <Button
           onClick={handleDeleteButtonClick}
           position="absolute"
-          bottom={2}
+          bottom={4}
           right={2}
           colorScheme="red"
           aria-label="Delete button"
@@ -167,37 +173,50 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
         </Button>
       )}
 
-      <Box>
-        <Image
-          src={photo || pet.imageUrl} // Adjust based on your data structure
-          alt={pet.pet_name} // Use pet_name for accessibility
-          borderRadius="md"
-          height="40vh"
-          width="40vh"
-          objectFit="contain"
-        />
-        {!showNameAndPhotoOnly && (
-          <VStack align="start" mt={4}>
-            <Text fontSize="4xl" fontWeight="bold">
-              {pet.pet_name}
-              <IconButton
-                icon={liked ? <AiFillHeart /> : <AiOutlineHeart />}
-                onClick={handleLikeButtonClick}
-                variant="ghost"
-                colorScheme="red"
-                aria-label="Like button"
-                fontSize="6xl"
-                ml={2}
-              />
-            </Text>
-            <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Breed: {pet.pet_breed}</Text>
-            <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Age: {pet.pet_age} years</Text>
-            <Text fontSize={["1rem", "0.75rem", "1.0rem", "1.5rem"]}>Description: {pet.pet_description || "No description available"}</Text>
-            <Button colorScheme="blue" mt={4} onClick={handleModalOpen}>Match</Button>
-          </VStack>
-        )}
+        <HStack>
+          <Image
+            src={photo || pet.imageUrl} // Adjust based on your data structure
+            alt={pet.pet_name} // Use pet_name for accessibility
+            borderRadius="md"
+            height={["40vh", "40vh", "50vh"]}
+            width={["40vh", "40vh", "50vh"]}
+            objectFit="contain"
+            mr= {["20px", "30px", "50px" ]}
+            ml= {["20px", "30px", "40px" ]}
+          />
+          {!showNameAndPhotoOnly && (
+            <VStack align="start" mt={4}>
+              <HStack>
+                <Text fontSize={["1.2rem", "1.5rem", "1.7rem", "2rem"]} fontWeight="bold">
+                  {pet.pet_name}
+                </Text>
+                <IconButton
+                  icon={liked ? <AiFillHeart /> : <AiOutlineHeart />}
+                  onClick={handleLikeButtonClick}
+                  variant="ghost"
+                  colorScheme="red"
+                  aria-label="Like button"
+                  fontSize={["3xl", "3xl", "4xl", "4xl"]}
+                />
+              </HStack>
+              <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Breed: {pet.pet_breed}</Text>
+              <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Age: {pet.pet_age} years</Text>
+              <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Description: {pet.pet_description || "No description available"}</Text>
+              <Button 
+                bg="rgba(253, 222, 176, 1)" 
+                color='black' 
+                mt={4}
+                position="absolute"
+                bottom={4}
+                left={2}
+                onClick={handleModalOpen}
+                >
+                Match
+              </Button>  
+            </VStack>
+          )}
 
-      </Box>
+        </HStack>
 
       <Modal isOpen={isModalOpen} onClose={handleModalClose}>
         <ModalOverlay />

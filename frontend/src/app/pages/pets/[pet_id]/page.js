@@ -70,7 +70,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                     method: 'GET'
                 });
                 const photoresponsedata = await photoresponse.json();
-                const imageSrcUrl = photoresponsedata.petImage[0]?.photo_url;
+                const imageSrcUrl = photoresponsedata.petImage[0].photo_url;
                 setPhoto(imageSrcUrl);
             } catch (error) {
                 console.error('Error fetching image:', error);

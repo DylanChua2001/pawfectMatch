@@ -10,6 +10,8 @@ import {
   Avatar,
   Input,
   VStack,
+  Flex, 
+  HStack
 } from "@chakra-ui/react";
 import Cookie from 'js-cookie';
 import axios from 'axios';
@@ -101,8 +103,8 @@ const Profile = () => {
   }
 
   return (
-    <Box p={5} maxW="600px" mx="auto">
-      <VStack spacing={4}>
+    <Box p={5} mx="auto">
+      <VStack spacing={2}>
         <Avatar
           borderRadius="full"
           boxSize="150px"
@@ -110,37 +112,99 @@ const Profile = () => {
         />
         {isEditing && (
           <FormControl>
-            <FormLabel>Change Profile Picture</FormLabel>
-            <Input type="file" onChange={handleImageChange} />
+            <FormLabel fontSize="sm">Change Profile Picture</FormLabel>
+            <Input type="file" onChange={handleImageChange} fontSize="sm" border="none" pl={1}/>
           </FormControl>
         )}
         <FormControl>
-          <FormLabel>Username</FormLabel>
-          <Editable value={profile.user_name} isDisabled={!isEditing}>
-            <EditablePreview />
-            <Input as={EditableInput} name="user_name" onChange={handleInputChange} value={profile.user_name} />
-          </Editable>
+          <HStack>
+            <FormLabel fontSize="sm" minWidth="100px" marginBottom={0}>Username</FormLabel>
+            <Box flex="1" minWidth="0" // Allow the box to shrink if necessary
+            >
+              <Editable value={profile.user_name} isDisabled={!isEditing} fontSize="sm">
+                <EditablePreview minHeight="36px" width="100%"  />
+                <Input
+                  as={EditableInput}
+                  name="user_name"
+                  onChange={handleInputChange}
+                  value={profile.user_age}
+                  fontSize="sm"
+                  border="1px solid"
+                  borderColor="gray.300"
+                  borderRadius="md"
+                  _focus={{ boxShadow: 'none' }}
+                />
+              </Editable>
+            </Box>
+          </HStack>
         </FormControl>
         <FormControl>
-          <FormLabel>Age</FormLabel>
-          <Editable value={profile.user_age} isDisabled={!isEditing}>
-            <EditablePreview />
-            <Input as={EditableInput} name="user_age" onChange={handleInputChange} value={profile.user_age} />
-          </Editable>
+          <HStack>
+            <FormLabel fontSize="sm" minWidth="100px" marginBottom={0}>Age</FormLabel>
+            <Box flex="1" minWidth="0" // Allow the box to shrink if necessary
+            >
+              <Editable value={profile.user_age} isDisabled={!isEditing} fontSize="sm">
+                <EditablePreview minHeight="36px" width="100%"  />
+                <Input
+                  as={EditableInput}
+                  name="user_age"
+                  onChange={handleInputChange}
+                  value={profile.user_age}
+                  fontSize="sm"
+                  border="1px solid"
+                  borderColor="gray.300"
+                  borderRadius="md"
+                  _focus={{ boxShadow: 'none' }} // Remove focus box-shadow
+        
+                />
+              </Editable>
+            </Box>
+          </HStack>
+        </FormControl>
+
+        <FormControl>
+          <HStack>
+            <FormLabel fontSize="sm" minWidth="100px" marginBottom={0}>Your traits</FormLabel>
+            <Box flex="1" minWidth="0" // Allow the box to shrink if necessary
+            >
+              <Editable value={profile.person_traits} isDisabled={!isEditing} fontSize="sm">
+                <EditablePreview minHeight="36px" width="100%"  />
+                <Input
+                  as={EditableInput}
+                  name="person_traits"
+                  onChange={handleInputChange}
+                  value={profile.person_traits}
+                  fontSize="sm"
+                  border="1px solid"
+                  borderColor="gray.300"
+                  borderRadius="md"
+                  _focus={{ boxShadow: 'none' }}
+                />
+              </Editable>
+            </Box>
+          </HStack>
         </FormControl>
         <FormControl>
-          <FormLabel>Person Traits</FormLabel>
-          <Editable value={profile.person_traits} isDisabled={!isEditing}>
-            <EditablePreview />
-            <Input as={EditableInput} name="person_traits" onChange={handleInputChange} value={profile.person_traits} />
-          </Editable>
-        </FormControl>
-        <FormControl>
-          <FormLabel>Email</FormLabel>
-          <Editable value={profile.email_add} isDisabled={!isEditing}>
-            <EditablePreview />
-            <Input as={EditableInput} name="email_add" onChange={handleInputChange} value={profile.email_add} />
-          </Editable>
+        <HStack>
+            <FormLabel fontSize="sm" minWidth="100px" marginBottom={0}>Email</FormLabel>
+            <Box flex="1" minWidth="0" // Allow the box to shrink if necessary
+            >
+              <Editable value={profile.email_add} isDisabled={!isEditing} fontSize="sm">
+                <EditablePreview minHeight="36px" width="100%"  />
+                <Input
+                  as={EditableInput}
+                  name="email_add"
+                  onChange={handleInputChange}
+                  value={profile.email_add}
+                  fontSize="sm"
+                  border="1px solid"
+                  borderColor="gray.300"
+                  borderRadius="md"
+                  _focus={{ boxShadow: 'none' }}
+                />
+              </Editable>
+            </Box>
+          </HStack>
         </FormControl>
         <Button onClick={isEditing ? handleSave : () => setIsEditing(true)}>
           {isEditing ? "Save" : "Edit"}

@@ -87,8 +87,8 @@ const AddPet = () => {
   };
 
   return (
-    <Box maxW="80vw" mx="auto" my={10} p={5} borderWidth="1px" borderRadius="lg" boxShadow="md" backgroundColor="rgba(255, 255, 255, 0.7)">
-      <VStack align="start" spacing={5}>
+    <Box p={5} mx="auto">
+      <VStack align="start" spacing={1}>
         <FormLabel>Name</FormLabel>
         <Input id="pet_name" value={formData.pet_name} onChange={handleChange} />
         <FormLabel>Type</FormLabel>
@@ -104,7 +104,7 @@ const AddPet = () => {
         <FormLabel>Description</FormLabel>
         <Textarea id="pet_description" value={formData.pet_description} onChange={handleChange} />
         <FormLabel>Main Photo</FormLabel>
-        <Input id="mainPhoto" type="file" onChange={handleChange} />
+        <Input id="mainPhoto" type="file" onChange={handleChange} pl="1px"/>
         {formData.mainPhoto && (
           <Image src={URL.createObjectURL(formData.mainPhoto)} alt="Main Pet Photo" borderRadius="md" objectFit="contain" height="40vh" width="40vh" />
         )}
@@ -112,7 +112,7 @@ const AddPet = () => {
         <Input id="pet_character" value={formData.pet_character} onChange={handleChange} />
         <FormLabel>Pet Physical Trait</FormLabel>
         <Input id="pet_physical_trait" value={formData.pet_physical_trait} onChange={handleChange} />
-        <Button onClick={handleSubmit} mt={4} colorScheme="teal" variant="solid">
+        <Button onClick={handleSubmit} mt={4} background="rgba(253, 222, 176, 1)" variant="solid">
           Add Pet
         </Button>
       </VStack>

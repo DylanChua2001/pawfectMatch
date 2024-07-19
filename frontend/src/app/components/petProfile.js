@@ -89,7 +89,12 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   // Function to handle modal open
   const handleModalOpen = async() => {
     if (isUserMatched) {
-      alert('You are already matched with another pet.');
+      toast({
+        title: 'Sorry! You have already matched with another pet.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
       return;
     }
 

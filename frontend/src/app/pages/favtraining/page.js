@@ -89,9 +89,6 @@ const FavTrainingPackagesPage = () => {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        backgroundImage="url('/background.png')"
-        backgroundSize="cover"
-        backgroundPosition="center"
       >
         <Spinner size="xl" />
         <Text fontSize="xl" color="black" mt={4}>Loading...</Text>
@@ -107,9 +104,6 @@ const FavTrainingPackagesPage = () => {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        backgroundImage="url('/background.png')"
-        backgroundSize="cover"
-        backgroundPosition="center"
       >
         <Text fontSize="xl" color="red.500">{error}</Text>
       </Box>
@@ -123,9 +117,25 @@ const FavTrainingPackagesPage = () => {
       </Box>
       <Flex justifyContent="center">
         <Box
+          borderRadius= "15px"
+          backgroundColor="rgba(255, 255, 255, 0.7)"
+          position="fixed"
+          p={4}
+          top={["100px", "100px", "100px"]} // Adjust the top position as needed for different screen sizes
+          left="0"
+          right="0"
+          margin="auto"
           maxW={["90%", "92%", "97%"]}
           w="100%"
-          maxHeight={["calc(100vh - 200px)", "calc(100vh - 150px)", "calc(100vh - 180px)"]}
+          h={["calc(100vh - 100px)", "calc(100vh - 110px)", "calc(100vh - 120px)"]}
+          sx={{
+            overflowX: 'hidden', // Hide horizontal scrollbar
+            '&::-webkit-scrollbar': {
+              display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
+            },
+            '-ms-overflow-style': 'none', // Hide scrollbar for Internet Explorer and Edge
+            'scrollbar-width': 'none', // Hide scrollbar for Firefox
+          }}
         >
           <Text fontSize="2xl" fontWeight="bold" mb={4}>
             Favorite Training Packages

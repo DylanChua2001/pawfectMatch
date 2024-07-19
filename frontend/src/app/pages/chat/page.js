@@ -49,7 +49,7 @@ const Chatbot = () => {
   const fetchMessages = async () => {
     try {
       const sessionID = Cookie.get('userID');
-      const response = await axios.post('https://pawfect-match-backend-six.vercel.app/api/chat/getchatbyid', {
+      const response = await axios.post('http://localhost:3001/api/chat/getchatbyid', {
         id: sessionID
       });
       setMessages(response.data);
@@ -83,7 +83,7 @@ const Chatbot = () => {
 
     try {
       const response = await axios.post(
-        'https://pawfect-match-backend-six.vercel.app/api/openai/ask',
+        'http://localhost:3001/api/openai/ask',
         { question: inputText },
         {
           headers: {
@@ -117,7 +117,7 @@ const Chatbot = () => {
     try {
       const sessionID = Cookie.get('userID');
       const response = await axios.post(
-        'https://pawfect-match-backend-six.vercel.app/api/openai/verify',
+        'http://localhost:3001/api/openai/verify',
         { sessionID: sessionID }, // Replace with the actual session ID
         {
           headers: {

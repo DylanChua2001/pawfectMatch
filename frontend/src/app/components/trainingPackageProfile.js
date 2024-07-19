@@ -16,7 +16,7 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
   useEffect(() => {
     const checkAdminStatus = async () => {
       try {
-        const response = await axios.get(`https://pawfect-match-backend-six.vercel.app/api/users/id/${sessionID}`);
+        const response = await axios.get(`http://localhost:3001/api/users/id/${sessionID}`);
         setIsAdmin(response.data.is_admin); // Assuming API response has is_admin field
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -29,7 +29,7 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
   useEffect(() => {
     const checkIfLiked = async () => {
       try {
-        const response = await axios.get(`https://pawfect-match-backend-six.vercel.app/api/users/id/${sessionID}`);
+        const response = await axios.get(`http://localhost:3001/api/users/id/${sessionID}`);
         const { user_train_fav } = response.data;
         console.log(user_train_fav)
         if (user_train_fav == null) {
@@ -49,8 +49,8 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
 
   const handleLikeButtonClick = async () => {
     const url = liked
-      ? `https://pawfect-match-backend-six.vercel.app/api/favourites/deleteFavTrainPack/${sessionID}/delete/${trainingPackage.train_id}`
-      : `https://pawfect-match-backend-six.vercel.app/api/favourites/addFavTrainPack/${sessionID}/add/${trainingPackage.train_id}`;
+      ? `http://localhost:3001/api/favourites/deleteFavTrainPack/${sessionID}/delete/${trainingPackage.train_id}`
+      : `http://localhost:3001/api/favourites/addFavTrainPack/${sessionID}/add/${trainingPackage.train_id}`;
 
     try {
       const response = await axios.put(url, { liked: !liked });
@@ -76,7 +76,7 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
   const handleDelete = async () => {
     try {
       console.log('hi', trainingPackage.train_id)
-      const response = await axios.delete(`https://pawfect-match-backend-six.vercel.app/api/trainPack/deleteTrainingPack/${trainingPackage.train_id}`, {
+      const response = await axios.delete(`http://localhost:3001/api/trainPack/deleteTrainingPack/${trainingPackage.train_id}`, {
         withCredentials: true
       });
       console.log(response)

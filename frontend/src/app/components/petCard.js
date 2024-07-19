@@ -9,7 +9,7 @@ const PetCard = ({ pet, onClick }) => {
   useEffect(() => {
     const fetchPhotoList = async () => {
       try {
-        const photoresponse = await fetch(`https://pawfect-match-backend-six.vercel.app/api/image/retrievePetImage/${petID}`, {
+        const photoresponse = await fetch(`http://localhost:3001/api/image/retrievePetImage/${petID}`, {
           method: 'GET'
         });
         const photoresponsedata = await photoresponse.json();

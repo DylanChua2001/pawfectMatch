@@ -188,7 +188,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                         <VStack align="start" mt={4}>
                             <HStack>
                                 <Text fontSize={["1.2rem", "1.5rem", "1.7rem", "2rem"]} fontWeight="bold">
-                                    {pet.pet_name} {/* Use pet_name */}
+                                    {pet.pet_name}
                                 </Text>
                                 <IconButton
                                     icon={liked ? <AiFillHeart /> : <AiOutlineHeart />}

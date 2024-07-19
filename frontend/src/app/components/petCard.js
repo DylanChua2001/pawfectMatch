@@ -1,5 +1,4 @@
 // components/PetCard.js
-'use client'
 import { Box, Image, Text } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 
@@ -31,6 +30,7 @@ const PetCard = ({ pet, onClick }) => {
   }, [petID]);
 
   return (
+    <>
     <Box
       maxW="250px"
       bg="gray.100"
@@ -58,6 +58,7 @@ const PetCard = ({ pet, onClick }) => {
         </Text>
       </Box>
     </Box>
+    </>
   );
 };
 

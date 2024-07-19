@@ -10,7 +10,8 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
 
   const sessionID = Cookie.get('userID'); 
   console.log(sessionID)
-  console.log(trainingPackage.train_id)
+  console.log("Training Package No. :", trainingPackage.train_id)
+  const trainPack = trainingPackage.train_id
 
   useEffect(() => {
     const checkIfLiked = async () => {
@@ -35,8 +36,8 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
 
   const handleLikeButtonClick = async () => {
     const url = liked
-      ? `http://localhost:3001/api/favourites/deleteFavTrainPack/${sessionID}/delete/${trainingPackage.train_id}`
-      : `http://localhost:3001/api/favourites/addFavTrainPack/${sessionID}/add/${trainingPackage.train_id}`;
+      ? `http://localhost:3001/api/favourites/deleteFavTrainPack/${sessionID}/delete/${trainPack}`
+      : `http://localhost:3001/api/favourites/addFavTrainPack/${sessionID}/add/${trainPack}`;
 
     try {
       const response = await axios.put(url, { liked: !liked });
@@ -44,9 +45,7 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
       setLiked(!liked); // Update state based on successful API response
       console.log(`Training Package liked: ${!liked}`);
 
-      if (onLike) {
-        onLike(trainingPackage); // Notify parent component of like action
-      }
+     
 
     } catch (error) {
       console.error('Error updating like status:', error);

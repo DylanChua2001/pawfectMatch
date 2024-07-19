@@ -50,6 +50,23 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
     fetchPhotoList()
   },[petID])
 
+
+  useEffect(() => {
+    const checkIfLiked = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/api/users/id/${sessionID}`);
+        const { user_pet_fav } = response.data;
+        setLiked(user_pet_fav ? user_pet_fav.includes(petID) : false);
+      } catch (error) {
+        console.error('Error fetching user favorite pets:', error);
+      }
+    };
+
+    if (sessionID) {
+      checkIfLiked();
+    }
+  }, [sessionID, petID]);
+
   // Function to handle like button click
 
   useEffect(() => {
@@ -70,16 +87,17 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
 
   const handleLikeButtonClick = async () => {
     const url = liked
-      ? `http://localhost:3001/api/favourites/deleteFavPet/${sessionID}/delete/${pet.pet_id}`
-      : `http://localhost:3001/api/favourites/addFavPet/${sessionID}/add/${pet.pet_id}`;
+      ? `http://localhost:3001/api/favourites/deleteFavPet/${sessionID}/delete/${petID}`
+      : `http://localhost:3001/api/favourites/addFavPet/${sessionID}/add/${petID}`;
 
-    try {
-      const response = await axios.put(url, { liked: !liked });
-      setLiked(!liked);
+      try {
 
-      if (onLike) {
-        onLike(pet);
-      }
+        const response = await axios.put(url, { liked: !liked });
+        setLiked(!liked);
+    
+        if (onLike) {
+          onLike(pet);
+        }
     } catch (error) {
       console.error('Error updating like status:', error);
     }
@@ -187,9 +205,10 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
             mr= {["20px", "30px", "50px" ]}
             ml= {["20px", "30px", "40px" ]}
           />
+          {showNameAndPhotoOnly && (
           <Text fontWeight="bold" fontSize="lg">
               {pet.pet_name}
-            </Text>
+            </Text>)}
           </Box>
           {!showNameAndPhotoOnly && (
             <VStack align="start" mt={4}>

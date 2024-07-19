@@ -58,7 +58,7 @@ const FavPetsPage = () => {
     };
 
     fetchFavPetsData();
-  }, []);
+  }, [userID]);
 
 
   const handleRemoveFromFavorites = async (petID) => {

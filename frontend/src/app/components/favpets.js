@@ -44,7 +44,8 @@ const FavoritePets = ({ favoritePets, onRemove, onPetClick }) => {
           profiles.push({
             pet_id: petID,
             pet_name: petresponsedata.pet_name,
-            imageSrcUrl: imageSrcUrl
+            imageSrcUrl: imageSrcUrl,
+            liked: true 
           });
 
         } catch (error) {

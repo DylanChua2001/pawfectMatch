@@ -30,6 +30,7 @@ const PetList = () => {
     fetchPetsData();
   }, []);
 
+  /*
   useEffect(() => {
     const savedFavoritePets = JSON.parse(localStorage.getItem('favoritePets')) || [];
     setFavoritePets(savedFavoritePets);
@@ -38,6 +39,7 @@ const PetList = () => {
   useEffect(() => {
     localStorage.setItem('favoritePets', JSON.stringify(favoritePets));
   }, [favoritePets]);
+  */
 
   const handlePetCardClick = (pet) => {
     setSelectedPet(pet);

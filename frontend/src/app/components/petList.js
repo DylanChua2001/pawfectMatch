@@ -53,7 +53,7 @@ const PetList = () => {
     const lowercasedFilter = searchTerm.toLowerCase();
     const filteredData = petsData.filter(pet =>
       pet.pet_name.toLowerCase().includes(lowercasedFilter) ||
-      (pet.pet_description && pet.pet_description.toLowerCase().includes(lowercasedFilter))
+      (pet.pet_breed && pet.pet_breed.toLowerCase().includes(lowercasedFilter))
     );
     setFilteredPets(filteredData);
   };

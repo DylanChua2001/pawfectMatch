@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const petController = require('../controllers/petController');
-const verifyToken = require('../config/jwtMiddleware');
+const { verifyToken, verifyToken2 } = require('../config/jwtMiddleware');
 
 // Route to get all users
 router.get('/getAllPets', petController.getAllPets);

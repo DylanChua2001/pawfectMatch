@@ -9,7 +9,7 @@ const PetCard = ({ pet, onClick }) => {
   useEffect(() => {
     const fetchPhotoList = async () => {
       try {
-        const photoresponse = await fetch(`http://localhost:3001/api/image/retrievePetImage/${petID}`, {
+        const photoResponse = await fetch(`http://localhost:3001/api/image/retrievePetImage/${petID}`, {
           method: 'GET'
         });
         const photoresponsedata = await photoresponse.json();
@@ -18,9 +18,9 @@ const PetCard = ({ pet, onClick }) => {
         setPhoto(imageSrcUrl)
 
       } catch (error) {
-        console.error('Error fetching image:', error)
+        console.error('Error fetching image:', error);
       }
-    }
+    };
 
     fetchPhotoList()
   }, [petID])

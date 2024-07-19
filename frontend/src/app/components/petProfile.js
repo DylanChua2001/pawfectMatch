@@ -235,6 +235,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
                 position="absolute"
                 bottom={4}
                 left={2}
+                onClick={handleModalOpen}
                 >
                 Match
               </Button>  

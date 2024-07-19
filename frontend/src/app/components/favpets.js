@@ -5,14 +5,26 @@ import PetProfile from './petProfile'; // Assuming PetProfile is used to display
 
 const FavoritePets = ({ favoritePets, onRemove, onPetClick }) => {
   return (
-    <Box mt={8}>
+    <Box  maxW="100vw">
       <Text fontSize="2xl" fontWeight="bold" mb={4}>
         Favorite Pets
       </Text>
       <Box display="flex" overflowX="auto">
         {favoritePets && favoritePets.length > 0 ? (
           favoritePets.map((pet) => (
-            <Box key={pet.pet_id} flex="0 0 auto" maxW="sm" p={2}>
+            <Box 
+              // key={pet.pet_id} 
+              // flex="0 0 auto" 
+              // maxW="sm" 
+              // p={2}
+              maxW="250px"
+              bg="gray.100"
+              borderRadius="lg"
+              overflow="hidden"
+              p={4}
+              cursor="pointer"
+              _hover={{ boxShadow: 'lg' }}
+              >
               <PetProfile pet={pet} onClick={() => onPetClick(pet)} showNameAndPhotoOnly /> {/* Pass showNameAndPhotoOnly prop */}
               <Button onClick={() => onRemove(pet.pet_id)} colorScheme="red" mt={2}>
                 Remove

@@ -61,13 +61,13 @@ const FavPetsPage = () => {
         position="fixed"
         borderRadius= "15px"
         backgroundColor="rgba(255, 255, 255, 0.7)"
-        top="70px" // Adjust the top position as needed for different screen sizes
+        top="100px" // Adjust the top position as needed for different screen sizes
         left="0"
         right="0"
         margin="auto"
-        maxW={["70%", "70%", "50%"]}
+        maxW={["90%", "92%", "97%"]}
         w="100%"
-        h="calc(100vh - 90px)"
+        h={["calc(100vh - 60px)", "calc(100vh - 70px)", "calc(100vh - 80px)"]}
         sx={{
           overflowY: 'hidden', // Hide horizontal scrollbar
           '&::-webkit-scrollbar': {

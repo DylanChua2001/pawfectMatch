@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { Spinner, Box, Image, Text, VStack, HStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useToast } from '@chakra-ui/react';
+import { Spinner, Box, Image, Text, VStack, HStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter,useToast } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
@@ -160,8 +160,23 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
 
     return (
         <>
-            <Header />
-            <Box>
+            <Box mb='70px'>
+                <Header />
+            </Box>
+            <Box backgroundColor="rgba(255, 255, 255, 0.7)" maxW="80vw" mx="auto" my={10} p={5} borderWidth="1px" borderRadius="lg" boxShadow="md" position="relative">
+                {isAdmin && (
+                    <Button
+                        onClick={handleDeleteButtonClick}
+                        position="absolute"
+                        bottom={2}
+                        right={2}
+                        colorScheme="red"
+                        aria-label="Delete button"
+                    >
+                        Delete Pet
+                    </Button>
+                )}
+
                 <Box>
                     <Image
                         src={photo || pet.imageUrl}
@@ -177,7 +192,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                         <VStack align="start" mt={4}>
                             <HStack>
                                 <Text fontSize={["1.2rem", "1.5rem", "1.7rem", "2rem"]} fontWeight="bold">
-                                    {pet.pet_name} {/* Use pet_name */}
+                                    {pet.pet_name}
                                 </Text>
                                 <IconButton
                                     icon={liked ? <AiFillHeart /> : <AiOutlineHeart />}

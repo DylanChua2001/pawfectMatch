@@ -77,6 +77,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
     try {
       const response = await axios.put(url, { liked: !liked });
       setLiked(!liked);
+      console.log(liked)
 
       if (onLike) {
         onLike(pet);

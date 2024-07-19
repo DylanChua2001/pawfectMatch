@@ -43,17 +43,17 @@ const FavPetsPage = () => {
     );
   }
 
-  useEffect(() => {
-    // Load favorite pets from localStorage on initial render
-    const savedFavoritePets = JSON.parse(localStorage.getItem('favoritePets')) || [];
-    setFavoritePets(savedFavoritePets);
-  }, []);
+  // useEffect(() => {
+  //   // Load favorite pets from localStorage on initial render
+  //   const savedFavoritePets = JSON.parse(localStorage.getItem('favoritePets')) || [];
+  //   setFavoritePets(savedFavoritePets);
+  // }, []);
 
-  const handleRemoveFromFavorites = (petId) => {
-    const updatedFavorites = favoritePets.filter(pet => pet.pet_id !== petId);
-    setFavoritePets(updatedFavorites);
-    localStorage.setItem('favoritePets', JSON.stringify(updatedFavorites)); // Update localStorage
-  };
+  // const handleRemoveFromFavorites = (petId) => {
+  //   const updatedFavorites = favoritePets.filter(pet => pet.pet_id !== petId);
+  //   setFavoritePets(updatedFavorites);
+  //   localStorage.setItem('favoritePets', JSON.stringify(updatedFavorites)); // Update localStorage
+  // };
 
   return (
     <Flex direction="column" height="100vh">

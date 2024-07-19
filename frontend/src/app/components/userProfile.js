@@ -41,7 +41,7 @@ const Profile = () => {
         setProfile({
           user_name: data.user_name || '',
           user_age: data.user_age || '',
-          person_traits: data.person_traits ? data.person_traits.join(', ') : '',
+          // person_traits: data.person_traits ? data.person_traits.join(', ') : '',
           email_add: data.email_add || '',
           imageSrcUrl: imageSrcUrl || '' // Ensure it's set even if undefined
         });
@@ -128,13 +128,13 @@ const Profile = () => {
             <Input as={EditableInput} name="user_age" onChange={handleInputChange} value={profile.user_age} />
           </Editable>
         </FormControl>
-        <FormControl>
+        {/* <FormControl>
           <FormLabel>Person Traits</FormLabel>
           <Editable value={profile.person_traits} isDisabled={!isEditing}>
             <EditablePreview />
             <Input as={EditableInput} name="person_traits" onChange={handleInputChange} value={profile.person_traits} />
           </Editable>
-        </FormControl>
+        </FormControl> */}
         <FormControl>
           <FormLabel>Email</FormLabel>
           <Editable value={profile.email_add} isDisabled={!isEditing}>

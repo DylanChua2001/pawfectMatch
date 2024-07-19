@@ -159,18 +159,6 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
       pb= "90px"
       pt= "20px"
       >
-      {isAdmin && (
-        <Button
-          onClick={handleDeleteButtonClick}
-          position="absolute"
-          bottom={4}
-          right={2}
-          colorScheme="red"
-          aria-label="Delete button"
-        >
-          Delete Pet
-        </Button>
-      )}
 
         <HStack>
           <Image
@@ -212,6 +200,18 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
                 >
                 Match
               </Button>  
+              {isAdmin &&  (
+                  <Button
+                    onClick={handleDeleteButtonClick}
+                    position="absolute"
+                    bottom={4}
+                    right={2}
+                    colorScheme="red"
+                    aria-label="Delete button"
+                  >
+                    Delete Pet
+                  </Button>
+                )}
             </VStack>
           )}
 

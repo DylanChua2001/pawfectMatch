@@ -82,7 +82,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
     useEffect(() => {
         const fetchFavoritePets = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/api/favourites/getAllFavPets/${userID}`);
+                const response = await axios.get(`https://pawfect-match-backend-six.vercel.app/api/favourites/getAllFavPets/${userID}`);
                 const favoritePets = response.data.userFavPets.user_pet_fav;
                 setLiked(favoritePets.includes(pet_id));
             } catch (error) {
@@ -97,8 +97,8 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
 
     const handleLikeButtonClick = async () => {
         const url = liked
-            ? `http://localhost:3001/api/favourites/deleteFavPet/${userID}/delete/${pet.pet_id}`
-            : `http://localhost:3001/api/favourites/addFavPet/${userID}/add/${pet.pet_id}`;
+            ? `https://pawfect-match-backend-six.vercel.app/api/favourites/deleteFavPet/${userID}/delete/${pet.pet_id}`
+            : `https://pawfect-match-backend-six.vercel.app/api/favourites/addFavPet/${userID}/add/${pet.pet_id}`;
 
         try {
             await axios.put(url, { liked: !liked });
@@ -121,7 +121,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
         setIsModalOpen(true);
 
         try {
-            await axios.post(`http://localhost:3001/api/match/addAMatch/${userID}/${pet.pet_id}`);
+            await axios.post(`https://pawfect-match-backend-six.vercel.app/api/match/addAMatch/${userID}/${pet.pet_id}`);
         } catch (error) {
             console.error('Error updating like status:', error);
         }

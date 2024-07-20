@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { Box, Text, VStack, HStack, IconButton, Button, useToast } from '@chakra-ui/react';
+import { Box, Text, VStack, HStack, IconButton, Button, useToast} from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import axios from 'axios';
 import Cookie from 'js-cookie';

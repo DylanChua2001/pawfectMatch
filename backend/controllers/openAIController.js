@@ -28,7 +28,6 @@ async function reccomendPet(req, res) {
         const queryText = 'Select person_traits FROM user_table WHERE user_id = $1;';
         const result = await database.query(queryText, [userID]);
         const userTrait = result.rows[0].person_traits;
-
         const prompt = ChatPromptTemplate.fromMessages([
             [
                 "system",

@@ -201,10 +201,9 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
           <VStack 
             align="start" 
             maxW="100%" // Adjust based on your design
-            maxH="200px" // Adjust height to control how much of the content is visible
+            maxH="210px" // Adjust height to control how much of the content is visible
             overflowY="auto" // Enable vertical scrolling
             overflowX="hidden" // Prevent horizontal scrolling
-
             sx={{
                 '&::-webkit-scrollbar': {
                   display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
@@ -230,7 +229,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
             <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Breed: {pet.pet_breed}</Text>
             <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Age: {pet.pet_age} years</Text>
             <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}  whiteSpace="normal" wordBreak="break-word">
-              Description: {pet.pet_description || "No description available "}</Text>
+              Description: {pet.pet_description || "No description available"}</Text>
 
             
             <Button

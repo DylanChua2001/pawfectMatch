@@ -189,7 +189,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                         <VStack 
                             align="start" 
                             maxW="100%" // Adjust based on your design
-                            maxH="200px" // Adjust height to control how much of the content is visible
+                            maxH="210px" // Adjust height to control how much of the content is visible
                             overflowY="auto" // Enable vertical scrolling
                             overflowX="hidden" // Prevent horizontal scrolling
                             sx={{

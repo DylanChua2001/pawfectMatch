@@ -59,9 +59,6 @@ const CreateUserProfile = () => {
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
-                backgroundImage="url('/background.png')"
-                backgroundSize="cover"
-                backgroundPosition="center"
             >
                 <Spinner size="xl" />
                 <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>
@@ -168,98 +165,303 @@ const CreateUserProfile = () => {
     }, [messages]); // Scroll to bottom whenever messages change
 
     return (
+        // <Flex height="100vh" direction="column" alignItems="center" justifyContent="center">
+        //     <Header />
+        //     <Flex direction="row" mt="10px" justifyContent="center" alignItems="center" gap='10%' p='20px' maxWidth="100%">
+        //         <Box
+        //             padding="15px"
+        //             position="fixed"
+        //             borderRadius="15px"
+        //             backgroundColor="rgba(255, 255, 255, 0.7)"
+        //             top="70px" // Adjust the top position as needed for different screen sizes
+        //             left="0"
+        //             right="0"
+        //             margin="auto"
+        //             maxW={["92%", "90%", "97%"]}
+        //             w="100%"
+        //             h={["calc(100vh - 90px)", "calc(100vh - 100px)", "calc(100vh - 110px)"]}
+        //             sx={{
+        //               overflowY: 'hidden', // Hide vertical scrollbar
+        //               '&::-webkit-scrollbar': {
+        //                 display: 'none',  // Hide scrollbar for Chrome, Safari, and Edge
+        //               },
+        //               '-ms-overflow-style': 'none',  // Hide scrollbar for Internet Explorer and Edge
+        //               'scrollbar-width': 'none',     // Hide scrollbar for Firefox
+        //               'overflow-y': 'auto',
+        //             }}
+        //             ref={messageContainerRef} // Ref to scroll container  
+        //         >
+        //             <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+        //                 {/* Display messages */}
+        //                 {messages.map((msg, index) => (
+        //                     <Flex
+        //                         key={index}
+        //                         className={`message ${msg.type}`}
+        //                         justifyContent={msg.type === 'ai' ? 'flex-start' : 'flex-end'}
+        //                         marginBottom="10px"
+        //                     >
+
+        //                         {msg.type === 'ai' && (
+        //                             <Avatar
+        //                                 borderRadius="full"
+        //                                 borderColor="black"
+        //                                 src="../chick.png"
+        //                                 width="50"
+        //                                 height="50"
+        //                                 marginRight="5px"
+        //                                 marginTop="5px"
+        //                             />
+        //                         )}
+        //                         <Box
+        //                             bg='rgba(235,232,226,255)'
+        //                             paddingX="20px"
+        //                             paddingY="10px"
+        //                             borderRadius="20px"
+        //                             maxWidth="80%" // Set maximum width to 70%
+        //                             wordBreak="break-word" // Allow long words to break and wrap
+        //                             textAlign="left"
+        //                         >
+        //                             {msg.content}
+        //                         </Box>
+
+        //                         {msg.type !== 'ai' && (
+        //                             <Avatar
+        //                                 borderRadius="full"
+        //                                 borderColor="black"
+        //                                 src={photo}
+        //                                 width="50"
+        //                                 height="50"
+        //                                 marginLeft="5px"
+        //                                 marginTop="5px"
+        //                             />
+        //                         )}
+        //                     </Flex>
+        //                 ))}
+        //             </Box>
+        //             <Flex justifyContent="space-between" alignItems="center" marginTop="10px">
+        //                 <Input
+        //                     flex="1"
+        //                     type="text"
+        //                     value={inputText}
+        //                     onChange={(e) => setInputText(e.target.value)}
+        //                     placeholder="Type your message..."
+        //                     borderRadius="20px"
+        //                     padding="15px"
+        //                     marginRight="10px"
+        //                     onKeyDown={handleKeyDown}
+        //                 />
+        //                 <Button
+        //                     onClick={sendMessage}
+        //                     colorScheme="yellow"
+        //                     borderRadius="20px"
+        //                     padding="15px"
+        //                 >
+        //                     Send
+        //                 </Button>
+        //                 <Button
+        //                     onClick={handleVerify}
+        //                     colorScheme="blue"
+        //                     borderRadius="20px"
+        //                     padding="15px"
+        //                 >
+        //                     Save and let me see the pets!
+        //                 </Button>
+        //             </Flex>
+        //         </Box>
+        //     </Flex>
+        // </Flex>
         <Flex height="100vh" direction="column" alignItems="center" justifyContent="center">
-            <Header />
-            <Flex direction="row" mt="10px" justifyContent="center" alignItems="center" gap='10%' p='20px' maxWidth="100%">
+      <Header />
+      <Flex direction="row" mt="10px" justifyContent="center" alignItems="center" gap='10%' p='20px' maxWidth="100%">
+        <Box
+          padding="15px"
+          position="fixed"
+          borderRadius="15px"
+          backgroundColor="rgba(255, 255, 255, 0.7)"
+          top="70px" // Adjust the top position as needed for different screen sizes
+          left="0"
+          right="0"
+          margin="auto"
+          maxW={["92%", "90%", "97%"]}
+          w="100%"
+          h={["calc(100vh - 90px)", "calc(100vh - 100px)", "calc(100vh - 110px)"]}
+          sx={{
+            overflowY: 'hidden', // Hide vertical scrollbar
+            '&::-webkit-scrollbar': {
+              display: 'none',  // Hide scrollbar for Chrome, Safari, and Edge
+            },
+            '-ms-overflow-style': 'none',  // Hide scrollbar for Internet Explorer and Edge
+            'scrollbar-width': 'none',     // Hide scrollbar for Firefox
+            'overflow-y': 'auto',
+          }}
+          ref={messageContainerRef} // Ref to scroll container
+        >
+          <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+            {/* Display messages */}
+            {messages.map((msg, index) => (
+              <Flex
+                key={index}
+                className={`message ${msg.type}`}
+                justifyContent={msg.type === 'ai'|| msg.type === 'loading' ? 'flex-start' : 'flex-end'}
+                marginBottom="10px"
+              >
+
+                {(msg.type === 'ai' || msg.type === 'loading') && (
+                  <Avatar
+                    borderRadius="full"
+                    borderColor="black"
+                    src="../chick.png"
+                    width="50"
+                    height="50"
+                    marginRight="5px"
+                    marginTop="5px"
+                  />
+                )}
                 <Box
-                    borderRadius="50px"
-                    padding="3%"
-                    bg="rgba(255, 250, 245, 0.7)"
-                    textAlign="center"
-                    overflow="auto"
-                    maxHeight="80vh"
-                    width="100%" // Ensure full width for message container
-                    ref={messageContainerRef} // Ref to scroll container
+                  bg='rgba(235,232,226,255)'
+                  paddingX="20px"
+                  paddingY="10px"
+                  borderRadius="20px"
+                  maxWidth="80%" // Set maximum width to 70%
+                  wordBreak="break-word" // Allow long words to break and wrap
+                  textAlign="left"
                 >
-                    <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
-                        {/* Display messages */}
-                        {messages.map((msg, index) => (
-                            <Flex
-                                key={index}
-                                className={`message ${msg.type}`}
-                                justifyContent={msg.type === 'ai' ? 'flex-start' : 'flex-end'}
-                                marginBottom="10px"
-                            >
-
-                                {msg.type === 'ai' && (
-                                    <Avatar
-                                        borderRadius="full"
-                                        borderColor="black"
-                                        src="../chick.png"
-                                        width="50"
-                                        height="50"
-                                        marginRight="5px"
-                                        marginTop="5px"
-                                    />
-                                )}
-                                <Box
-                                    bg='rgba(235,232,226,255)'
-                                    paddingX="20px"
-                                    paddingY="10px"
-                                    borderRadius="20px"
-                                    maxWidth="80%" // Set maximum width to 70%
-                                    wordBreak="break-word" // Allow long words to break and wrap
-                                    textAlign="left"
-                                >
-                                    {msg.content}
-                                </Box>
-
-                                {msg.type !== 'ai' && (
-                                    <Avatar
-                                        borderRadius="full"
-                                        borderColor="black"
-                                        src={photo}
-                                        width="50"
-                                        height="50"
-                                        marginLeft="5px"
-                                        marginTop="5px"
-                                    />
-                                )}
-                            </Flex>
-                        ))}
-                    </Box>
-                    <Flex justifyContent="space-between" alignItems="center" marginTop="10px">
-                        <Input
-                            flex="1"
-                            type="text"
-                            value={inputText}
-                            onChange={(e) => setInputText(e.target.value)}
-                            placeholder="Type your message..."
-                            borderRadius="20px"
-                            padding="15px"
-                            marginRight="10px"
-                            onKeyDown={handleKeyDown}
-                        />
-                        <Button
-                            onClick={sendMessage}
-                            colorScheme="yellow"
-                            borderRadius="20px"
-                            padding="15px"
-                        >
-                            Send
-                        </Button>
-                        <Button
-                            onClick={handleVerify}
-                            colorScheme="blue"
-                            borderRadius="20px"
-                            padding="15px"
-                        >
-                            Save and let me see the pets!
-                        </Button>
-                    </Flex>
+                  {msg.content}
                 </Box>
+
+                {msg.type === 'ai' && msg.content.includes('pet_id') && (
+                  <Button
+                    onClick={handleVerify}
+                    colorScheme="yellow"
+                    size="sm"
+                    mt="10px" // Added margin-top for spacing
+                    ml='10px'
+                    width="30%"
+                    textAlign="center"
+                  >
+                    Bring me to the pet!
+                  </Button>
+                )}
+
+                {(msg.type !== 'ai'&& msg.type !== 'loading') && (
+                  <Avatar
+                    borderRadius="full"
+                    borderColor="black"
+                    src={photo}
+                    width="50"
+                    height="50"
+                    marginLeft="5px"
+                    marginTop="5px"
+                  />
+                )}
+
+                {/* {loadingMessage && (
+                  <Flex
+                    className="message ai"
+                    justifyContent="flex-start"
+                    marginBottom="10px"
+                    alignItems="center"
+                  >
+                    <Avatar
+                      borderRadius="full"
+                      borderColor="black"
+                      src="../chick.png"
+                      width="50"
+                      height="50"
+                      marginRight="5px"
+                      marginTop="5px"
+                    />
+                    <Box
+                      bg='rgba(235,232,226,255)'
+                      paddingX="20px"
+                      paddingY="10px"
+                      borderRadius="20px"
+                      maxWidth="80%" // Set maximum width to 70%
+                      wordBreak="break-word" // Allow long words to break and wrap
+                      textAlign="left"
+                    >
+                      {loadingMessage.content}
+                    </Box>
+                  </Flex>
+                )} */}
+              </Flex>
+            ))}
+          </Box>
+          <Box position="sticky">
+            <Flex justifyContent="space-between" alignItems="center" marginTop="10px">
+              <Box
+                flex="1"
+                type="text"
+                borderRadius="20px"
+                padding="25px"
+              >
+              </Box>
             </Flex>
-        </Flex>
+          </Box>
+        </Box>
+        <Box
+          padding="15px"
+          position="fixed"
+          borderRadius="15px"
+          bottom="10" // Position at the bottom
+          left="0"
+          right="0"
+          paddingTop='50px'
+          margin="auto"
+          maxW={["92%", "90%", "97%"]}
+          w="100%"
+          backgroundColor="rgba(254,245,231,255)"
+        >
+        </Box>
+        <Box
+          padding="15px"
+          position="fixed"
+          borderRadius="15px"
+          bottom="10" // Position at the bottom
+          left="0"
+          right="0"
+          margin="auto"
+          maxW={["92%", "90%", "97%"]}
+          w="100%"
+        >
+          <Flex position="relative" width="100%" justifyContent="center" alignItems="center">
+            <Input
+              flex="1"
+              type="text"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder="Type your message..."
+              borderRadius="20px"
+              padding="15px"
+              paddingTop='25px'
+              paddingBottom='25px'
+              paddingRight="60px" // Add right padding to make space for the button
+              marginRight="10px"
+              onKeyDown={handleKeyDown}
+              backgroundColor="rgba(255, 255, 255, 1)"
+            />
+            <Button
+              onClick={sendMessage}
+              colorScheme="yellow"
+              borderRadius="20px"
+              padding="15px"
+              zIndex='1000'
+            >
+              Send
+            </Button>
+            <Button
+                onClick={handleVerify}
+                colorScheme="blue"
+                borderRadius="20px"
+                padding="15px"
+                marginLeft= "10px"
+            >
+                Save and let me see the pets!
+            </Button>
+          </Flex>
+        </Box>
+      </Flex>
+    </Flex>
     );
 };
 

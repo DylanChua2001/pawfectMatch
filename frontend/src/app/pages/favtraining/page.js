@@ -80,6 +80,7 @@ const FavTrainingPackagesPage = () => {
 
   if (loading) {
     return (
+      <>
       <Box
         minHeight="100vh"
         display="flex"
@@ -90,11 +91,13 @@ const FavTrainingPackagesPage = () => {
         <Spinner size="xl" />
         <Text fontSize="xl" color="black" mt={4}>Loading...</Text>
       </Box>
+      </>
     );
   }
 
   if (error) {
     return (
+      <>
       <Box
         minHeight="100vh"
         display="flex"
@@ -104,6 +107,7 @@ const FavTrainingPackagesPage = () => {
       >
         <Text fontSize="xl" color="red.500">{error}</Text>
       </Box>
+      </>
     );
   }
 
@@ -112,6 +116,7 @@ const FavTrainingPackagesPage = () => {
   };
 
   return (
+    <>
     <Flex direction="column" height="100vh">
       <Box mt="60px">
         <Header />
@@ -208,6 +213,7 @@ const FavTrainingPackagesPage = () => {
         </Box>
       </Flex>
     </Flex>
+    </>
   );
 };
 

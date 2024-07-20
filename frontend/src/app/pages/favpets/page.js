@@ -51,6 +51,10 @@ const FavPetsPage = () => {
   //   localStorage.setItem('favoritePets', JSON.stringify(updatedFavorites)); // Update localStorage
   // };
 
+  const handlePetClick = (pet_id) => {
+    router.push(`/pages/pets/${pet_id}`); // Navigate to the pet's profile page
+  };
+
   return (
     <Flex direction="column" height="100vh">
       <Box mt="60px">
@@ -77,7 +81,7 @@ const FavPetsPage = () => {
           'overflow-y': 'auto',  
         }}
         >
-          <FavoritePets favoritePets={favoritePets} onRemove={handleRemoveFromFavorites} />
+          <FavoritePets favoritePets={favoritePets} onRemove={handleRemoveFromFavorites} onPetClick={handlePetClick}/>
       </Box>
     </Flex>
   );

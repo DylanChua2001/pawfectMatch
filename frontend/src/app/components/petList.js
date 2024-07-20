@@ -53,9 +53,15 @@ const PetList = () => {
         { threshold: 1.0 }
       );
 
-      observer.observe(containerRef.current);
+      if (containerRef.current) {
+        observer.observe(containerRef.current);
+      }
 
-      return () => observer.unobserve(containerRef.current);
+      return () => {
+        if (containerRef.current) {
+          observer.unobserve(containerRef.current);
+        }
+      };
     }
   }, [scrollingEnabled]);
 

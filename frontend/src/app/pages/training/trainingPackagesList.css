@@ -20,7 +20,9 @@
   }
   
   .no-scroll {
-    animation: none;
+    display: flex;
+    flex-wrap: nowrap;
+    animation: scroll 0s linear infinite;
   }
   
   @keyframes scroll {

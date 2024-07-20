@@ -132,6 +132,25 @@ const PetList = () => {
       setScrollingEnabled(true); // Re-enable scrolling when no search term or filters are applied
     }
   }, [searchTerm, filteredPets, petsData]);
+  
+  useEffect(() => {
+    const handleScroll = (event) => {
+      if (containerRef.current) {
+        // Apply horizontal scroll to the container
+        containerRef.current.scrollLeft += event.deltaY;
+        // Prevent the default scroll behavior for horizontal scrolling
+        event.preventDefault();
+      }
+    };
+  
+    // Attach event listener to the window object
+    window.addEventListener('wheel', handleScroll, { passive: false });
+  
+    return () => {
+      // Clean up event listener
+      window.removeEventListener('wheel', handleScroll);
+    };
+  }, []);
 
   return (
     <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" px="20px">
@@ -185,9 +204,19 @@ const PetList = () => {
             </Button>
           </Flex>
           <Box
-            paddingBottom="10px"
-            className="infinite-scroll-wrapper"
-          >
+            paddingBottom= "10px"
+            display="flex" 
+            overflowX="auto"
+            sx={{
+              overflowX: 'hidden', // Hide horizontal scrollbar
+              '&::-webkit-scrollbar': {
+                display: 'none',  // Hide scrollbar for Chrome, Safari, and Edge
+              },
+              '-ms-overflow-style': 'none',  // Hide scrollbar for Internet Explorer and Edge
+              'scrollbar-width': 'none',     // Hide scrollbar for Firefox
+              'overflow-x': 'auto',  
+            }}
+            >
             <Box
               paddingBottom="10px"
               className={`infinite-scroll-content ${scrollingEnabled ? '' : 'no-scroll'}`}

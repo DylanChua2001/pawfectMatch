@@ -1,9 +1,4 @@
-.infinite-scroll-wrapper {
-    display: flex;
-    overflow: hidden; /* Hide the horizontal scrollbar */
-    white-space: nowrap; /* Ensure items stay on the same line */
-  }
-  
+
   .infinite-scroll-content {
     display: flex;
     flex-wrap: nowrap;

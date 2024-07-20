@@ -153,9 +153,24 @@ const TrainingPackagesList = () => {
     }
   }, [searchTerm, filteredTrainingPackages, trainingPackages]);
 
-  const handleContainerClick = () => {
-    setScrollingEnabled(false); // Disable auto-scrolling when clicking anywhere in the container
-  };
+  useEffect(() => {
+    const handleScroll = (event) => {
+      if (containerRef.current) {
+        // Apply horizontal scroll to the container
+        containerRef.current.scrollLeft += event.deltaY;
+        // Prevent the default scroll behavior for horizontal scrolling
+        event.preventDefault();
+      }
+    };
+
+    // Attach event listener to the window object
+    window.addEventListener('wheel', handleScroll, { passive: false });
+
+    return () => {
+      // Clean up event listener
+      window.removeEventListener('wheel', handleScroll);
+    };
+  }, []);
 
   return (
     <>
@@ -165,7 +180,6 @@ const TrainingPackagesList = () => {
         backgroundColor="rgba(255, 255, 255, 0.7)"
         overflowX="auto"
         px="20px"
-        onClick={handleContainerClick} // Add click handler to the container
       >
         {selectedTrainingPackage ? (
           <Box>
@@ -211,7 +225,17 @@ const TrainingPackagesList = () => {
             </Flex>
             <Box
               paddingBottom="10px"
-              className="infinite-scroll-wrapper"
+              display="flex"
+              overflowX="auto"
+              sx={{
+                overflowX: 'hidden', // Hide horizontal scrollbar
+                '&::-webkit-scrollbar': {
+                  display: 'none',  // Hide scrollbar for Chrome, Safari, and Edge
+                },
+                '-ms-overflow-style': 'none',  // Hide scrollbar for Internet Explorer and Edge
+                'scrollbar-width': 'none',     // Hide scrollbar for Firefox
+                'overflow-x': 'auto',
+              }}
             >
               <Box
                 paddingBottom="10px"

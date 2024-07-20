@@ -1,32 +1,35 @@
-'use client'
+'use client';
 import { useState, useEffect } from 'react';
-import { Box, Button, Input, Flex, IconButton, Spacer} from '@chakra-ui/react';
+import { Box, Button, Input, Flex, IconButton, Spacer } from '@chakra-ui/react';
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
 import TrainingPackageCard from './trainingCard';
 import TrainingPackageProfile from './trainingPackageProfile';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import Cookie from 'js-cookie';
 
 const TrainingPackagesList = () => {
   const [selectedTrainingPackage, setSelectedTrainingPackage] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [trainingPackages, setTrainingPackages] = useState([]);
   const [filteredTrainingPackages, setFilteredTrainingPackages] = useState([]);
   const [cart, setCart] = useState([]);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const userId = Cookie.get('userID');
 
-  useEffect(() => {
-    const fetchTrainingPackages = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/trainPack/getAllTrainingPack');
-        const data = await response.json();
-        setFilteredTrainingPackages(data.allTrainPack);
-      } catch (error) {
-        console.error('Error fetching training packages:', error);
-      }
-    };
+  const fetchTrainingPackages = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/trainPack/getAllTrainingPack');
+      const data = await response.json();
+      setTrainingPackages(data.allTrainPack);
+      setFilteredTrainingPackages(data.allTrainPack);
+    } catch (error) {
+      console.error('Error fetching training packages:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchTrainingPackages();
   }, []);
 
@@ -44,6 +47,19 @@ const TrainingPackagesList = () => {
     fetchCart();
   }, [userId]);
 
+  useEffect(() => {
+    const filterFromQuery = searchParams.get('filter');
+    if (filterFromQuery) {
+      setSearchTerm(filterFromQuery);
+      const lowercasedFilter = filterFromQuery.toLowerCase();
+      const filteredData = trainingPackages.filter(trainingPackage =>
+        trainingPackage.train_name.toLowerCase().includes(lowercasedFilter) ||
+        trainingPackage.train_desc.toLowerCase().includes(lowercasedFilter)
+      );
+      setFilteredTrainingPackages(filteredData);
+    }
+  }, [searchParams, trainingPackages]);
+
   const handleTrainingPackageCardClick = (trainingPackage) => {
     setSelectedTrainingPackage(trainingPackage);
   };
@@ -54,7 +70,7 @@ const TrainingPackagesList = () => {
 
   const handleSearch = () => {
     const lowercasedFilter = searchTerm.toLowerCase();
-    const filteredData = filteredTrainingPackages.filter(trainingPackage =>
+    const filteredData = trainingPackages.filter(trainingPackage =>
       trainingPackage.train_name.toLowerCase().includes(lowercasedFilter) ||
       trainingPackage.train_desc.toLowerCase().includes(lowercasedFilter)
     );
@@ -63,7 +79,7 @@ const TrainingPackagesList = () => {
 
   const handleClearFilter = () => {
     setSearchTerm('');
-    fetchTrainingPackages();
+    setFilteredTrainingPackages(trainingPackages); // Reset to original list
   };
 
   const handleKeyDown = (event) => {
@@ -87,7 +103,7 @@ const TrainingPackagesList = () => {
 
   return (
     <>
-      <Box maxW="100vw"  borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" px= "20px">
+      <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" px="20px">
         {selectedTrainingPackage ? (
           <Box>
             <Button onClick={handleBackToList} mb={4} position="absolute" top="20px" right="25px">Back to Training</Button>
@@ -122,27 +138,27 @@ const TrainingPackagesList = () => {
                   ml={2}
                 />
               )}
-              <Spacer/>
-              <Button 
+              <Spacer />
+              <Button
                 onClick={navigateToCart}
-                bg="rgba(253, 222, 176, 1)" 
+                bg="rgba(253, 222, 176, 1)"
                 fontSize={["0.70rem", "0.80rem", "0.95rem", "1rem"]}>
-              Cart
-            </Button>
+                Cart
+              </Button>
             </Flex>
-            <Box 
-            paddingBottom= "10px"
-            display="flex" 
-            overflowX="auto"
-            sx={{
-              overflowX: 'hidden', // Hide horizontal scrollbar
-              '&::-webkit-scrollbar': {
-                display: 'none',  // Hide scrollbar for Chrome, Safari, and Edge
-              },
-              '-ms-overflow-style': 'none',  // Hide scrollbar for Internet Explorer and Edge
-              'scrollbar-width': 'none',     // Hide scrollbar for Firefox
-              'overflow-x': 'auto',  
-            }}>
+            <Box
+              paddingBottom="10px"
+              display="flex"
+              overflowX="auto"
+              sx={{
+                overflowX: 'hidden', // Hide horizontal scrollbar
+                '&::-webkit-scrollbar': {
+                  display: 'none',  // Hide scrollbar for Chrome, Safari, and Edge
+                },
+                '-ms-overflow-style': 'none',  // Hide scrollbar for Internet Explorer and Edge
+                'scrollbar-width': 'none',     // Hide scrollbar for Firefox
+                'overflow-x': 'auto',
+              }}>
               {filteredTrainingPackages.map((trainingPackage) => (
                 <Box key={trainingPackage.train_id} flex="0 0 auto" maxW="sm" p={2}>
                   <TrainingPackageCard

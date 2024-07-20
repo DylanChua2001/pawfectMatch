@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Box, Input, Flex, IconButton, Button, Spacer } from '@chakra-ui/react';
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
 import PetCard from './petCard';
 import PetProfile from './petProfile';
 import { useRouter } from 'next/navigation';
 import FilterMenu from './filter'; // Import the FilterMenu component
+import '../pages/pets/petList.css'; // Import the CSS file
 
 const PetList = () => {
   const [selectedPet, setSelectedPet] = useState(null);
@@ -12,14 +13,16 @@ const PetList = () => {
   const [filteredPets, setFilteredPets] = useState([]);
   const [petsData, setPetsData] = useState([]);
   const [favoritePets, setFavoritePets] = useState([]);
+  const [scrollingEnabled, setScrollingEnabled] = useState(true); // State to manage scrolling
+  const [page, setPage] = useState(1); // State for pagination
   const router = useRouter();
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const fetchPetsData = async () => {
       try {
         const response = await fetch('http://localhost:3001/api/pets/getAllPets');
         const data = await response.json();
-        console.log(data)
         setPetsData(data);
         setFilteredPets(data);
       } catch (error) {
@@ -30,7 +33,6 @@ const PetList = () => {
     fetchPetsData();
   }, []);
 
-  /*
   useEffect(() => {
     const savedFavoritePets = JSON.parse(localStorage.getItem('favoritePets')) || [];
     setFavoritePets(savedFavoritePets);
@@ -39,7 +41,39 @@ const PetList = () => {
   useEffect(() => {
     localStorage.setItem('favoritePets', JSON.stringify(favoritePets));
   }, [favoritePets]);
-  */
+
+  useEffect(() => {
+    if (scrollingEnabled && containerRef.current) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setPage(prevPage => prevPage + 1);
+          }
+        },
+        { threshold: 1.0 }
+      );
+
+      observer.observe(containerRef.current);
+
+      return () => observer.unobserve(containerRef.current);
+    }
+  }, [scrollingEnabled]);
+
+  useEffect(() => {
+    const fetchMorePets = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/api/pets/getPetsByPage?page=${page}`);
+        const data = await response.json();
+        setFilteredPets(prevPets => [...prevPets, ...data]);
+      } catch (error) {
+        console.error('Error fetching more pets:', error);
+      }
+    };
+
+    if (page > 1) {
+      fetchMorePets();
+    }
+  }, [page]);
 
   const handlePetCardClick = (pet) => {
     setSelectedPet(pet);
@@ -50,6 +84,7 @@ const PetList = () => {
   };
 
   const handleSearch = () => {
+    setScrollingEnabled(false); // Disable scrolling when searching
     const lowercasedFilter = searchTerm.toLowerCase();
     const filteredData = petsData.filter(pet =>
       pet.pet_name.toLowerCase().includes(lowercasedFilter) ||
@@ -61,6 +96,7 @@ const PetList = () => {
   const handleClearFilter = () => {
     setSearchTerm('');
     setFilteredPets(petsData);
+    setScrollingEnabled(true); // Re-enable scrolling when clear filter
   };
 
   const handleLikePet = (pet) => {
@@ -68,15 +104,6 @@ const PetList = () => {
       setFavoritePets([...favoritePets, pet]);
     }
   };
-
-  // const handleRemoveFromFavorites = (petId) => {
-  //   const updatedFavorites = favoritePets.filter(pet => pet.pet_id !== petId);
-  //   setFavoritePets(updatedFavorites);
-  // };
-
-  // const handleFavoritePetClick = (pet) => {
-  //   setSelectedPet(pet);
-  // };
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -89,24 +116,35 @@ const PetList = () => {
   };
 
   const applyFilters = (petIDs) => {
-    // Filter petsData based on selected petIDs
     const filteredData = petsData.filter(pet => petIDs.includes(pet.pet_id));
-    console.log(filteredData)
-    // Only set filteredPets if searchTerm is empty
     setFilteredPets(filteredData);
-
+    setScrollingEnabled(false); // Disable scrolling when filters are applied
   };
 
+  useEffect(() => {
+    if (!searchTerm && filteredPets.length === petsData.length) {
+      setScrollingEnabled(true); // Re-enable scrolling when no search term or filters are applied
+    }
+  }, [searchTerm, filteredPets, petsData]);
+
   return (
-    <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" p={4}>
+    <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" px="20px">
       {selectedPet ? (
-        <Box>
-          <Button onClick={handleBackToList} mb={4}>Back to List</Button>
+        <Box pt="70px">
+          <Button
+            onClick={handleBackToList}
+            mb={4}
+            position="absolute"
+            top="20px"
+            right="25px"
+          >
+            Back to Pets
+          </Button>
           <PetProfile pet={selectedPet} onLike={handleLikePet} />
         </Box>
       ) : (
         <>
-          <Flex mb={4} alignItems="center">
+          <Flex alignItems="center">
             <Input
               placeholder="Search pets..."
               value={searchTerm}
@@ -118,8 +156,7 @@ const PetList = () => {
               aria-label="Search"
               icon={<SearchIcon />}
               onClick={handleSearch}
-              colorScheme="teal"
-
+              bg="rgba(253, 222, 176, 1)"
               ml={2}
             />
             {searchTerm && (
@@ -127,21 +164,36 @@ const PetList = () => {
                 aria-label="Clear filter"
                 icon={<CloseIcon />}
                 onClick={handleClearFilter}
-                colorScheme="red"
+                bg="rgba(253, 222, 176, 1)"
                 ml={2}
               />
             )}
-            <Spacer />
             <FilterMenu applyFilters={applyFilters} />
+            <Spacer />
+            <Button
+              onClick={navigateToFavorites}
+              bg="rgba(253, 222, 176, 1)"
+              fontSize={["0.70rem", "0.80rem", "0.95rem", "1rem"]}
+            >
+              Favorites
+            </Button>
           </Flex>
-          <Box display="flex" overflowX="auto">
-            {filteredPets.map((pet) => (
-              <Box key={pet.pet_id} flex="0 0 auto" maxW="sm" p={2}>
-                <PetCard pet={pet} onClick={() => handlePetCardClick(pet)} />
-              </Box>
-            ))}
+          <Box
+            paddingBottom="10px"
+            className="infinite-scroll-wrapper"
+          >
+            <Box
+              paddingBottom="10px"
+              className={`infinite-scroll-content ${scrollingEnabled ? '' : 'no-scroll'}`}
+              ref={containerRef}
+            >
+              {filteredPets.map((pet) => (
+                <Box key={pet.pet_id} flex="0 0 auto" maxW="sm" p={2}>
+                  <PetCard pet={pet} onClick={() => handlePetCardClick(pet)} />
+                </Box>
+              ))}
+            </Box>
           </Box>
-          <Button onClick={navigateToFavorites} mt={4} colorScheme="blue">Go to Favorites</Button>
         </>
       )}
     </Box>

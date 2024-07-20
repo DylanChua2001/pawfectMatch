@@ -23,6 +23,8 @@ const Header = () => {
   const [userID, setUserID] = useState(null); // Add userID state
   const [imageSrcUrl, setImageSrcUrl] = useState(''); // State for profile image URL
   const router = useRouter(); // Initialize useRouter hook
+  const id = Cookies.get('userID'); // Assuming 'userID' is the cookie key storing the ID
+  const isAdmin = Cookies.get('isAdmin');
 
   const handleMenuToggle = () => {
     setIsOpen(!isOpen);
@@ -48,7 +50,6 @@ const Header = () => {
 
   const fetchProfile = async () => {
     try {
-      const id = Cookies.get('userID'); // Assuming 'userID' is the cookie key storing the ID
       setUserID(id); // Set userID state
       const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${id}`, {
         method: 'GET'
@@ -97,14 +98,15 @@ const Header = () => {
           <MenuList>
             {!userID && <MenuItem onClick={() => navigateTo('/pages/login')}>Login</MenuItem>}
             {userID && <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/profile')}>Profile</MenuItem>}
-            <MenuItem onClick={() => navigateTo('/pages/about')}>About Us</MenuItem>
-            {userID && <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat</MenuItem>}
+            <MenuItem onClick={() => navigateTo('/pages/about')}>About PawfectMatch</MenuItem>
+            {userID && <MenuItem onClick={() => navigateTo('/pages/profile')}>Edit Profile</MenuItem>}
+            {userID && (isAdmin==false) && <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>}
+            {userID && (isAdmin==false) && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training Packages</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/favtraining')}>Favorite Training</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/cart')}>Cart</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat (PawAI)</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/createUserProfile')}>Knowing you better (PawAI)</MenuItem>}
             {/* Add more MenuItems for additional pages */}
           </MenuList>
         </Menu>

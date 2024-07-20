@@ -11,7 +11,7 @@ const createCheckoutSession = async(req,res) => {
         const userID = req.params.userID; // Extract userID from params
         console.log('Received userID:', userID);
 
-        const responseCart = await fetch (`https://pawfect-match-three.vercel.app/api/cart/getCart/${userID}`)
+        const responseCart = await fetch (`https://pawfect-match-backend-six.vercel.app//api/cart/getCart/${userID}`)
         const responseData1 = await responseCart.json();
 
         const cartItems = responseData1.userCart.user_cart;
@@ -26,7 +26,7 @@ const createCheckoutSession = async(req,res) => {
         const lineItems = [];
 
         for (const cartItem of cartItems){
-            const responseOneTrainItem = await fetch (`https://pawfect-match-three.vercel.app/api/trainPack/getOneTrainingPackIdNameMoney/${cartItem}`)
+            const responseOneTrainItem = await fetch (`https://pawfect-match-backend-six.vercel.app//api/trainPack/getOneTrainingPackIdNameMoney/${cartItem}`)
             const OneTrainItem = await responseOneTrainItem.json();
             console.log (OneTrainItem)
             

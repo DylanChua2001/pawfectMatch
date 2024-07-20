@@ -1,124 +1,3 @@
-// // // components/Header.js
-// 'use client'
-
-// import { useState, useEffect } from 'react';
-// import {
-//   HStack,
-//   Avatar,
-//   Image,
-//   Heading,
-//   Menu,
-//   MenuButton,
-//   MenuList,
-//   MenuItem,
-//   MenuGroup,
-//   Button,
-// } from '@chakra-ui/react';
-// import { useRouter } from 'next/navigation'; // Import useRouter hook from Next.js
-// import Cookies from 'js-cookie';
-// import axios from 'axios';
-
-// const Header = () => {
-//   const [isOpen, setIsOpen] = useState(false);
-//   const [isLoading, setIsLoading] = useState(true); // Add loading state
-//   const [userID, setUserID] = useState(null); // Add userID state
-//   const [imageSrcUrl, setImageSrcUrl] = useState(''); // State for profile image URL
-//   const router = useRouter(); // Initialize useRouter hook
-//   const id = Cookies.get('userID'); // Assuming 'userID' is the cookie key storing the ID
-//   const isAdmin = Cookies.get('isAdmin');
-
-//   const handleMenuToggle = () => {
-//     setIsOpen(!isOpen);
-//   };
-
-//   const navigateTo = (route) => {
-//     router.push(route);
-//     setIsOpen(false);
-//   };
-
-//   const handleLogout = async () => {
-//     await axios.get('https://pawfect-match-three.vercel.app/api/auth/logout')
-//     Cookies.remove('token'); // Remove JWT token cookie
-//     Cookies.remove('userID'); // Remove userID cookie
-//     Cookies.remove('isAdmin'); // Remove isAdmin cookie
-//     Cookies.remove('connect.sid'); // Remove session ID cookie (if applicable)
-//     router.push('/pages/login');
-//   };
-
-//   useEffect(() => {
-//     fetchProfile(); // Fetch profile data when component mounts
-//   }, []);
-
-//   const fetchProfile = async () => {
-//     try {
-//       setUserID(id); // Set userID state
-//       const photoresponse = await fetch(`https://pawfect-match-three.vercel.app/api/image/retrieveImage/${id}`, {
-//         method: 'GET'
-//       });
-
-//       const photoresponsedata = await photoresponse.json();
-//       const fetchedImageSrcUrl = photoresponsedata.userImage[0].photo_url;
-//       setImageSrcUrl(fetchedImageSrcUrl); // Set the fetched image URL to state
-//     } catch (error) {
-//       console.error('Error fetching profile:', error);
-//     } finally {
-//       setIsLoading(false); // Set loading state to false regardless of success or failure
-//     }
-//   };
-
-//   if (isLoading) {
-//     return null; // Return null or a loading spinner while loading
-//   }
-
-//   return (
-//     <>
-//       <HStack position="fixed" top="2%" left="3px" zIndex="1">
-//         <Button bg={'transparent'} _hover={{ bg: 'transparent' }} onClick={() => router.push("/")}>
-//           <Image src='/pawprints.png' alt="Image" width={50} height={50} />
-//           <Heading fontSize="240%" fontFamily="Kaushan Script" fontStyle="italic">
-//             PawfectMatch
-//           </Heading>
-//         </Button>
-//       </HStack>
-//       <HStack position="fixed" top="1%" right="1%" zIndex="1">
-//         <Menu>
-//           <MenuButton
-//             as={Button}
-//             rounded="full"
-//             variant="link"
-//             onClick={handleMenuToggle}
-//           >
-//             <Avatar
-//               borderRadius="full"
-//               borderColor="black"
-//               src={imageSrcUrl || "profileicon.png"}
-//               width="50"
-//               height="50"
-//             />
-//           </MenuButton>
-//           <MenuList>
-//             {!userID && <MenuItem onClick={() => navigateTo('/pages/login')}>Login</MenuItem>}
-//             {userID && <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>}
-//             <MenuItem onClick={() => navigateTo('/pages/about')}>About PawfectMatch</MenuItem>
-//             {userID && <MenuItem onClick={() => navigateTo('/pages/profile')}>Edit Profile</MenuItem>}
-//             {userID && (isAdmin==false) && <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>}
-//             {userID && (isAdmin==false) && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training Packages</MenuItem>}
-//             {userID && <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>}
-//             {userID && <MenuItem onClick={() => navigateTo('/pages/favtraining')}>Favorite Training</MenuItem>}
-//             {userID && <MenuItem onClick={() => navigateTo('/pages/cart')}>Cart</MenuItem>}
-//             {userID && <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat (PawAI)</MenuItem>}
-//             {userID && <MenuItem onClick={() => navigateTo('/pages/createUserProfile')}>Knowing you better (PawAI)</MenuItem>}
-//             {/* Add more MenuItems for additional pages */}
-//           </MenuList> 
-//         </Menu>
-//       </HStack>
-//     </>
-//   );
-// };
-
-// export default Header;
-
-// // components/Header.js
 'use client'
 
 import { useState, useEffect } from 'react';
@@ -161,7 +40,7 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
-    await axios.get('https://pawfect-match-three.vercel.app/api/auth/logout')
+    await axios.get('https://pawfect-match-backend-six.vercel.app//api/auth/logout')
     Cookies.remove('token'); // Remove JWT token cookie
     Cookies.remove('userID'); // Remove userID cookie
     Cookies.remove('isAdmin'); // Remove isAdmin cookie
@@ -188,7 +67,7 @@ const Header = () => {
   const fetchProfile = async () => {
     try {
       setUserID(id); // Set userID state
-      const photoresponse = await fetch(`https://pawfect-match-three.vercel.app/api/image/retrieveImage/${id}`, {
+      const photoresponse = await fetch(`https://pawfect-match-backend-six.vercel.app//api/image/retrieveImage/${id}`, {
         method: 'GET'
       });
 
@@ -268,7 +147,6 @@ const Header = () => {
               </>
             )}
             {userID && <MenuItem onClick={() => navigateTo('/pages/cart')}>Cart</MenuItem>}
-            <MenuItem onClick={() => navigateTo('/pages/about')}>About PawfectMatch</MenuItem>
             {!userID && <MenuItem onClick={() => navigateTo('/pages/login')}>Login</MenuItem>}
             {userID && <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>}
             <MenuItem onClick={() => navigateTo('/pages/about')}>About PawfectMatch</MenuItem>

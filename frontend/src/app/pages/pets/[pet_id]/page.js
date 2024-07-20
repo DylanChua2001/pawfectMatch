@@ -51,7 +51,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
             try {
                 if (!pet_id) return;
 
-                const response = await fetch(`https://pawfect-match-three.vercel.app/api/pets/id/${pet_id}`);
+                const response = await fetch(`https://pawfect-match-backend-six.vercel.app//api/pets/id/${pet_id}`);
                 const data = await response.json();
                 setPet(data);
             } catch (error) {
@@ -65,7 +65,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
     useEffect(() => {
         const fetchPhotoList = async () => {
             try {
-                const photoresponse = await fetch(`https://pawfect-match-three.vercel.app/api/image/retrievePetImage/${pet_id}`, {
+                const photoresponse = await fetch(`https://pawfect-match-backend-six.vercel.app//api/image/retrievePetImage/${pet_id}`, {
                     method: 'GET'
                 });
                 const photoresponsedata = await photoresponse.json();
@@ -81,8 +81,8 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
 
     const handleLikeButtonClick = async () => {
         const url = liked
-            ? `https://pawfect-match-three.vercel.app/api/favourites/deleteFavPet/${sessionID}/delete/${pet.pet_id}`
-            : `https://pawfect-match-three.vercel.app/api/favourites/addFavPet/${sessionID}/add/${pet.pet_id}`;
+            ? `https://pawfect-match-backend-six.vercel.app//api/favourites/deleteFavPet/${sessionID}/delete/${pet.pet_id}`
+            : `https://pawfect-match-backend-six.vercel.app//api/favourites/addFavPet/${sessionID}/add/${pet.pet_id}`;
 
         try {
             await axios.put(url, { liked: !liked });
@@ -106,7 +106,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`https://pawfect-match-three.vercel.app/api/pets/deletePet/${pet.pet_id}`, {
+            await axios.delete(`https://pawfect-match-backend-six.vercel.app//api/pets/deletePet/${pet.pet_id}`, {
                 withCredentials: true
             });
             toast({

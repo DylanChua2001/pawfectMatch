@@ -29,10 +29,10 @@ const FavTrainingPackagesPage = () => {
 
     const fetchFavoritePackageIds = async () => {
       try {
-        const response = await axios.get(`https://pawfect-match-three.vercel.app/api/favourites/getAllFavTrainPacks/${userID}`);
+        const response = await axios.get(`https://pawfect-match-backend-six.vercel.app//api/favourites/getAllFavTrainPacks/${userID}`);
         const favoriteIds = response.data.userFavPets.user_train_fav || [];
 
-        const allPackagesResponse = await axios.get('https://pawfect-match-three.vercel.app/api/trainPack/getAllTrainingPack');
+        const allPackagesResponse = await axios.get('https://pawfect-match-backend-six.vercel.app//api/trainPack/getAllTrainingPack');
         const allTrainPacks = allPackagesResponse.data.allTrainPack || [];
 
         const favoritePackages = allTrainPacks.filter(pkg => favoriteIds.includes(pkg.train_id));
@@ -54,7 +54,7 @@ const FavTrainingPackagesPage = () => {
       try {
         await Promise.all(favoritePackages.map(async (pkg) => {
           try {
-            const response = await fetch(`https://pawfect-match-three.vercel.app/api/image/retrieveTrainingImage/${pkg.train_id}`);
+            const response = await fetch(`https://pawfect-match-backend-six.vercel.app//api/image/retrieveTrainingImage/${pkg.train_id}`);
             const data = await response.json();
             if (data.trainImage && data.trainImage.length > 0) {
               updatedImages[pkg.train_id] = data.trainImage[0].photo_url;

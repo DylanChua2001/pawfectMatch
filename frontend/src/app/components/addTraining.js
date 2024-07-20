@@ -22,7 +22,7 @@ const AddTrainingPackage = () => {
   const handleSubmit = async () => {
     try {
       // Step 1: Create the training package
-      const createTrainingPackageResponse = await axios.post('https://pawfect-match-three.vercel.app/api/trainPack/createNewTrainingPack', formData, {
+      const createTrainingPackageResponse = await axios.post('https://pawfect-match-backend-six.vercel.app//api/trainPack/createNewTrainingPack', formData, {
         withCredentials: true
       });
       const newTrainPack = createTrainingPackageResponse.data.newTrainPack;
@@ -33,7 +33,7 @@ const AddTrainingPackage = () => {
         const formDataImage = new FormData();
         formDataImage.append('image', formData.train_image);
 
-        const uploadImageResponse = await axios.post(`https://pawfect-match-three.vercel.app/api/image/uploadTrainingImage/${newTrainPack.train_id}`, formDataImage, {
+        const uploadImageResponse = await axios.post(`https://pawfect-match-backend-six.vercel.app//api/image/uploadTrainingImage/${newTrainPack.train_id}`, formDataImage, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

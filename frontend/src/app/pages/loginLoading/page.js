@@ -49,7 +49,6 @@ const LoginLoading = () => {
 
     if (data == null) {
         return (
-            <>
             <Box
                 minHeight="100vh"
                 display="flex"
@@ -60,25 +59,35 @@ const LoginLoading = () => {
                 backgroundSize="cover"
                 backgroundPosition="center"
             >
-                <Spinner size="xl" />
-                <Box fontSize="xl" color="black" mt={4} textAlign="center">
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    borderRadius="15px"
+                    backgroundColor="rgba(255, 255, 255, 0.8)"
+                    px="20px"
+                    py="10px"
+                    margin="auto"
+                    fontSize={["0.45rem", "0.45rem", "0.65rem", "0.65rem"]}
+                    maxW='65%'
+                >
+                    <Spinner size="xl" />
                     <Text fontSize="2xl" fontWeight="bold">
                         Loading PawAI...<br />
                     </Text>
                     <Text fontSize="xl" mt={2}>
-                        PawAI will be used to better understand your character.<br />
-                        The more questions you answer, the more accurate the matching will be.<br />
-                        Once you feel as though you have answered enough questions, feel free to continue to the main page!<br />
-                        You can always revisit this page later.
+                        PawAI is here to help us understand your ideal pet’s personality better.
+                        The more questions you answer, the closer we'll get to finding the perfect match for you.
+                        When you’re ready, you can continue to the main page.
+                        And don’t worry—if you want to come back and refine your choices later, you’re always welcome!"
                     </Text>
                 </Box>
 
             </Box>
-            </>
         );
     } else {
         return (
-            <>
             <Box
                 minHeight="100vh"
                 display="flex"
@@ -92,7 +101,6 @@ const LoginLoading = () => {
                 <Spinner size="xl" />
                 <Text fontSize="xl" color="black" mt={4}>User data loaded. Proceeding to main page</Text>
             </Box>
-            </>
         );
     };
 }

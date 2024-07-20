@@ -11,6 +11,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [photo, setPhoto] = useState('')
   const petID = pet.pet_id
+
   const [isUserMatched, setIsUserMatched] = useState(false);
 
   const sessionID = Cookie.get('userID');
@@ -71,6 +72,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
     }
   }, [sessionID, pet.pet_id]);
 
+
   const handleLikeButtonClick = async () => {
     const url = liked
       ? `https://pawfect-match-three.vercel.app/api/favourites/deleteFavPet/${sessionID}/delete/${pet.pet_id}`
@@ -91,7 +93,12 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   // Function to handle modal open
   const handleModalOpen = async () => {
     if (isUserMatched) {
-      alert('You are already matched with another pet.');
+      toast({
+        title: 'Sorry! You have already matched with another pet.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
       return;
     }
 

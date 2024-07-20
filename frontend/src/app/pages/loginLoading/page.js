@@ -48,6 +48,7 @@ const LoginLoading = () => {
         clearTimeout(timer);
 
         return (
+            <>
             <Box
                 minHeight="100vh"
                 display="flex"
@@ -72,10 +73,12 @@ const LoginLoading = () => {
                 </Box>
 
             </Box>
+            </>
         );
     } else {
         router.push('/');
         return (
+            <>
             <Box
                 minHeight="100vh"
                 display="flex"
@@ -88,6 +91,7 @@ const LoginLoading = () => {
             >
                 <Text fontSize="xl" color="black" mt={4}>User data loaded. Proceeding to main page</Text>
             </Box>
+            </>
         );
     };
 }

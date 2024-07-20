@@ -1,4 +1,124 @@
-// components/Header.js
+// // // components/Header.js
+// 'use client'
+
+// import { useState, useEffect } from 'react';
+// import {
+//   HStack,
+//   Avatar,
+//   Image,
+//   Heading,
+//   Menu,
+//   MenuButton,
+//   MenuList,
+//   MenuItem,
+//   MenuGroup,
+//   Button,
+// } from '@chakra-ui/react';
+// import { useRouter } from 'next/navigation'; // Import useRouter hook from Next.js
+// import Cookies from 'js-cookie';
+// import axios from 'axios';
+
+// const Header = () => {
+//   const [isOpen, setIsOpen] = useState(false);
+//   const [isLoading, setIsLoading] = useState(true); // Add loading state
+//   const [userID, setUserID] = useState(null); // Add userID state
+//   const [imageSrcUrl, setImageSrcUrl] = useState(''); // State for profile image URL
+//   const router = useRouter(); // Initialize useRouter hook
+//   const id = Cookies.get('userID'); // Assuming 'userID' is the cookie key storing the ID
+//   const isAdmin = Cookies.get('isAdmin');
+
+//   const handleMenuToggle = () => {
+//     setIsOpen(!isOpen);
+//   };
+
+//   const navigateTo = (route) => {
+//     router.push(route);
+//     setIsOpen(false);
+//   };
+
+//   const handleLogout = async () => {
+//     await axios.get('http://localhost:3001/api/auth/logout')
+//     Cookies.remove('token'); // Remove JWT token cookie
+//     Cookies.remove('userID'); // Remove userID cookie
+//     Cookies.remove('isAdmin'); // Remove isAdmin cookie
+//     Cookies.remove('connect.sid'); // Remove session ID cookie (if applicable)
+//     router.push('/pages/login');
+//   };
+
+//   useEffect(() => {
+//     fetchProfile(); // Fetch profile data when component mounts
+//   }, []);
+
+//   const fetchProfile = async () => {
+//     try {
+//       setUserID(id); // Set userID state
+//       const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${id}`, {
+//         method: 'GET'
+//       });
+
+//       const photoresponsedata = await photoresponse.json();
+//       const fetchedImageSrcUrl = photoresponsedata.userImage[0].photo_url;
+//       setImageSrcUrl(fetchedImageSrcUrl); // Set the fetched image URL to state
+//     } catch (error) {
+//       console.error('Error fetching profile:', error);
+//     } finally {
+//       setIsLoading(false); // Set loading state to false regardless of success or failure
+//     }
+//   };
+
+//   if (isLoading) {
+//     return null; // Return null or a loading spinner while loading
+//   }
+
+//   return (
+//     <>
+//       <HStack position="fixed" top="2%" left="3px" zIndex="1">
+//         <Button bg={'transparent'} _hover={{ bg: 'transparent' }} onClick={() => router.push("/")}>
+//           <Image src='/pawprints.png' alt="Image" width={50} height={50} />
+//           <Heading fontSize="240%" fontFamily="Kaushan Script" fontStyle="italic">
+//             PawfectMatch
+//           </Heading>
+//         </Button>
+//       </HStack>
+//       <HStack position="fixed" top="1%" right="1%" zIndex="1">
+//         <Menu>
+//           <MenuButton
+//             as={Button}
+//             rounded="full"
+//             variant="link"
+//             onClick={handleMenuToggle}
+//           >
+//             <Avatar
+//               borderRadius="full"
+//               borderColor="black"
+//               src={imageSrcUrl || "profileicon.png"}
+//               width="50"
+//               height="50"
+//             />
+//           </MenuButton>
+//           <MenuList>
+//             {!userID && <MenuItem onClick={() => navigateTo('/pages/login')}>Login</MenuItem>}
+//             {userID && <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>}
+//             <MenuItem onClick={() => navigateTo('/pages/about')}>About PawfectMatch</MenuItem>
+//             {userID && <MenuItem onClick={() => navigateTo('/pages/profile')}>Edit Profile</MenuItem>}
+//             {userID && (isAdmin==false) && <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>}
+//             {userID && (isAdmin==false) && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training Packages</MenuItem>}
+//             {userID && <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>}
+//             {userID && <MenuItem onClick={() => navigateTo('/pages/favtraining')}>Favorite Training</MenuItem>}
+//             {userID && <MenuItem onClick={() => navigateTo('/pages/cart')}>Cart</MenuItem>}
+//             {userID && <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat (PawAI)</MenuItem>}
+//             {userID && <MenuItem onClick={() => navigateTo('/pages/createUserProfile')}>Knowing you better (PawAI)</MenuItem>}
+//             {/* Add more MenuItems for additional pages */}
+//           </MenuList> 
+//         </Menu>
+//       </HStack>
+//     </>
+//   );
+// };
+
+// export default Header;
+
+// // components/Header.js
 'use client'
 
 import { useState, useEffect } from 'react';
@@ -12,6 +132,7 @@ import {
   MenuList,
   MenuItem,
   Button,
+  Box,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation'; // Import useRouter hook from Next.js
 import Cookies from 'js-cookie';
@@ -22,9 +143,13 @@ const Header = () => {
   const [isLoading, setIsLoading] = useState(true); // Add loading state
   const [userID, setUserID] = useState(null); // Add userID state
   const [imageSrcUrl, setImageSrcUrl] = useState(''); // State for profile image URL
+  const [isFavoritesOpen, setIsFavoritesOpen] = useState(false); // State for Favorites menu
+  const [isAddOpen, setIsAddOpen] = useState(false); // State for Adding of pets and training menu
+  const [isPawAIOpen, setIsPawAIOpen] = useState(false); // State for PAW AI
   const router = useRouter(); // Initialize useRouter hook
   const id = Cookies.get('userID'); // Assuming 'userID' is the cookie key storing the ID
   const isAdmin = Cookies.get('isAdmin');
+
 
   const handleMenuToggle = () => {
     setIsOpen(!isOpen);
@@ -42,6 +167,18 @@ const Header = () => {
     Cookies.remove('isAdmin'); // Remove isAdmin cookie
     Cookies.remove('connect.sid'); // Remove session ID cookie (if applicable)
     router.push('/pages/login');
+  };
+
+  const toggleFavoritesMenu = () => {
+    setIsFavoritesOpen(!isFavoritesOpen);
+  };
+
+  const toggleAddMenu = () => {
+    setIsAddOpen(!isAddOpen);
+  };
+
+  const togglePawAIMenu = () => {
+    setIsPawAIOpen(!isPawAIOpen);
   };
 
   useEffect(() => {
@@ -80,12 +217,12 @@ const Header = () => {
         </Button>
       </HStack>
       <HStack position="fixed" top="1%" right="1%" zIndex="1">
-        <Menu>
+        <Menu isOpen={isOpen}>
           <MenuButton
             as={Button}
             rounded="full"
             variant="link"
-            onClick={handleMenuToggle}
+            onClick={() => setIsOpen(!isOpen)}
           >
             <Avatar
               borderRadius="full"
@@ -96,19 +233,49 @@ const Header = () => {
             />
           </MenuButton>
           <MenuList>
+            {userID && <MenuItem onClick={() => navigateTo('/pages/profile')}>Edit Profile</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/pets')}>Pets</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/training')}>Training Packages</MenuItem>}
+            {userID && (
+              <>
+                <MenuItem onClick={toggleFavoritesMenu}>Favorites</MenuItem>
+                {isFavoritesOpen && (
+                  <Box ml="6">
+                    <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>
+                    <MenuItem onClick={() => navigateTo('/pages/favtraining')}>Favorite Training</MenuItem>
+                  </Box>
+                )}
+              </>
+            )}            
+            {userID && (isAdmin === 'false') && (
+              <>
+                <MenuItem onClick={togglePawAIMenu}>PawAI</MenuItem>
+                {isPawAIOpen && (
+                  <Box ml="6">
+                    <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat</MenuItem>
+                    <MenuItem onClick={() => navigateTo('/pages/createUserProfile')}>Knowing you better</MenuItem>
+                  </Box>
+                )}
+              </>
+            )}
+            {userID && (isAdmin === 'true') && (
+              <>
+                <MenuItem onClick={toggleAddMenu}>Add</MenuItem>
+                {isAddOpen && (
+                  <Box ml="6">
+                    <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>
+                    <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training</MenuItem>
+                  </Box>
+                )}
+              </>
+            )}
+
+            {userID && (isAdmin === 'false') &&<MenuItem onClick={() => navigateTo('/pages/cart')}>Cart</MenuItem>}
+            {userID && (isAdmin === 'false') &&<MenuItem onClick={() => navigateTo('/pages/about')}>About PawfectMatch</MenuItem>}
             {!userID && <MenuItem onClick={() => navigateTo('/pages/login')}>Login</MenuItem>}
             {userID && <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>}
-            <MenuItem onClick={() => navigateTo('/pages/about')}>About PawfectMatch</MenuItem>
-            {userID && <MenuItem onClick={() => navigateTo('/pages/profile')}>Edit Profile</MenuItem>}
-            {(userID && isAdmin==='true') && (<MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>)}
-            {(userID && isAdmin==='true') && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training Packages</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/favtraining')}>Favorite Training</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/cart')}>Cart</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat (PawAI)</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/createUserProfile')}>Knowing you better (PawAI)</MenuItem>}
             {/* Add more MenuItems for additional pages */}
-          </MenuList>
+          </MenuList> 
         </Menu>
       </HStack>
     </>

@@ -15,7 +15,7 @@ const LoginLoading = () => {
         const fetchUserData = async () => {
             if (userID) {
                 try {
-                    const response = await axios.get(`http://localhost:3001/api/users/id/${userID}`);
+                    const response = await axios.get(`https://pawfect-match-three.vercel.app/api/users/id/${userID}`);
                     setData(response.data.person_traits);
                 } catch (error) {
                     console.error('Error fetching user data:', error);

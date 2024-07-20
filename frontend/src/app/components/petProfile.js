@@ -24,7 +24,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   useEffect(() => {
     const checkAdminStatus = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/users/id/${sessionID}`);
+        const response = await axios.get(`https://pawfect-match-three.vercel.app/api/users/id/${sessionID}`);
         setIsAdmin(response.data.is_admin); // Assuming API response has is_admin field
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -37,7 +37,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   useEffect(() => {
     const fetchPhotoList = async () => {
       try {
-        const photoresponse = await fetch(`http://localhost:3001/api/image/retrievePetImage/${petID}`, {
+        const photoresponse = await fetch(`https://pawfect-match-three.vercel.app/api/image/retrievePetImage/${petID}`, {
           method: 'GET'
         });
         const photoresponsedata = await photoresponse.json();
@@ -58,7 +58,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   useEffect(() => {
     const checkUserMatch = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/match/checkUserMatch/${sessionID}`);
+        const response = await axios.get(`https://pawfect-match-three.vercel.app/api/match/checkUserMatch/${sessionID}`);
         const { matchedPetId } = response.data;
         setIsUserMatched(!!matchedPetId && matchedPetId !== pet.pet_id);
       } catch (error) {
@@ -73,8 +73,8 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
 
   const handleLikeButtonClick = async () => {
     const url = liked
-      ? `http://localhost:3001/api/favourites/deleteFavPet/${sessionID}/delete/${pet.pet_id}`
-      : `http://localhost:3001/api/favourites/addFavPet/${sessionID}/add/${pet.pet_id}`;
+      ? `https://pawfect-match-three.vercel.app/api/favourites/deleteFavPet/${sessionID}/delete/${pet.pet_id}`
+      : `https://pawfect-match-three.vercel.app/api/favourites/addFavPet/${sessionID}/add/${pet.pet_id}`;
 
     try {
       const response = await axios.put(url, { liked: !liked });
@@ -98,7 +98,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
     setIsModalOpen(true);
 
     try {
-      const response = await axios.post(`http://localhost:3001/api/match/addAMatch/${sessionID}/${pet.pet_id}`);
+      const response = await axios.post(`https://pawfect-match-three.vercel.app/api/match/addAMatch/${sessionID}/${pet.pet_id}`);
       console.log('Response from API:', response.data);
 
     } catch (error) {
@@ -113,7 +113,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:3001/api/pets/deletePet/${pet.pet_id}`, {
+      const response = await axios.delete(`https://pawfect-match-three.vercel.app/api/pets/deletePet/${pet.pet_id}`, {
         withCredentials: true
       });
       console.log(response);

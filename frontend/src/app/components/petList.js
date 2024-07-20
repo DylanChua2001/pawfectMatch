@@ -21,7 +21,7 @@ const PetList = () => {
   useEffect(() => {
     const fetchPetsData = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/pets/getAllPets');
+        const response = await fetch('https://pawfect-match-three.vercel.app/api/pets/getAllPets');
         const data = await response.json();
         setPetsData(data);
         setFilteredPets(data);
@@ -68,7 +68,7 @@ const PetList = () => {
   useEffect(() => {
     const fetchMorePets = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/pets/getPetsByPage?page=${page}`);
+        const response = await fetch(`https://pawfect-match-three.vercel.app/api/pets/getPetsByPage?page=${page}`);
         const data = await response.json();
         setFilteredPets(prevPets => [...prevPets, ...data]);
       } catch (error) {

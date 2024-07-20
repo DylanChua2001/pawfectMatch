@@ -50,7 +50,7 @@ export default function RegisterCard() {
     }
 
     try {
-      const emailCheckResponse = await axios.get('http://localhost:3001/api/users/getAllUser');
+      const emailCheckResponse = await axios.get('https://pawfect-match-three.vercel.app/api/users/getAllUser');
       const emailExists = emailCheckResponse.data.some(user => user.email_add === formData.email_add);
 
       if (emailExists) {
@@ -64,7 +64,7 @@ export default function RegisterCard() {
         return;
       }
 
-      const response = await axios.post('http://localhost:3001/api/users/createNewUser', formData);
+      const response = await axios.post('https://pawfect-match-three.vercel.app/api/users/createNewUser', formData);
       toast({
         title: 'Account Created Successfully',
         description: 'Taking you to the login page',

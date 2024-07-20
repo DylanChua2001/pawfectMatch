@@ -18,13 +18,13 @@ const Cart = () => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/cart/getCart/${userId}`);
+        const response = await axios.get(`https://pawfect-match-three.vercel.app/api/cart/getCart/${userId}`);
         const cartItemIds = response.data.userCart.user_cart;
 
         // Fetch details for each training package ID in user_cart
         const fetchTrainingPackages = async () => {
           try {
-            const response = await axios.get(`http://localhost:3001/api/trainPack/getAllTrainingPack`);
+            const response = await axios.get(`https://pawfect-match-three.vercel.app/api/trainPack/getAllTrainingPack`);
             const allTrainPack = response.data.allTrainPack;
             
             const cartItemsData = cartItemIds.map(itemId => {
@@ -63,7 +63,7 @@ const Cart = () => {
 
       console.log("Success 1")
 
-      const responseCart = await fetch(`http://localhost:3001/api/cart/getCart/${userId}`, {
+      const responseCart = await fetch(`https://pawfect-match-three.vercel.app/api/cart/getCart/${userId}`, {
         method: 'GET',
       });
 
@@ -104,7 +104,7 @@ const Cart = () => {
       let stripeGrandTotal = 0
 
       for (const cartItem in itemCounts){
-        const responseOneTrainItem = await fetch (`http://localhost:3001/api/trainPack/getOneTrainingPackIdNameMoney/${cartItem}`)
+        const responseOneTrainItem = await fetch (`https://pawfect-match-three.vercel.app/api/trainPack/getOneTrainingPackIdNameMoney/${cartItem}`)
         const OneTrainItem = await responseOneTrainItem.json();
         console.log (OneTrainItem)
         
@@ -187,7 +187,7 @@ const Cart = () => {
 
   const logTxnData = async(transactionData) => {
     try {
-      const response = await fetch('http://localhost:3001/api/txn/createTxn', {
+      const response = await fetch('https://pawfect-match-three.vercel.app/api/txn/createTxn', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -210,7 +210,7 @@ const Cart = () => {
 
   const emptyUserCart = async() => {
     try {
-      const response = await fetch(`http://localhost:3001/api/cart/resetCart/${userId}`, {
+      const response = await fetch(`https://pawfect-match-three.vercel.app/api/cart/resetCart/${userId}`, {
         method : 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -254,7 +254,7 @@ const Cart = () => {
 
   const handleRemoveFromCart = async (item) => {
     try {
-      await axios.put(`http://localhost:3001/api/cart/deleteCart/${userId}/delete/${item.train_id}`);
+      await axios.put(`https://pawfect-match-three.vercel.app/api/cart/deleteCart/${userId}/delete/${item.train_id}`);
       //setCart(cart.filter(cartItem => cartItem.train_id !== item.train_id));
       const index = cart.findIndex(cartItem => cartItem.train_id === item.train_id);
       if (index !== -1) {

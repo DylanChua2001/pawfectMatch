@@ -37,7 +37,7 @@
 //   };
 
 //   const handleLogout = async () => {
-//     await axios.get('http://localhost:3001/api/auth/logout')
+//     await axios.get('https://pawfect-match-three.vercel.app/api/auth/logout')
 //     Cookies.remove('token'); // Remove JWT token cookie
 //     Cookies.remove('userID'); // Remove userID cookie
 //     Cookies.remove('isAdmin'); // Remove isAdmin cookie
@@ -52,7 +52,7 @@
 //   const fetchProfile = async () => {
 //     try {
 //       setUserID(id); // Set userID state
-//       const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${id}`, {
+//       const photoresponse = await fetch(`https://pawfect-match-three.vercel.app/api/image/retrieveImage/${id}`, {
 //         method: 'GET'
 //       });
 
@@ -161,7 +161,7 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
-    await axios.get('http://localhost:3001/api/auth/logout')
+    await axios.get('https://pawfect-match-three.vercel.app/api/auth/logout')
     Cookies.remove('token'); // Remove JWT token cookie
     Cookies.remove('userID'); // Remove userID cookie
     Cookies.remove('isAdmin'); // Remove isAdmin cookie
@@ -188,7 +188,7 @@ const Header = () => {
   const fetchProfile = async () => {
     try {
       setUserID(id); // Set userID state
-      const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${id}`, {
+      const photoresponse = await fetch(`https://pawfect-match-three.vercel.app/api/image/retrieveImage/${id}`, {
         method: 'GET'
       });
 

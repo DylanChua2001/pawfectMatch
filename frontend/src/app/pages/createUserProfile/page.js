@@ -20,7 +20,7 @@ const CreateUserProfile = () => {
       const fetchPhotoList = async () => {
         try {
           console.log(id)
-          const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${id}`, {
+          const photoresponse = await fetch(`https://pawfect-match-three.vercel.app/api/image/retrieveImage/${id}`, {
             method: 'GET'
           });
           console.log(photoresponse)
@@ -70,7 +70,7 @@ const CreateUserProfile = () => {
     const fetchMessages = async () => {
         try {
             const sessionID = Cookie.get('userID');
-            const response = await axios.post('http://localhost:3001/api/chat/getchatbyid', {
+            const response = await axios.post('https://pawfect-match-three.vercel.app/api/chat/getchatbyid', {
                 id: sessionID + "user",
             });
             setMessages(response.data);
@@ -104,7 +104,7 @@ const CreateUserProfile = () => {
 
         try {
             const response = await axios.post(
-                'http://localhost:3001/api/openai/user',
+                'https://pawfect-match-three.vercel.app/api/openai/user',
                 { question: inputText },
                 {
                     headers: {
@@ -139,7 +139,7 @@ const CreateUserProfile = () => {
             const sessionID = session + "user";
             console.log(sessionID)
             const response = await axios.post(
-                'http://localhost:3001/api/openai/save',
+                'https://pawfect-match-three.vercel.app/api/openai/save',
                 { sessionID: sessionID }, // Replace with the actual session ID
                 {
                     headers: {

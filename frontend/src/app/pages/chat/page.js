@@ -21,7 +21,7 @@ const Chatbot = () => {
     const fetchPhotoList = async () => {
       try {
         console.log(id)
-        const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${id}`, {
+        const photoresponse = await fetch(`https://pawfect-match-three.vercel.app/api/image/retrieveImage/${id}`, {
           method: 'GET'
         });
         console.log(photoresponse)
@@ -71,7 +71,7 @@ const Chatbot = () => {
   const fetchMessages = async () => {
     try {
       const sessionID = Cookie.get('userID');
-      const response = await axios.post('http://localhost:3001/api/chat/getchatbyid', {
+      const response = await axios.post('https://pawfect-match-three.vercel.app/api/chat/getchatbyid', {
         id: sessionID
       });
       setMessages(response.data);
@@ -107,7 +107,7 @@ const Chatbot = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:3001/api/openai/ask',
+        'https://pawfect-match-three.vercel.app/api/openai/ask',
         { question: inputText },
         {
           headers: {
@@ -144,7 +144,7 @@ const Chatbot = () => {
     try {
       const sessionID = Cookie.get('userID');
       const response = await axios.post(
-        'http://localhost:3001/api/openai/verify',
+        'https://pawfect-match-three.vercel.app/api/openai/verify',
         { sessionID: sessionID }, // Replace with the actual session ID
         {
           headers: {

@@ -92,7 +92,7 @@ const FavPetsPage = () => {
   }, [favoritePets]);
 
   const handlePetCardClick = (petId) => {
-    // Implement the logic for handling pet card clicks, e.g., redirect to pet profile
+    router.push(`pets/${petId}`)
     console.log(`Clicked pet ID: ${petId}`);
   };
 

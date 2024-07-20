@@ -13,6 +13,31 @@ const Chatbot = () => {
   const messageContainerRef = useRef(null);
   const userID = Cookie.get('userID');
   const toast = useToast();
+  const [photo, setPhoto] = useState('');
+  const id = Cookie.get('userID');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchPhotoList = async () => {
+      try {
+        console.log(id)
+        const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${id}`, {
+          method: 'GET'
+        });
+        console.log(photoresponse)
+        const photoresponsedata = await photoresponse.json();
+        const imageSrcUrl = photoresponsedata.userImage[0].photo_url;
+        console.log("Image Link :", imageSrcUrl)
+        setPhoto(imageSrcUrl)
+
+      } catch (error) {
+        console.error('Error fetching image:', error)
+      }
+    }
+
+    fetchPhotoList()
+  }, [id])
+
 
   useEffect(() => {
     if (!userID) {
@@ -35,9 +60,6 @@ const Chatbot = () => {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        backgroundImage="url('/background.png')"
-        backgroundSize="cover"
-        backgroundPosition="center"
       >
         <Spinner size="xl" />
         <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>
@@ -55,14 +77,14 @@ const Chatbot = () => {
       setMessages(response.data);
       console.log(response);
       const initialAIMessage = {
-        content: "Hello! I am PawAI and I am here to help you find a perfect match for your ideal pet! Let's start off by getting to know your personality better so that we can match you to a pet?",
+        content: "Hi there! I’m PawAI, I’m here to help you find the Pawfect Match. To get started, tell me more about the character traits you’re looking for in a pet.",
         type: 'ai'
       };
       setMessages(prevMessages => [initialAIMessage, ...prevMessages]);
     } catch (error) {
       console.error('Error fetching messages:', error);
       const initialAIMessage = {
-        content: "Hello! I am PawAI and I am here to help you find a perfect match for your ideal pet! Let's start off by getting to know your personality better so that we can match you to a pet?",
+        content: "Hi there! I’m PawAI, I’m here to help you find the Pawfect Match. To get started, tell me more about the character traits you’re looking for in a pet.",
         type: 'ai'
       };
       setMessages([initialAIMessage]);
@@ -80,6 +102,8 @@ const Chatbot = () => {
     const userMessage = { content: inputText, type: 'user' };
     setMessages(prevMessages => [...prevMessages, userMessage]); // Update messages with user's message
     setInputText('');
+    setLoading(true);
+    setMessages(prevMessages => [...prevMessages, { content: 'AI is typing...', type: 'loading' }]);
 
     try {
       const response = await axios.post(
@@ -94,7 +118,7 @@ const Chatbot = () => {
           credentials: 'include', // Option to include cookies in CORS requests
         }
       );
-      
+
       const botMessage = { content: response.data.response, type: 'ai' };
       setMessages(prevMessages => [...prevMessages, botMessage]); // Update messages with the bot's response
 
@@ -103,6 +127,9 @@ const Chatbot = () => {
     } catch (error) {
       console.error('Error fetching data:', error);
       // Handle error state
+    } finally {
+      setLoading(false); // Set loading to false once response is received
+      setMessages(prevMessages => prevMessages.filter(msg => msg.type !== 'loading'));
     }
   };
 
@@ -149,13 +176,26 @@ const Chatbot = () => {
       <Header />
       <Flex direction="row" mt="10px" justifyContent="center" alignItems="center" gap='10%' p='20px' maxWidth="100%">
         <Box
-          borderRadius="50px"
-          padding="3%"
-          bg="rgba(255, 250, 245, 0.7)"
-          textAlign="center"
-          overflow="auto"
-          maxHeight="80vh"
-          width="100%" // Ensure full width for message container
+          padding="15px"
+          position="fixed"
+          borderRadius="15px"
+          backgroundColor="rgba(255, 255, 255, 0.7)"
+          top="70px" // Adjust the top position as needed for different screen sizes
+          left="0"
+          right="0"
+          margin="auto"
+          maxW={["92%", "90%", "97%"]}
+          w="100%"
+          h={["calc(100vh - 90px)", "calc(100vh - 100px)", "calc(100vh - 110px)"]}
+          sx={{
+            overflowY: 'hidden', // Hide vertical scrollbar
+            '&::-webkit-scrollbar': {
+              display: 'none',  // Hide scrollbar for Chrome, Safari, and Edge
+            },
+            '-ms-overflow-style': 'none',  // Hide scrollbar for Internet Explorer and Edge
+            'scrollbar-width': 'none',     // Hide scrollbar for Firefox
+            'overflow-y': 'auto',
+          }}
           ref={messageContainerRef} // Ref to scroll container
         >
           <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
@@ -164,11 +204,11 @@ const Chatbot = () => {
               <Flex
                 key={index}
                 className={`message ${msg.type}`}
-                justifyContent={msg.type === 'ai' ? 'flex-start' : 'flex-end'}
+                justifyContent={msg.type === 'ai'|| msg.type === 'loading' ? 'flex-start' : 'flex-end'}
                 marginBottom="10px"
               >
 
-                {msg.type === 'ai' && (
+                {(msg.type === 'ai' || msg.type === 'loading') && (
                   <Avatar
                     borderRadius="full"
                     borderColor="black"
@@ -205,21 +245,88 @@ const Chatbot = () => {
                   </Button>
                 )}
 
-                {msg.type !== 'ai' && (
+                {(msg.type !== 'ai'&& msg.type !== 'loading') && (
                   <Avatar
                     borderRadius="full"
                     borderColor="black"
-                    src="../profile.jpg"
+                    src={photo}
                     width="50"
                     height="50"
                     marginLeft="5px"
                     marginTop="5px"
                   />
                 )}
+
+                {/* {loadingMessage && (
+                  <Flex
+                    className="message ai"
+                    justifyContent="flex-start"
+                    marginBottom="10px"
+                    alignItems="center"
+                  >
+                    <Avatar
+                      borderRadius="full"
+                      borderColor="black"
+                      src="../chick.png"
+                      width="50"
+                      height="50"
+                      marginRight="5px"
+                      marginTop="5px"
+                    />
+                    <Box
+                      bg='rgba(235,232,226,255)'
+                      paddingX="20px"
+                      paddingY="10px"
+                      borderRadius="20px"
+                      maxWidth="80%" // Set maximum width to 70%
+                      wordBreak="break-word" // Allow long words to break and wrap
+                      textAlign="left"
+                    >
+                      {loadingMessage.content}
+                    </Box>
+                  </Flex>
+                )} */}
               </Flex>
             ))}
           </Box>
-          <Flex justifyContent="space-between" alignItems="center" marginTop="10px">
+          <Box position="sticky">
+            <Flex justifyContent="space-between" alignItems="center" marginTop="10px">
+              <Box
+                flex="1"
+                type="text"
+                borderRadius="20px"
+                padding="25px"
+              >
+              </Box>
+            </Flex>
+          </Box>
+        </Box>
+        <Box
+          padding="15px"
+          position="fixed"
+          borderRadius="15px"
+          bottom="10" // Position at the bottom
+          left="0"
+          right="0"
+          paddingTop='50px'
+          margin="auto"
+          maxW={["92%", "90%", "97%"]}
+          w="100%"
+          backgroundColor="rgba(254,245,231,255)"
+        >
+        </Box>
+        <Box
+          padding="15px"
+          position="fixed"
+          borderRadius="15px"
+          bottom="10" // Position at the bottom
+          left="0"
+          right="0"
+          margin="auto"
+          maxW={["92%", "90%", "97%"]}
+          w="100%"
+        >
+          <Flex position="relative" width="100%" justifyContent="center" alignItems="center">
             <Input
               flex="1"
               type="text"
@@ -228,14 +335,21 @@ const Chatbot = () => {
               placeholder="Type your message..."
               borderRadius="20px"
               padding="15px"
+              paddingTop='25px'
+              paddingBottom='25px'
+              paddingRight="60px" // Add right padding to make space for the button
               marginRight="10px"
               onKeyDown={handleKeyDown}
+              backgroundColor="rgba(255, 255, 255, 1)"
             />
             <Button
               onClick={sendMessage}
               colorScheme="yellow"
               borderRadius="20px"
               padding="15px"
+              position="absolute"
+              right="20px" // Position the button inside the input
+              zIndex='1000'
             >
               Send
             </Button>

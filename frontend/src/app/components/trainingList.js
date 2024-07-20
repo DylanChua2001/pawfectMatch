@@ -97,6 +97,11 @@ const TrainingPackagesList = () => {
     }
   };
 
+  const navigateToFavorites = () => {
+    router.push('/pages/favtraining'); // Navigate to favorites page
+  };
+
+
   const navigateToCart = () => {
     router.push('/pages/cart');
   };
@@ -139,6 +144,14 @@ const TrainingPackagesList = () => {
                 />
               )}
               <Spacer />
+              <Button
+                onClick={navigateToFavorites}
+                bg="rgba(253, 222, 176, 1)"
+                fontSize={["0.70rem", "0.80rem", "0.95rem", "1rem"]}
+                mx= "10px"
+              >
+              Favorites
+              </Button>
               <Button
                 onClick={navigateToCart}
                 bg="rgba(253, 222, 176, 1)"

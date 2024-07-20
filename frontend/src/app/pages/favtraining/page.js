@@ -128,24 +128,39 @@ const FavTrainingPackagesPage = () => {
           margin="auto"
           maxW={["90%", "92%", "97%"]}
           w="100%"
-          h={["calc(100vh - 100px)", "calc(100vh - 110px)", "calc(100vh - 120px)"]}
-          sx={{
+          h={["calc(100vh - 120px)", "calc(100vh - 130px)", "calc(100vh - 140px)"]}
+          overflowY="auto" 
+            sx={{
+            overflowY: 'hidden', // Hide horizontal scrollbar
+            '&::-webkit-scrollbar': {
+              display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
+            },
+            '-ms-overflow-style': 'none', // Hide scrollbar for Internet Explorer and Edge
+            'scrollbar-width': 'none', // Hide scrollbar for Firefox
+            'overflow-y': 'auto',
+          }}>
+        
+          <Text fontSize="2xl" fontWeight="bold" pl={3} mb={3}>
+            Favorite Training Packages
+          </Text>
+          <Box 
+            display="flex" 
+            overflowX="auto" 
+            sx={{
             overflowX: 'hidden', // Hide horizontal scrollbar
             '&::-webkit-scrollbar': {
               display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
             },
             '-ms-overflow-style': 'none', // Hide scrollbar for Internet Explorer and Edge
             'scrollbar-width': 'none', // Hide scrollbar for Firefox
-          }}
-        >
-          <Text fontSize="2xl" fontWeight="bold" mb={4}>
-            Favorite Training Packages
-          </Text>
-          <Box display="flex" overflowX="auto">
+            'overflow-x': 'auto',
+          }}>
             {favoritePackages.length > 0 ? (
               favoritePackages.map(pkg => (
                 <Box key={pkg.train_id} flex="0 0 auto" maxW="sm" p={2}>
                   <Box
+                    maxW="250px"
+                    h="100%"
                     bg="gray.100"
                     borderRadius="lg"
                     overflow="hidden"
@@ -179,7 +194,7 @@ const FavTrainingPackagesPage = () => {
                       >
                         {pkg.train_desc}
                       </Text>
-                      <Text fontSize="sm" textAlign="center">
+                      <Text mt={2} fontWeight="bold" fontSize={["0.65rem", "0.70rem", "0.75rem", "0.75rem"]} textAlign="center">
                         ${pkg.train_price}
                       </Text>
                     </Box>

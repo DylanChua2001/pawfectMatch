@@ -65,9 +65,8 @@ const TrainingPackagesList = () => {
   }, [searchParams, trainingPackages]);
 
   useEffect(() => {
-    let observer;
     if (scrollingEnabled && containerRef.current) {
-      observer = new IntersectionObserver(
+      const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
             setPage(prevPage => prevPage + 1);
@@ -76,15 +75,34 @@ const TrainingPackagesList = () => {
         { threshold: 1.0 }
       );
 
-      observer.observe(containerRef.current);
+      if (containerRef.current) {
+        observer.observe(containerRef.current);
+      }
 
       return () => {
-        if (observer && containerRef.current) {
+        if (containerRef.current) {
           observer.unobserve(containerRef.current);
         }
       };
     }
-  }, [scrollingEnabled, containerRef]);
+  }, [scrollingEnabled]);
+
+  useEffect(() => {
+    const fetchMoreTrainingPackages = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/api/trainPack/getAllTrainingPack`);
+        const data = await response.json();
+        setFilteredPets(prevPets => [...prevPets, ...data]);
+      } catch (error) {
+        console.error('Error fetching more pets:', error);
+      }
+    };
+
+    if (page > 1) {
+      fetchMoreTrainingPackages();
+    }
+  }, [page]);
+
 
   const handleTrainingPackageCardClick = (trainingPackage) => {
     setSelectedTrainingPackage(trainingPackage);

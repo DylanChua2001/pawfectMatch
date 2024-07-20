@@ -16,7 +16,7 @@ async function reccomendPet(req, res) {
     try {
         const JWT_SECRET = process.env.jwt;
         const db = await getDatabase();
-        const llm = new ChatOpenAI({ model: "gpt-4", temperature: 0 });
+        const llm = new ChatOpenAI({ model: "gpt-3.5-turbo", temperature: 0 });
         const executeQuery = new QuerySqlTool(db);
         const pool = await createDatabasePool();
         const userID = req.cookies.token ? jwt.verify(req.cookies.token, JWT_SECRET).userID : null;
@@ -82,7 +82,7 @@ async function reccomendPet(req, res) {
 async function getPetID(req, res) {
     try {
         const db = await getDatabase();
-        const llm = new ChatOpenAI({ model: "gpt-4", temperature: 0 });
+        const llm = new ChatOpenAI({ model: "gpt-3.5-turbo", temperature: 0 });
         const executeQuery = new QuerySqlTool(db);
         const parser = new StringOutputParser();
 
@@ -140,7 +140,7 @@ async function createUserProfile(req, res) {
     try {
         const JWT_SECRET = process.env.jwt;
         const db = await getDatabase();
-        const llm = new ChatOpenAI({ model: "gpt-4", temperature: 0 });
+        const llm = new ChatOpenAI({ model: "gpt-3.5-turbo", temperature: 0 });
         const executeQuery = new QuerySqlTool(db);
         const pool = await createDatabasePool();
         const userID = req.cookies.token ? jwt.verify(req.cookies.token, JWT_SECRET).userID : null;
@@ -196,7 +196,7 @@ async function saveUserProfile(req, res) {
     try {
         const JWT_SECRET = process.env.jwt;
         const db = await getDatabase();
-        const llm = new ChatOpenAI({ model: "gpt-4", temperature: 0 });
+        const llm = new ChatOpenAI({ model: "gpt-3.5-turbo", temperature: 0 });
         const executeQuery = new QuerySqlTool(db);
         const pool = await createDatabasePool();
         const userID = req.cookies.token ? jwt.verify(req.cookies.token, JWT_SECRET).userID : null;

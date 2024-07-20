@@ -82,8 +82,8 @@ const createCheckoutSession = async(req,res) => {
         const session = await stripe.checkout.sessions.create({  //stripe session
             line_items: lineItems,
             mode: 'payment',
-            success_url: `http://localhost:3000/?success=true`,
-            cancel_url: `http://localhost:3000/?canceled=true`,
+            success_url: `https://pawfect-match-backend-six.vercel.app/?success=true`,
+            cancel_url: `https://pawfect-match-backend-six.vercel.app/?canceled=true`,
             automatic_tax: { enabled: true }
         })
 

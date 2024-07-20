@@ -45,7 +45,7 @@ To get started with PawfectMatch, follow these steps:
     ```bash
     npm run dev
     
-4. The application will be available at http://localhost:3000.
+4. The application will be available at https://pawfect-match-backend-six.vercel.app.
 
 5. Open another command prompt
 
@@ -59,4 +59,4 @@ To get started with PawfectMatch, follow these steps:
     ```bash
     npm start
     
-4. The application will be available at http://localhost:3001.
+4. The application will be available at https://pawfect-match-backend-six.vercel.app.

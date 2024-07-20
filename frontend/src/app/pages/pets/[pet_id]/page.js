@@ -17,7 +17,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
     const userID = Cookie.get('userID');
     const toast = useToast();
     const router = useRouter();
-  
+
     useEffect(() => {
       if (!userID) {
         toast({
@@ -29,8 +29,8 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
         });
         return;
       }
-    }, [userID, router, toast]); // Added the dependency array
-  
+    }, [userID, router, toast]);
+
     if (!userID) {
       return (
         <Box
@@ -44,7 +44,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
           <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>
         </Box>
       );
-    }  
+    }
 
     useEffect(() => {
         const fetchPet = async () => {
@@ -79,10 +79,26 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
         fetchPhotoList();
     }, [pet_id]);
 
+    useEffect(() => {
+        const fetchFavoritePets = async () => {
+            try {
+                const response = await axios.get(`http://localhost:3001/api/favourites/getAllFavPets/${userID}`);
+                const favoritePets = response.data.userFavPets.user_pet_fav;
+                setLiked(favoritePets.includes(pet_id));
+            } catch (error) {
+                console.error('Error fetching favorite pets:', error);
+            }
+        };
+
+        if (userID && pet_id) {
+            fetchFavoritePets();
+        }
+    }, [userID, pet_id]);
+
     const handleLikeButtonClick = async () => {
         const url = liked
-            ? `https://pawfect-match-backend-six.vercel.app/api/favourites/deleteFavPet/${sessionID}/delete/${pet.pet_id}`
-            : `https://pawfect-match-backend-six.vercel.app/api/favourites/addFavPet/${sessionID}/add/${pet.pet_id}`;
+            ? `http://localhost:3001/api/favourites/deleteFavPet/${userID}/delete/${pet.pet_id}`
+            : `http://localhost:3001/api/favourites/addFavPet/${userID}/add/${pet.pet_id}`;
 
         try {
             await axios.put(url, { liked: !liked });
@@ -96,8 +112,19 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
         }
     };
 
-    const handleModalOpen = () => {
+    const handleModalOpen = async () => {
+        if (isUserMatched) {
+            alert('You are already matched with another pet.');
+            return;
+        }
+
         setIsModalOpen(true);
+
+        try {
+            await axios.post(`http://localhost:3001/api/match/addAMatch/${userID}/${pet.pet_id}`);
+        } catch (error) {
+            console.error('Error updating like status:', error);
+        }
     };
 
     const handleModalClose = () => {
@@ -127,24 +154,6 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                 duration: 5000,
             });
         }
-    };
-
-    const handleDeleteButtonClick = async () => {
-        toast({
-            title: `Deleting ${pet.pet_name} is irreversible.`,
-            description: (
-                <Box textAlign="center">
-                    <Button bg="transparent" mr={3} onClick={handleDelete}>
-                        Confirm Deletion
-                    </Button>
-                </Box>
-            ),
-            status: 'warning',
-            isClosable: true,
-            duration: null,
-            position: 'bottom-left',
-        });
-        console.log('Delete button clicked');
     };
 
     if (!pet_id) {
@@ -222,7 +231,6 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                         </VStack>
                     )}
                 </HStack>
-          
 
                 <Modal isOpen={isModalOpen} onClose={handleModalClose}>
                     <ModalOverlay />
@@ -230,21 +238,22 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                         <ModalHeader>Match</ModalHeader>
                         <ModalCloseButton />
                         <ModalBody>
-                            <Text fontSize="lg" fontWeight="bold" color="green.500">
-                                Congratulations! You have been matched with {pet.pet_name}.
-                            </Text>
+                            <Text fontSize="lg" fontWeight="bold" color="black">{pet.pet_name} has been successfully matched with you!</Text>
                         </ModalBody>
                         <ModalFooter>
-                            <Button colorScheme="blue" mr={3} onClick={handleModalClose}>
-                                Close
-                            </Button>
+                            <Button onClick={handleModalClose}>Close</Button>
                         </ModalFooter>
                     </ModalContent>
                 </Modal>
+
+                {isAdmin && (
+                    <Button onClick={handleDelete} colorScheme="red" position="absolute" bottom={4} right={4}>
+                        Delete
+                    </Button>
+                )}
             </Box>
         </>
     );
 };
 
 export default PetProfile;
-

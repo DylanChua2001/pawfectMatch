@@ -65,7 +65,9 @@ const TrainingPackagesList = () => {
   };
 
   const handleBackToList = () => {
+    console.log('Back to list clicked'); // Debugging statement
     setSelectedTrainingPackage(null);
+    console.log('Selected training package after setting to null:', selectedTrainingPackage);
   };
 
   const handleSearch = () => {
@@ -111,7 +113,7 @@ const TrainingPackagesList = () => {
       <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" overflowX="auto" px="20px">
         {selectedTrainingPackage ? (
           <Box>
-            <Button onClick={handleBackToList} mb={4} position="absolute" top="20px" right="25px">Back to Training</Button>
+            <Button onClick={handleBackToList} mb={4} position="absolute" top="20px" right="25px" zIndex={10}>Back to Training</Button>
             <TrainingPackageProfile
               trainingPackage={selectedTrainingPackage}
               onAddToCart={handleAddToCart}

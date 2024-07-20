@@ -133,7 +133,6 @@ import {
   MenuItem,
   Button,
   Box,
-  Box,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation'; // Import useRouter hook from Next.js
 import Cookies from 'js-cookie';

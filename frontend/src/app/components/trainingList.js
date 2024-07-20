@@ -4,7 +4,7 @@ import { Box, Button, Input, Flex, IconButton, Spacer } from '@chakra-ui/react';
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
 import TrainingPackageCard from './trainingCard';
 import TrainingPackageProfile from './trainingPackageProfile';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import Cookie from 'js-cookie';
 
@@ -15,6 +15,7 @@ const TrainingPackagesList = () => {
   const [filteredTrainingPackages, setFilteredTrainingPackages] = useState([]);
   const [cart, setCart] = useState([]);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const userId = Cookie.get('userID');
 
   const fetchTrainingPackages = async () => {
@@ -45,6 +46,19 @@ const TrainingPackagesList = () => {
 
     fetchCart();
   }, [userId]);
+
+  useEffect(() => {
+    const filterFromQuery = searchParams.get('filter');
+    if (filterFromQuery) {
+      setSearchTerm(filterFromQuery);
+      const lowercasedFilter = filterFromQuery.toLowerCase();
+      const filteredData = trainingPackages.filter(trainingPackage =>
+        trainingPackage.train_name.toLowerCase().includes(lowercasedFilter) ||
+        trainingPackage.train_desc.toLowerCase().includes(lowercasedFilter)
+      );
+      setFilteredTrainingPackages(filteredData);
+    }
+  }, [searchParams, trainingPackages]);
 
   const handleTrainingPackageCardClick = (trainingPackage) => {
     setSelectedTrainingPackage(trainingPackage);

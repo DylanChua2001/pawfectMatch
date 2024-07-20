@@ -8,7 +8,7 @@ import Header from '../../../components/header';
 import Cookie from 'js-cookie';
 import { useRouter } from 'next/navigation';
 
-const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
+const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
     const [liked, setLiked] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const pet_id = useParams().pet_id;
@@ -17,6 +17,24 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
     const userID = Cookie.get('userID');
     const toast = useToast();
     const router = useRouter();
+
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        const adminStatus = Cookie.get('isAdmin') === 'true';
+        if (!adminStatus) {
+        toast({
+            title: 'Access Denied',
+            description: 'You do not have permission to view this page',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            onCloseComplete: () => router.push('/'), // Redirect to login or another appropriate page
+        });
+        } else {
+        setIsAdmin(true);
+        }
+    }, [router, toast]);
 
     useEffect(() => {
       if (!userID) {
@@ -33,6 +51,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
 
     if (!userID) {
       return (
+        <>
         <Box
           minHeight="100vh"
           display="flex"
@@ -43,6 +62,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
           <Spinner size="xl" />
           <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>
         </Box>
+        </>
       );
     }
 
@@ -157,11 +177,11 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
     };
 
     if (!pet_id) {
-        return <div>Loading...</div>;
+        return <><div>Loading...</div></>;
     }
 
     if (!pet) {
-        return <div>Unable to find pet with ID: {pet_id}</div>;
+        return <><div>Unable to find pet with ID: {pet_id}</div></>;
     }
 
     return (

@@ -152,6 +152,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
   
 
   return (
+    <>
     <Box
       maxW="100vw"
       mx="auto"
@@ -273,6 +274,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
         </ModalContent>
       </Modal>
     </Box>
+    </>
   );
 };
 

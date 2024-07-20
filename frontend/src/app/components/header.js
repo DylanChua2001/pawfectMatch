@@ -234,6 +234,8 @@ const Header = () => {
           </MenuButton>
           <MenuList>
             {userID && <MenuItem onClick={() => navigateTo('/pages/profile')}>Edit Profile</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/pets')}>Pets</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/training')}>Training Packages</MenuItem>}
             {userID && (
               <>
                 <MenuItem onClick={toggleFavoritesMenu}>Favorites</MenuItem>
@@ -241,6 +243,17 @@ const Header = () => {
                   <Box ml="6">
                     <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>
                     <MenuItem onClick={() => navigateTo('/pages/favtraining')}>Favorite Training</MenuItem>
+                  </Box>
+                )}
+              </>
+            )}            
+            {userID && (isAdmin === 'false') && (
+              <>
+                <MenuItem onClick={togglePawAIMenu}>PawAI</MenuItem>
+                {isPawAIOpen && (
+                  <Box ml="6">
+                    <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat</MenuItem>
+                    <MenuItem onClick={() => navigateTo('/pages/createUserProfile')}>Knowing you better</MenuItem>
                   </Box>
                 )}
               </>
@@ -256,19 +269,9 @@ const Header = () => {
                 )}
               </>
             )}
-            {userID && (
-              <>
-                <MenuItem onClick={togglePawAIMenu}>PawAI</MenuItem>
-                {isPawAIOpen && (
-                  <Box ml="6">
-                    <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat</MenuItem>
-                    <MenuItem onClick={() => navigateTo('/pages/createUserProfile')}>Knowing you better</MenuItem>
-                  </Box>
-                )}
-              </>
-            )}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/cart')}>Cart</MenuItem>}
-            <MenuItem onClick={() => navigateTo('/pages/about')}>About PawfectMatch</MenuItem>
+
+            {userID && (isAdmin === 'false') &&<MenuItem onClick={() => navigateTo('/pages/cart')}>Cart</MenuItem>}
+            {userID && (isAdmin === 'false') &&<MenuItem onClick={() => navigateTo('/pages/about')}>About PawfectMatch</MenuItem>}
             {!userID && <MenuItem onClick={() => navigateTo('/pages/login')}>Login</MenuItem>}
             {userID && <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>}
             {/* Add more MenuItems for additional pages */}

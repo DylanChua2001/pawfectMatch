@@ -26,6 +26,7 @@ const HomePage = () => {
 
   if (!userID) {
     return (
+      <>
       <Box
         minHeight="100vh"
         display="flex"
@@ -36,6 +37,7 @@ const HomePage = () => {
         <Spinner size="xl" />
         <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>
       </Box>
+      </>
     );
   }
 

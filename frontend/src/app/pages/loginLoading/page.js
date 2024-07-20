@@ -38,17 +38,17 @@ const LoginLoading = () => {
             }, 10000); // 10 seconds
 
             return () => clearTimeout(timer); // Cleanup timer on component unmount
+        } else {
+            const timer = setTimeout(() => {
+                router.push('/'); // Replace with your target page
+            }, 10000); // 10 seconds
+
+            return () => clearTimeout(timer); // Cleanup timer on component unmount
         }
     }, [data, router]);
 
     if (data == null) {
-        const timer = setTimeout(() => {
-            router.push('/pages/userCreateProfile'); // Replace with your target page
-        }, 10000); // 10 seconds
-        clearTimeout(timer);
-
         return (
-            <>
             <Box
                 minHeight="100vh"
                 display="flex"
@@ -73,12 +73,9 @@ const LoginLoading = () => {
                 </Box>
 
             </Box>
-            </>
         );
     } else {
-        router.push('/');
         return (
-            <>
             <Box
                 minHeight="100vh"
                 display="flex"
@@ -89,9 +86,9 @@ const LoginLoading = () => {
                 backgroundSize="cover"
                 backgroundPosition="center"
             >
+                <Spinner size="xl" />
                 <Text fontSize="xl" color="black" mt={4}>User data loaded. Proceeding to main page</Text>
             </Box>
-            </>
         );
     };
 }

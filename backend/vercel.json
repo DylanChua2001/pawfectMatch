@@ -59,11 +59,11 @@
             "src": "/api/(.*)",
             "dest": "/index.js"
         }
-    ],
-    "functions": {
-        "**/*.js": {
-            "maxDuration": 60
-        }
-    }
+    ]
+    // "functions": {
+    //     "**/*.js": {
+    //         "maxDuration": 60
+    //     }
+    // }
 }
 

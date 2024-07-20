@@ -49,6 +49,7 @@ const LoginLoading = () => {
 
     if (data == null) {
         return (
+            <>
             <Box
                 minHeight="100vh"
                 display="flex"
@@ -73,9 +74,11 @@ const LoginLoading = () => {
                 </Box>
 
             </Box>
+            </>
         );
     } else {
         return (
+            <>
             <Box
                 minHeight="100vh"
                 display="flex"
@@ -89,6 +92,7 @@ const LoginLoading = () => {
                 <Spinner size="xl" />
                 <Text fontSize="xl" color="black" mt={4}>User data loaded. Proceeding to main page</Text>
             </Box>
+            </>
         );
     };
 }

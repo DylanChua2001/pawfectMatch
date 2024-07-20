@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { Box, Flex, useToast, Spinner, Text, Image } from "@chakra-ui/react";
-import Header from "../../components/header"; // Replace with your header component
+import Header from "../../components/header";
 import Cookie from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -22,22 +22,19 @@ const FavTrainingPackagesPage = () => {
         status: 'error',
         duration: 5000,
         isClosable: true,
-        onCloseComplete: () => router.push('/pages/login'), // Replace with your actual login page route
+        onCloseComplete: () => router.push('/pages/login'),
       });
       return;
     }
 
     const fetchFavoritePackageIds = async () => {
       try {
-        // Fetch favorite training package IDs
         const response = await axios.get(`http://localhost:3001/api/favourites/getAllFavTrainPacks/${userID}`);
         const favoriteIds = response.data.userFavPets.user_train_fav || [];
 
-        // Fetch all training packages
         const allPackagesResponse = await axios.get('http://localhost:3001/api/trainPack/getAllTrainingPack');
         const allTrainPacks = allPackagesResponse.data.allTrainPack || [];
 
-        // Filter the packages to get only favorites
         const favoritePackages = allTrainPacks.filter(pkg => favoriteIds.includes(pkg.train_id));
 
         setFavoritePackages(favoritePackages);
@@ -116,6 +113,10 @@ const FavTrainingPackagesPage = () => {
     );
   }
 
+  const handleCardClick = (trainName) => {
+    router.push(`/pages/training?filter=${encodeURIComponent(trainName)}`);
+  };
+
   return (
     <Flex direction="column" height="100vh">
       <Box mt="60px">
@@ -141,9 +142,10 @@ const FavTrainingPackagesPage = () => {
                     p={4}
                     cursor="pointer"
                     _hover={{ boxShadow: 'lg' }}
+                    onClick={() => handleCardClick(pkg.train_name)}
                   >
                     <Image 
-                      src={packageImages[pkg.train_id] || ''} // No image URL handling
+                      src={packageImages[pkg.train_id] || ''} 
                       alt={pkg.train_name}
                       boxSize="250px"
                       objectFit="contain"

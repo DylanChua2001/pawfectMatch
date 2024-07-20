@@ -8,7 +8,8 @@ import { useRouter } from 'next/navigation';
 const LoginLoading = () => {
     const userID = Cookie.get('userID'); // Assuming 'userID' is the cookie key storing the ID
     const router = useRouter();
-    const [data, setData] = useState();
+    const [data, setData] = useState('');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -18,55 +19,80 @@ const LoginLoading = () => {
                     setData(response.data.person_traits);
                 } catch (error) {
                     console.error('Error fetching user data:', error);
+                } finally {
+                    setLoading(false);
                 }
+            } else {
+                router.push('/login'); // Redirect to login if no userID
             }
         };
 
         fetchUserData();
-    });
+    }, [userID, router]);
 
     useEffect(() => {
         console.log(data)
-        if (data === "" ) {
-            console.log('hi')
+        if (data == null) {
+            const timer = setTimeout(() => {
+                router.push('/pages/createUserProfile'); // Replace with your target page
+            }, 10000); // 10 seconds
+
+            return () => clearTimeout(timer); // Cleanup timer on component unmount
+        } else {
             const timer = setTimeout(() => {
                 router.push('/'); // Replace with your target page
             }, 10000); // 10 seconds
-            clearTimeout(timer);
 
-            return (
-                <Box
-                    minHeight="100vh"
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    backgroundImage="url('/background.png')"
-                    backgroundSize="cover"
-                    backgroundPosition="center"
-                >
-                    <Text fontSize="xl" color="black" mt={4}>
-                        This chat will allow me to better understand your character. The more questions you answer, the more accurate the matching will be. Once you feel as though you have answered enough questions, feel free to click save. You can always revisit this page later.
+            return () => clearTimeout(timer); // Cleanup timer on component unmount
+        }
+    }, [data, router]);
+
+    if (data == null) {
+        return (
+            <Box
+                minHeight="100vh"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                backgroundImage="url('/background.png')"
+                backgroundSize="cover"
+                backgroundPosition="center"
+            >
+                <Spinner size="xl" />
+                <Box fontSize="xl" color="black" mt={4} textAlign="center">
+                    <Text fontSize="2xl" fontWeight="bold">
+                        Loading PawAI...<br />
+                    </Text>
+                    <Text fontSize="xl" mt={2}>
+                        PawAI will be used to better understand your character.<br />
+                        The more questions you answer, the more accurate the matching will be.<br />
+                        Once you feel as though you have answered enough questions, feel free to continue to the main page!<br />
+                        You can always revisit this page later.
                     </Text>
                 </Box>
-            );
-        }
-    })
 
-    return (
-        <Box
-            minHeight="100vh"
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            backgroundImage="url('/background.png')"
-            backgroundSize="cover"
-            backgroundPosition="center"
-        >
-            <Text fontSize="xl" color="black" mt={4}>User data loaded. Proceeding to main page</Text>
-        </Box>
-    );
-};
+            </Box>
+        );
+    } else {
+        return (
+            <Box
+                minHeight="100vh"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                backgroundImage="url('/background.png')"
+                backgroundSize="cover"
+                backgroundPosition="center"
+            >
+                <Spinner size="xl" />
+                <Text fontSize="xl" color="black" mt={4}>User data loaded. Proceeding to main page</Text>
+            </Box>
+        );
+    };
+}
+
+
 
 export default LoginLoading;

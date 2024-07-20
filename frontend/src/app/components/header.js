@@ -100,8 +100,8 @@ const Header = () => {
             {userID && <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>}
             <MenuItem onClick={() => navigateTo('/pages/about')}>About PawfectMatch</MenuItem>
             {userID && <MenuItem onClick={() => navigateTo('/pages/profile')}>Edit Profile</MenuItem>}
-            {userID && (isAdmin==false) && <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>}
-            {userID && (isAdmin==false) && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training Packages</MenuItem>}
+            {(userID && isAdmin==='true') && (<MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>)}
+            {(userID && isAdmin==='true') && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training Packages</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/favtraining')}>Favorite Training</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/cart')}>Cart</MenuItem>}

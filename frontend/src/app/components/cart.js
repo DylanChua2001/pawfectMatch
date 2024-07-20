@@ -282,7 +282,7 @@ const Cart = () => {
         ))}
       </VStack>
       <Text fontSize="xl" fontWeight="bold" mt={5}>Total: ${totalPrice.toFixed(2)}</Text>
-      <Button colorScheme="teal" mt={4} onClick={StripeSessionPayment}>Checkout</Button>
+      <Button bg="rgba(253, 222, 176, 1)" mt={4} onClick={StripeSessionPayment}>Checkout</Button>
     </Box>
   );
 };

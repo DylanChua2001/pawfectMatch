@@ -103,6 +103,8 @@ const Header = () => {
             {userID && (isAdmin==false) && <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>}
             {userID && (isAdmin==false) && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training Packages</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/favtraining')}>Favorite Training</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/cart')}>Cart</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat (PawAI)</MenuItem>}
             {userID && <MenuItem onClick={() => navigateTo('/pages/createUserProfile')}>Knowing you better (PawAI)</MenuItem>}
             {/* Add more MenuItems for additional pages */}

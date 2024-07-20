@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { Box, Flex, useToast, Spinner, Text } from "@chakra-ui/react";
 import Header from "../../components/header"; // Replace with your header component
-import FavoritePets from '../../components/favpets'; // Assuming FavoritePets component exists
 import Cookie from 'js-cookie';
 import { useRouter } from 'next/navigation';
 

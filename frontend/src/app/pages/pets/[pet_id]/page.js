@@ -172,6 +172,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                 borderRadius= "15px"
                 pl= "20px"
                 pt= "40px"
+                pr= '20px'
             >
                 <HStack>
                     <Image
@@ -185,7 +186,21 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                         ml= {["20px", "30px", "40px" ]}
                     />
                     {!showNameAndPhotoOnly && (
-                        <VStack align="start" mt={4}>
+                        <VStack 
+                            align="start" 
+                            maxW="100%" // Adjust based on your design
+                            maxH="210px" // Adjust height to control how much of the content is visible
+                            overflowY="auto" // Enable vertical scrolling
+                            overflowX="hidden" // Prevent horizontal scrolling
+                            sx={{
+                                '&::-webkit-scrollbar': {
+                                display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
+                                },
+                                '-ms-overflow-style': 'none', // Hide scrollbar for Internet Explorer and Edge
+                                'scrollbar-width': 'none', // Hide scrollbar for Firefox
+                                overflowY: 'auto', // Allow vertical scrolling
+                            }}
+                        > 
                             <HStack>
                                 <Text fontSize={["1.2rem", "1.5rem", "1.7rem", "2rem"]} fontWeight="bold">
                                     {pet.pet_name}
@@ -202,7 +217,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                             </HStack>
                             <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Breed: {pet.pet_breed}</Text>
                             <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Age: {pet.pet_age} years</Text>
-                            <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Description: {pet.pet_description || "No description available"}</Text>
+                            <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}  whiteSpace="normal" wordBreak="break-word">Description: {pet.pet_description || "No description available"}</Text>
                             <Button bg="rgba(253, 222, 176, 1)" onClick={handleModalOpen} color='black'  position="absolute" bottom={4} left={4}>Match</Button>
                         </VStack>
                     )}

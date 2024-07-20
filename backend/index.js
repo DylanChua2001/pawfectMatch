@@ -6,6 +6,7 @@ const cors = require('cors');
 const corsOptions = require('./config/corsOptions');
 const session = require('express-session');
 const cookieParser = require('cookie-parser')
+require('dotenv').config();
 
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
@@ -14,7 +15,7 @@ app.use(cookieParser());
 
 app.use(
     session({
-        secret: 'secret',
+        secret: process.env.JS_COOKIE_SECRET,
         resave: true,
         saveUninitialized: true,
         cookie: { secure: false },

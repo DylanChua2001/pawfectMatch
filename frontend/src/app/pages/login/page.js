@@ -40,8 +40,7 @@ export default function SimpleCard() {
       const { userID, isAdmin } = response.data.session;
       Cookie.set('userID', userID);
       Cookie.set('isAdmin', isAdmin);
-
-      router.push("/");
+      router.push("/pages/loginLoading");
     } catch (error) {
       console.error('Axios Error:', error);
 

@@ -21,12 +21,11 @@ export default function RegisterCard() {
   const router = useRouter();
   const toast = useToast();
   const [formData, setFormData] = useState({
-    user_id: '',
     email_add: '',
     user_name: '',
     user_password: '',
-    user_age: '',
-    person_traits: [],
+    confirm_password: '',
+    user_age: ''
   });
 
   const handleChange = (e) => {
@@ -39,8 +38,33 @@ export default function RegisterCard() {
   };
 
   const handleSignUp = async () => {
+    if (formData.user_password !== formData.confirm_password) {
+      toast({
+        title: 'Password Error',
+        description: 'Passwords do not match',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
     try {
-      const response = await axios.post("http://localhost:3001/api/users/createNewUser", formData);
+      const emailCheckResponse = await axios.get('http://localhost:3001/api/users/getAllUser');
+      const emailExists = emailCheckResponse.data.some(user => user.email_add === formData.email_add);
+
+      if (emailExists) {
+        toast({
+          title: 'Registration Error',
+          description: 'Email is already in use',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+        return;
+      }
+
+      const response = await axios.post('http://localhost:3001/api/users/createNewUser', formData);
       toast({
         title: 'Account Created Successfully',
         description: 'Taking you to the login page',
@@ -49,7 +73,7 @@ export default function RegisterCard() {
         isClosable: true,
       });
       setTimeout(() => {
-        router.push("/pages/login");
+        router.push('/pages/login');
       }, 5000); // 5000 milliseconds = 5 seconds
     } catch (error) {
       console.error('Axios Error:', error);
@@ -156,22 +180,22 @@ export default function RegisterCard() {
                   _focus={{ bg: "white", borderColor: "blue.400" }}
                 />
               </FormControl>
-              <FormControl id="user_age">
+              <FormControl id="confirm_password">
                 <Input
                   onChange={handleChange}
-                  type="number"
-                  placeholder='Age'
+                  type="password"
+                  placeholder='Confirm Password'
                   size="lg"
                   borderRadius="5px"
                   borderColor="#D9D9D9"
                   _focus={{ bg: "white", borderColor: "blue.400" }}
                 />
               </FormControl>
-              <FormControl id="person_traits">
+              <FormControl id="user_age">
                 <Input
-                  onChange={handleTraitChange}
-                  type="text"
-                  placeholder='Traits (comma separated)'
+                  onChange={handleChange}
+                  type="number"
+                  placeholder='Age'
                   size="lg"
                   borderRadius="5px"
                   borderColor="#D9D9D9"

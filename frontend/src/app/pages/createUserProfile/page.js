@@ -79,14 +79,14 @@ const CreateUserProfile = () => {
             setMessages(response.data);
             console.log(response);
             const initialAIMessage = {
-                content: "Hello! I am PawAI and I am here to help you find a perfect match for your ideal pet! This chat will allow me to better understand your character, the more questions you answer, the more accurate the matching will be. Once you fell as though you have answered enough questions, feel free to click save, you can always revisit this page later. To start off, Can you tell me a little more about your character?",
+                content: "Hello! I am PawAI and I am here to help you find a perfect match for your ideal pet! This chat will allow me to better understand your character. To start off, can you tell me a little more about your character?",
                 type: 'ai'
             };
             setMessages(prevMessages => [initialAIMessage, ...prevMessages]);
         } catch (error) {
             console.error('Error fetching messages:', error);
             const initialAIMessage = {
-                content: "Hello! I am PawAI and I am here to help you find a perfect match for your ideal pet! This chat will allow me to better understand your character, the more questions you answer, the more accurate the matching will be. Once you fell as though you have answered enough questions, feel free to click save, you can always revisit this page later. To start off, Can you tell me a little more about your character?",
+                content: "Hello! I am PawAI and I am here to help you find a perfect match for your ideal pet! This chat will allow me to better understand your character. To start off, can you tell me a little more about your character?",
                 type: 'ai'
             };
             setMessages([initialAIMessage]);

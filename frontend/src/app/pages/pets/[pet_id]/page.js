@@ -17,6 +17,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
     const userID = Cookie.get('userID');
     const toast = useToast();
     const router = useRouter();
+
     const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {

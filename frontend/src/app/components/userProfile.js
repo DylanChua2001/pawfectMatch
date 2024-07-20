@@ -31,8 +31,8 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const id = Cookie.get('userID'); // Assuming 'userID' is the cookie key storing the ID
-        const response = await axios.get(`http://localhost:3001/api/users/id/${id}`);
-        const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveImage/${id}`, {
+        const response = await axios.get(`https://pawfect-match-backend-six.vercel.app/api/users/id/${id}`);
+        const photoresponse = await fetch(`https://pawfect-match-backend-six.vercel.app/api/image/retrieveImage/${id}`, {
           method: 'GET'
         });
 
@@ -73,7 +73,7 @@ const Profile = () => {
         const formData = new FormData();
         formData.append('image', selectedImage);
 
-        const imageResponse = await axios.post(`http://localhost:3001/api/image/uploadImage/${id}`, formData, {
+        const imageResponse = await axios.post(`https://pawfect-match-backend-six.vercel.app/api/image/uploadImage/${id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -86,7 +86,7 @@ const Profile = () => {
         }));
       }
 
-      const response = await axios.put(`http://localhost:3001/api/users/updateUser/${id}`, profile);
+      const response = await axios.put(`https://pawfect-match-backend-six.vercel.app/api/users/updateUser/${id}`, profile);
       console.log('Profile updated:', response.data);
       setIsEditing(false);
       window.location.reload();

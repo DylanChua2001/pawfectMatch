@@ -10,7 +10,7 @@ const TrainingPackageCard = ({ trainingPackage, onClick, onAddToCart }) => {
   useEffect(() => {
     const fetchPhotoList = async() => {
       try {
-        const photoresponse = await fetch(`http://localhost:3001/api/image/retrieveTrainingImage/${trainID}`, {
+        const photoresponse = await fetch(`https://pawfect-match-backend-six.vercel.app/api/image/retrieveTrainingImage/${trainID}`, {
           method: 'GET'
         });
         const photoresponsedata = await photoresponse.json();

@@ -30,7 +30,7 @@ const FavPetsPage = () => {
 
     const fetchFavoritePetIds = async () => {
       try {
-        const response = await axios.get(`https://pawfect-match-backend-six.vercel.app//api/favourites/getAllFavPets/${userID}`);
+        const response = await axios.get(`https://pawfect-match-backend-six.vercel.app/api/favourites/getAllFavPets/${userID}`);
         const petIds = response.data.userFavPets.user_pet_fav;
         setFavoritePets(petIds);
       } catch (error) {
@@ -46,7 +46,7 @@ const FavPetsPage = () => {
   useEffect(() => {
     const fetchPetDetails = async () => {
       try {
-        const response = await axios.get('https://pawfect-match-backend-six.vercel.app//api/pets/getAllPets');
+        const response = await axios.get('https://pawfect-match-backend-six.vercel.app/api/pets/getAllPets');
         const pets = response.data;
         const petMap = pets.reduce((acc, pet) => {
           acc[pet.pet_id] = pet;
@@ -67,7 +67,7 @@ const FavPetsPage = () => {
       try {
         await Promise.all(favoritePets.map(async (petId) => {
           try {
-            const response = await fetch(`https://pawfect-match-backend-six.vercel.app//api/image/retrievePetImage/${petId}`);
+            const response = await fetch(`https://pawfect-match-backend-six.vercel.app/api/image/retrievePetImage/${petId}`);
             const data = await response.json();
             if (data.petImage && data.petImage.length > 0) {
               updatedImages[petId] = data.petImage[0].photo_url;

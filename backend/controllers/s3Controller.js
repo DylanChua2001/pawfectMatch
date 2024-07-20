@@ -69,7 +69,7 @@ const s3Controller = {
             console.log('S3 Response:', response);
             console.log('Photo ID', imageName )
 
-            const updateResponse = await fetch(`https://pawfect-match-backend-six.vercel.app//api/users/uploadUserImageID/${userID}`, {
+            const updateResponse = await fetch(`https://pawfect-match-backend-six.vercel.app/api/users/uploadUserImageID/${userID}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ const s3Controller = {
         try {
             const {userID} = req.params
 
-            const responsePhoto = await fetch(`https://pawfect-match-backend-six.vercel.app//api/users/retrieveUserImageID/${userID}`, {
+            const responsePhoto = await fetch(`https://pawfect-match-backend-six.vercel.app/api/users/retrieveUserImageID/${userID}`, {
                 method: 'GET',
             });
 
@@ -170,7 +170,7 @@ const s3Controller = {
             console.log('S3 Response:', response);
             console.log('Photo ID', imageName )
 
-            const updateResponse = await fetch(`https://pawfect-match-backend-six.vercel.app//api/pets/uploadPetImageID/${petID}`, {
+            const updateResponse = await fetch(`https://pawfect-match-backend-six.vercel.app/api/pets/uploadPetImageID/${petID}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -201,7 +201,7 @@ const s3Controller = {
         try {
             const {petID} = req.params
 
-            const responsePhoto = await fetch(`https://pawfect-match-backend-six.vercel.app//api/pets/retrievePetImageID/${petID}`, {
+            const responsePhoto = await fetch(`https://pawfect-match-backend-six.vercel.app/api/pets/retrievePetImageID/${petID}`, {
                 method: 'GET',
             });
 
@@ -272,7 +272,7 @@ const s3Controller = {
             console.log('S3 Response:', response);
             console.log('Photo ID', imageName )
 
-            const updateResponse = await fetch(`https://pawfect-match-backend-six.vercel.app//api/trainPack/uploadTrainingImageID/${trainID}`, {
+            const updateResponse = await fetch(`https://pawfect-match-backend-six.vercel.app/api/trainPack/uploadTrainingImageID/${trainID}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -303,7 +303,7 @@ const s3Controller = {
         try {
             const {trainID} = req.params
 
-            const responsePhoto = await fetch(`https://pawfect-match-backend-six.vercel.app//api/trainPack/retrieveTrainingImageID/${trainID}`, {
+            const responsePhoto = await fetch(`https://pawfect-match-backend-six.vercel.app/api/trainPack/retrieveTrainingImageID/${trainID}`, {
                 method: 'GET',
             });
 

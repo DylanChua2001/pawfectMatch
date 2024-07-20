@@ -31,7 +31,7 @@ const AddPet = () => {
   const handleSubmit = async () => {
     try {
       // Step 1: Create the pet
-      const createPetResponse = await axios.post('https://pawfect-match-backend-six.vercel.app//api/pets/createPet', formData, {
+      const createPetResponse = await axios.post('https://pawfect-match-backend-six.vercel.app/api/pets/createPet', formData, {
         withCredentials: true
       });
       console.log("Pet created:", createPetResponse.data);
@@ -41,7 +41,7 @@ const AddPet = () => {
         const formDataImage = new FormData();
         formDataImage.append('image', formData.mainPhoto);
 
-        const uploadImageResponse = await axios.post(`https://pawfect-match-backend-six.vercel.app//api/image/uploadPetImage/${createPetResponse.data.pet_id}`, formDataImage, {
+        const uploadImageResponse = await axios.post(`https://pawfect-match-backend-six.vercel.app/api/image/uploadPetImage/${createPetResponse.data.pet_id}`, formDataImage, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

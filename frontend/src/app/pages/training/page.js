@@ -57,6 +57,13 @@ const HomePage = () => {
           w="100%"
           h={["calc(100vh - 60px)", "calc(100vh - 70px)", "calc(100vh - 80px)"]}
           overflowY="auto"
+          sx={{
+          '&::-webkit-scrollbar': {
+            display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
+          },
+          '-ms-overflow-style': 'none', // Hide scrollbar for Internet Explorer and Edge
+          'scrollbar-width': 'none', // Hide scrollbar for Firefox 
+        }}
           >
           <Training />
         </Box>

@@ -109,7 +109,9 @@ const TrainingPackagesList = () => {
   };
 
   const handleBackToList = () => {
+    console.log('Back to list clicked'); // Debugging statement
     setSelectedTrainingPackage(null);
+    console.log('Selected training package after setting to null:', selectedTrainingPackage);
   };
 
   const handleSearch = () => {
@@ -143,6 +145,11 @@ const TrainingPackagesList = () => {
     }
   };
 
+  const navigateToFavorites = () => {
+    router.push('/pages/favtraining'); // Navigate to favorites page
+  };
+
+
   const navigateToCart = () => {
     router.push('/pages/cart');
   };
@@ -169,7 +176,7 @@ const TrainingPackagesList = () => {
       >
         {selectedTrainingPackage ? (
           <Box>
-            <Button onClick={handleBackToList} mb={4} position="absolute" top="20px" right="25px">Back to Training</Button>
+            <Button onClick={handleBackToList} mb={4} position="absolute" top="20px" right="25px" zIndex={10}>Back to Training</Button>
             <TrainingPackageProfile
               trainingPackage={selectedTrainingPackage}
               onAddToCart={handleAddToCart}
@@ -202,6 +209,14 @@ const TrainingPackagesList = () => {
                 />
               )}
               <Spacer />
+              <Button
+                onClick={navigateToFavorites}
+                bg="rgba(253, 222, 176, 1)"
+                fontSize={["0.70rem", "0.80rem", "0.95rem", "1rem"]}
+                mx= "10px"
+              >
+              Favorites
+              </Button>
               <Button
                 onClick={navigateToCart}
                 bg="rgba(253, 222, 176, 1)"

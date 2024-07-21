@@ -149,20 +149,10 @@ const Header = () => {
               </>
             )}
 
-            {userID && (isAdmin === 'false') &&<MenuItem onClick={() => navigateTo('/pages/cart')}>Cart</MenuItem>}
-            {userID && (isAdmin === 'false') &&<MenuItem onClick={() => navigateTo('/pages/about')}>About PawfectMatch</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/cart')}>Cart</MenuItem>}
+            {userID && <MenuItem onClick={() => navigateTo('/pages/about')}>About PawfectMatch</MenuItem>}
             {!userID && <MenuItem onClick={() => navigateTo('/pages/login')}>Login</MenuItem>}
             {userID && <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>}
-            {/* <MenuItem onClick={() => navigateTo('/pages/about')}>About PawfectMatch</MenuItem>
-            {userID && <MenuItem onClick={() => navigateTo('/pages/profile')}>Edit Profile</MenuItem>}
-            {(userID && isAdmin==='true') && (<MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>)}
-            {(userID && isAdmin==='true') && <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training Packages</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/favtraining')}>Favorite Training</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/cart')}>Cart</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat (PawAI)</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/createUserProfile')}>Knowing you better (PawAI)</MenuItem>} */}
-            {/* Add more MenuItems for additional pages */}
           </MenuList> 
         </Menu>
       </HStack>

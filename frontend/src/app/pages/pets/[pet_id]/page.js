@@ -166,7 +166,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
     const handleModalClose = () => {
         setIsModalOpen(false);
     };
-
+    
     const handleDelete = async () => {
         try {
             await axios.delete(`http://localhost:3001/api/pets/deletePet/${pet.pet_id}`, {

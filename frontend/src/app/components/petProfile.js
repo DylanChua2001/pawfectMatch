@@ -161,7 +161,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
       pb="90px"
       pt="20px"
     >
-      {isAdmin && (
+      {/* {isAdmin && (
         <>
           <Button
             position="absolute"
@@ -172,9 +172,9 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
             onClick={onOpen}
           >
             Delete Pet
-          </Button>
+          </Button> */}
 
-          <Modal isOpen={isOpen} onClose={onClose}>
+          {/* <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent bg="rgba(254,245,231,255)">
               <ModalHeader>Confirm deletion?</ModalHeader>
@@ -192,7 +192,7 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
             </ModalContent>
           </Modal>
         </>
-      )}
+      )} */}
 
       <HStack>
         <Image

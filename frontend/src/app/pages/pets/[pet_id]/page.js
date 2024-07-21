@@ -71,7 +71,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
             try {
                 if (!pet_id) return;
 
-                const response = await fetch(https://pawfect-match-backend-six.vercel.app/api/pets/id/${pet_id}`);
+                const response = await fetch(`https://pawfect-match-backend-six.vercel.app/api/pets/id/${pet_id}`);
                 const data = await response.json();
                 setPet(data);
             } catch (error) {

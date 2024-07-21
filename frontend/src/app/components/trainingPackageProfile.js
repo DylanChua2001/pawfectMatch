@@ -163,7 +163,7 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
           </Button>
         </VStack>
       </HStack>
-      <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+      {/* <Modal isOpen={isModalOpen} onClose={handleModalClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Match</ModalHeader>
@@ -181,7 +181,7 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
         <Button onClick={handleDelete} colorScheme="red" position="absolute" bottom={4} right={4}>
           Delete
         </Button>
-      )}
+      )} */}
 
 
     </Box>

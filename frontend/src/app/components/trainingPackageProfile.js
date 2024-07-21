@@ -11,6 +11,7 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
   const [isAdmin, setIsAdmin] = useState(false); // State to check admin status
   const sessionID = Cookie.get('userID');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   console.log(sessionID)
   console.log(trainingPackage.train_id)

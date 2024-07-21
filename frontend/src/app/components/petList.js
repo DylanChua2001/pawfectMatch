@@ -2,19 +2,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Box, Input, Flex, IconButton, Button, Spacer } from '@chakra-ui/react';
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons';
 import PetCard from './petCard';
-import PetProfile from './petProfile';
 import { useRouter } from 'next/navigation';
-import FilterMenu from './filter'; // Import the FilterMenu component
-import '../pages/pets/petList.css'; // Import the CSS file
+import FilterMenu from './filter';
+import '../pages/pets/petList.css';
 
 const PetList = () => {
-  const [selectedPet, setSelectedPet] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPets, setFilteredPets] = useState([]);
   const [petsData, setPetsData] = useState([]);
   const [favoritePets, setFavoritePets] = useState([]);
-  const [scrollingEnabled, setScrollingEnabled] = useState(true); // State to manage scrolling
-  const [page, setPage] = useState(1); // State for pagination
+  const [scrollingEnabled, setScrollingEnabled] = useState(true);
+  const [page, setPage] = useState(1);
   const router = useRouter();
   const containerRef = useRef(null);
 
@@ -53,9 +51,15 @@ const PetList = () => {
         { threshold: 1.0 }
       );
 
-      observer.observe(containerRef.current);
+      if (containerRef.current) {
+        observer.observe(containerRef.current);
+      }
 
-      return () => observer.unobserve(containerRef.current);
+      return () => {
+        if (containerRef.current) {
+          observer.unobserve(containerRef.current);
+        }
+      };
     }
   }, [scrollingEnabled]);
 
@@ -76,15 +80,11 @@ const PetList = () => {
   }, [page]);
 
   const handlePetCardClick = (pet) => {
-    setSelectedPet(pet);
-  };
-
-  const handleBackToList = () => {
-    setSelectedPet(null);
+    router.push(`/pages/pets/${pet.pet_id}`);
   };
 
   const handleSearch = () => {
-    setScrollingEnabled(false); // Disable scrolling when searching
+    setScrollingEnabled(false);
     const lowercasedFilter = searchTerm.toLowerCase();
     const filteredData = petsData.filter(pet =>
       pet.pet_name.toLowerCase().includes(lowercasedFilter) ||
@@ -96,7 +96,7 @@ const PetList = () => {
   const handleClearFilter = () => {
     setSearchTerm('');
     setFilteredPets(petsData);
-    setScrollingEnabled(true); // Re-enable scrolling when clear filter
+    setScrollingEnabled(true);
   };
 
   const handleLikePet = (pet) => {
@@ -112,91 +112,73 @@ const PetList = () => {
   };
 
   const navigateToFavorites = () => {
-    router.push('/pages/favpets'); // Navigate to favorites page
+    router.push('/pages/favpets');
   };
 
   const applyFilters = (petIDs) => {
     const filteredData = petsData.filter(pet => petIDs.includes(pet.pet_id));
     setFilteredPets(filteredData);
-    setScrollingEnabled(false); // Disable scrolling when filters are applied
+    setScrollingEnabled(false);
   };
 
   useEffect(() => {
     if (!searchTerm && filteredPets.length === petsData.length) {
-      setScrollingEnabled(true); // Re-enable scrolling when no search term or filters are applied
+      setScrollingEnabled(true);
     }
   }, [searchTerm, filteredPets, petsData]);
 
   return (
-    <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" px="20px">
-      {selectedPet ? (
-        <Box pt="70px">
-          <Button
-            onClick={handleBackToList}
-            mb={4}
-            position="absolute"
-            top="20px"
-            right="25px"
-          >
-            Back to Pets
-          </Button>
-          <PetProfile pet={selectedPet} onLike={handleLikePet} />
-        </Box>
-      ) : (
-        <>
-          <Flex alignItems="center">
-            <Input
-              placeholder="Search pets..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={handleKeyDown}
-              maxW="300px"
-            />
+    <>
+      <Box maxW="100vw" borderRadius="15px" backgroundColor="rgba(255, 255, 255, 0.7)" px="20px">
+        <Flex alignItems="center">
+          <Input
+            placeholder="Search pets..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleKeyDown}
+            maxW="300px"
+          />
+          <IconButton
+            aria-label="Search"
+            icon={<SearchIcon />}
+            onClick={handleSearch}
+            bg="rgba(253, 222, 176, 1)"
+            ml={2}
+          />
+          {searchTerm && (
             <IconButton
-              aria-label="Search"
-              icon={<SearchIcon />}
-              onClick={handleSearch}
+              aria-label="Clear filter"
+              icon={<CloseIcon />}
+              onClick={handleClearFilter}
               bg="rgba(253, 222, 176, 1)"
               ml={2}
             />
-            {searchTerm && (
-              <IconButton
-                aria-label="Clear filter"
-                icon={<CloseIcon />}
-                onClick={handleClearFilter}
-                bg="rgba(253, 222, 176, 1)"
-                ml={2}
-              />
-            )}
-            <FilterMenu applyFilters={applyFilters} />
-            <Spacer />
-            <Button
-              onClick={navigateToFavorites}
-              bg="rgba(253, 222, 176, 1)"
-              fontSize={["0.70rem", "0.80rem", "0.95rem", "1rem"]}
-            >
-              Favorites
-            </Button>
-          </Flex>
+          )}
+          <FilterMenu applyFilters={applyFilters} />
+          <Spacer />
+          <Button
+            onClick={navigateToFavorites}
+            bg="rgba(253, 222, 176, 1)"
+            fontSize={["0.70rem", "0.80rem", "0.95rem", "1rem"]}
+          >
+            Favorites
+          </Button>
+        </Flex>
+        <Box paddingBottom="10px" className="infinite-scroll-wrapper">
           <Box
             paddingBottom="10px"
-            className="infinite-scroll-wrapper"
+            className={`infinite-scroll-content ${scrollingEnabled ? '' : 'no-scroll'}`}
+            ref={containerRef}
           >
-            <Box
-              paddingBottom="10px"
-              className={`infinite-scroll-content ${scrollingEnabled ? '' : 'no-scroll'}`}
-              ref={containerRef}
-            >
-              {filteredPets.map((pet) => (
-                <Box key={pet.pet_id} flex="0 0 auto" maxW="sm" p={2}>
-                  <PetCard pet={pet} onClick={() => handlePetCardClick(pet)} />
-                </Box>
-              ))}
-            </Box>
+            {filteredPets.map((pet) => (
+              <Box key={pet.pet_id} flex="0 0 auto" maxW="sm" p={2}>
+                <PetCard pet={pet} onClick={() => handlePetCardClick(pet)} />
+              </Box>
+            ))}
           </Box>
-        </>
-      )}
-    </Box>
+        </Box>
+      </Box>
+    </>
   );
 };
 

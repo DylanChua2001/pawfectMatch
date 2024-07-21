@@ -8,7 +8,7 @@ import Header from '../../../components/header';
 import Cookie from 'js-cookie';
 import { useRouter } from 'next/navigation';
 
-const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
+const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
     const [liked, setLiked] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const pet_id = useParams().pet_id;
@@ -17,8 +17,24 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
     const userID = Cookie.get('userID');
     const toast = useToast();
     const router = useRouter();
-    const sessionID = Cookie.get('userID');
-  
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        const adminStatus = Cookie.get('isAdmin') === 'true';
+        if (!adminStatus) {
+        toast({
+            title: 'Access Denied',
+            description: 'You do not have permission to view this page',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            onCloseComplete: () => router.push('/'), // Redirect to login or another appropriate page
+        });
+        } else {
+        setIsAdmin(true);
+        }
+    }, [router, toast]);
+
     useEffect(() => {
       if (!userID) {
         toast({
@@ -30,10 +46,11 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
         });
         return;
       }
-    }, [userID, router, toast]); // Added the dependency array
-  
+    }, [userID, router, toast]);
+
     if (!userID) {
       return (
+        <>
         <Box
           minHeight="100vh"
           display="flex"
@@ -44,8 +61,9 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
           <Spinner size="xl" />
           <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>
         </Box>
+        </>
       );
-    }  
+    }
 
     useEffect(() => {
         const fetchPet = async () => {
@@ -70,7 +88,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                     method: 'GET'
                 });
                 const photoresponsedata = await photoresponse.json();
-                const imageSrcUrl = photoresponsedata.petImage[0].photo_url;
+                const imageSrcUrl = photoresponsedata.petImage[0]?.photo_url;
                 setPhoto(imageSrcUrl);
             } catch (error) {
                 console.error('Error fetching image:', error);
@@ -80,14 +98,26 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
         fetchPhotoList();
     }, [pet_id]);
 
+    useEffect(() => {
+        const fetchFavoritePets = async () => {
+            try {
+                const response = await axios.get(`http://localhost:3001/api/favourites/getAllFavPets/${userID}`);
+                const favoritePets = response.data.userFavPets.user_pet_fav;
+                setLiked(favoritePets.includes(pet_id));
+            } catch (error) {
+                console.error('Error fetching favorite pets:', error);
+            }
+        };
+
+        if (userID && pet_id) {
+            fetchFavoritePets();
+        }
+    }, [userID, pet_id]);
+
     const handleLikeButtonClick = async () => {
-        if (!sessionID || !pet_id) {
-            console.error('Invalid session ID or pet ID:', { sessionID, pet_id });
-            return;
-          }
         const url = liked
-            ? `http://localhost:3001/api/favourites/deleteFavPet/${sessionID}/delete/${pet_id}`
-            : `http://localhost:3001/api/favourites/addFavPet/${sessionID}/add/${pet_id}`;
+            ? `http://localhost:3001/api/favourites/deleteFavPet/${userID}/delete/${pet.pet_id}`
+            : `http://localhost:3001/api/favourites/addFavPet/${userID}/add/${pet.pet_id}`;
 
         try {
             await axios.put(url, { liked: !liked });
@@ -101,8 +131,19 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
         }
     };
 
-    const handleModalOpen = () => {
+    const handleModalOpen = async () => {
+        if (isUserMatched) {
+            alert('You are already matched with another pet.');
+            return;
+        }
+
         setIsModalOpen(true);
+
+        try {
+            await axios.post(`http://localhost:3001/api/match/addAMatch/${userID}/${pet.pet_id}`);
+        } catch (error) {
+            console.error('Error updating like status:', error);
+        }
     };
 
     const handleModalClose = () => {
@@ -112,7 +153,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
     const handleDelete = async () => {
         try {
             await axios.delete(`http://localhost:3001/api/pets/deletePet/${pet.pet_id}`, {
-                withCredentials: true
+                isAdmin: true
             });
             toast({
                 title: "Success",
@@ -134,30 +175,12 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
         }
     };
 
-    const handleDeleteButtonClick = async () => {
-        toast({
-            title: `Deleting ${pet.pet_name} is irreversible.`,
-            description: (
-                <Box textAlign="center">
-                    <Button bg="transparent" mr={3} onClick={handleDelete}>
-                        Confirm Deletion
-                    </Button>
-                </Box>
-            ),
-            status: 'warning',
-            isClosable: true,
-            duration: null,
-            position: 'bottom-left',
-        });
-        console.log('Delete button clicked');
-    };
-
     if (!pet_id) {
-        return <div>Loading...</div>;
+        return <><div>Loading...</div></>;
     }
 
     if (!pet) {
-        return <div>Unable to find pet with ID: {pet_id}</div>;
+        return <><div>Unable to find pet with ID: {pet_id}</div></>;
     }
 
     return (
@@ -177,6 +200,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                 borderRadius= "15px"
                 pl= "20px"
                 pt= "40px"
+                pr= '20px'
             >
                 <HStack>
                     <Image
@@ -190,7 +214,21 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                         ml= {["20px", "30px", "40px" ]}
                     />
                     {!showNameAndPhotoOnly && (
-                        <VStack align="start" mt={4}>
+                        <VStack 
+                            align="start" 
+                            maxW="100%" // Adjust based on your design
+                            maxH="210px" // Adjust height to control how much of the content is visible
+                            overflowY="auto" // Enable vertical scrolling
+                            overflowX="hidden" // Prevent horizontal scrolling
+                            sx={{
+                                '&::-webkit-scrollbar': {
+                                display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
+                                },
+                                '-ms-overflow-style': 'none', // Hide scrollbar for Internet Explorer and Edge
+                                'scrollbar-width': 'none', // Hide scrollbar for Firefox
+                                overflowY: 'auto', // Allow vertical scrolling
+                            }}
+                        > 
                             <HStack>
                                 <Text fontSize={["1.2rem", "1.5rem", "1.7rem", "2rem"]} fontWeight="bold">
                                     {pet.pet_name}
@@ -207,12 +245,11 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                             </HStack>
                             <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Breed: {pet.pet_breed}</Text>
                             <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Age: {pet.pet_age} years</Text>
-                            <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Description: {pet.pet_description || "No description available"}</Text>
+                            <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}  whiteSpace="normal" wordBreak="break-word">Description: {pet.pet_description || "No description available"}</Text>
                             <Button bg="rgba(253, 222, 176, 1)" onClick={handleModalOpen} color='black'  position="absolute" bottom={4} left={4}>Match</Button>
                         </VStack>
                     )}
                 </HStack>
-          
 
                 <Modal isOpen={isModalOpen} onClose={handleModalClose}>
                     <ModalOverlay />
@@ -220,21 +257,22 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
                         <ModalHeader>Match</ModalHeader>
                         <ModalCloseButton />
                         <ModalBody>
-                            <Text fontSize="lg" fontWeight="bold" color="green.500">
-                                Congratulations! You have been matched with {pet.pet_name}.
-                            </Text>
+                            <Text fontSize="lg" fontWeight="bold" color="black">{pet.pet_name} has been successfully matched with you!</Text>
                         </ModalBody>
                         <ModalFooter>
-                            <Button colorScheme="blue" mr={3} onClick={handleModalClose}>
-                                Close
-                            </Button>
+                            <Button onClick={handleModalClose}>Close</Button>
                         </ModalFooter>
                     </ModalContent>
                 </Modal>
+
+                {isAdmin && (
+                    <Button onClick={handleDelete} colorScheme="red" position="absolute" bottom={4} right={4}>
+                        Delete
+                    </Button>
+                )}
             </Box>
         </>
     );
 };
 
 export default PetProfile;
-

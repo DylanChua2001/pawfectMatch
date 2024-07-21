@@ -18,13 +18,13 @@ const Cart = () => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const response = await axios.get(`https://pawfect-match-backend-six.vercel.app/api/cart/getCart/${userId}`);
+        const response = await axios.get(`https://pawfect-match-three.vercel.app/api/cart/getCart/${userId}`);
         const cartItemIds = response.data.userCart.user_cart;
 
         // Fetch details for each training package ID in user_cart
         const fetchTrainingPackages = async () => {
           try {
-            const response = await axios.get(`https://pawfect-match-backend-six.vercel.app/api/trainPack/getAllTrainingPack`);
+            const response = await axios.get(`https://pawfect-match-three.vercel.app/api/trainPack/getAllTrainingPack`);
             const allTrainPack = response.data.allTrainPack;
             
             const cartItemsData = cartItemIds.map(itemId => {

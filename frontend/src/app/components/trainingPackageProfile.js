@@ -135,6 +135,38 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
       pb="90px"
       pt="100px"
     >
+      {isAdmin && (
+        <>
+          <Button
+            position="absolute"
+            bottom={4}
+            right={2}
+            colorScheme="red"
+            aria-label="Delete button"
+            onClick={onOpen}
+          >
+            Delete Pet
+          </Button>
+
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent bg="rgba(254,245,231,255)">
+              <ModalHeader>Confirm deletion?</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Text>Deleting {pet.pet_name} is irreversible and permanent</Text>
+              </ModalBody>
+
+              <ModalFooter>
+                <Button colorScheme='yellow' mr={3} onClick={onClose}>
+                  Cancel
+                </Button>
+                <Button onClick={handleDelete} colorScheme='red'>Delete</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </>
+      )}
       <HStack spacing={5} align="start" pl='10px'>
         <VStack align="start" justify="center" spacing={3}>
           <Text fontSize="4xl" fontWeight="bold">

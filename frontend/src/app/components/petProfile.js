@@ -118,37 +118,37 @@ const PetProfile = ({ pet, onLike, showNameAndPhotoOnly }) => {
     setIsModalOpen(false);
   };
 
-  const handleDelete = async () => {
-    try {
-      const response = await axios.delete(`https://pawfect-match-backend-six.vercel.app/api/pets/deletePet/${pet.pet_id}`, {
-        withCredentials: true
-      });
-      console.log(response);
-      toast({
-        title: "Success",
-        description: `${pet.pet_name} was deleted`,
-        status: 'success',
-        isClosable: true,
-        duration: 2000, // Keeps the toast open for 5 seconds
-        position: 'bottom-left',
-      });
+  // const handleDelete = async () => {
+  //   try {
+  //     const response = await axios.delete(`https://pawfect-match-backend-six.vercel.app/api/pets/deletePet/${pet.pet_id}`, {
+  //       withCredentials: true
+  //     });
+  //     console.log(response);
+  //     toast({
+  //       title: "Success",
+  //       description: `${pet.pet_name} was deleted`,
+  //       status: 'success',
+  //       isClosable: true,
+  //       duration: 2000, // Keeps the toast open for 5 seconds
+  //       position: 'bottom-left',
+  //     });
   
-      // Reload the page after 5 seconds
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-    } catch (error) {
-      console.error("Error deleting pet:", error);
-      toast({
-        title: "Error",
-        description: "There was an error deleting the pet. Please try again.",
-        status: 'error',
-        isClosable: true,
-        duration: 5000,
-        position: 'bottom-left',
-      });
-    }
-  };
+  //     // Reload the page after 5 seconds
+  //     setTimeout(() => {
+  //       window.location.reload();
+  //     }, 2000);
+  //   } catch (error) {
+  //     console.error("Error deleting pet:", error);
+  //     toast({
+  //       title: "Error",
+  //       description: "There was an error deleting the pet. Please try again.",
+  //       status: 'error',
+  //       isClosable: true,
+  //       duration: 5000,
+  //       position: 'bottom-left',
+  //     });
+  //   }
+  // };
   
 
   return (

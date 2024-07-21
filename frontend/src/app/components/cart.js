@@ -166,8 +166,8 @@ const Cart = () => {
       const session = await stripe.checkout.sessions.create({  //stripe session
             line_items: lineItems,
             mode: 'payment',
-            success_url: `https://pawfect-match-backend-six.vercel.app/pages/cart/?success=true`,
-            cancel_url: `https://pawfect-match-backend-six.vercel.app/pages/cart/?canceled=true`,
+            success_url: `https://pawfect-match-backend-six.vercel.app`,
+            cancel_url: `https://pawfect-match-backend-six.vercel.app/pages/cart`,
             automatic_tax: { enabled: true }
       })
 

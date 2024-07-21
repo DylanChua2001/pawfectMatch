@@ -8,7 +8,7 @@ router.get('/getAllPets', petController.getAllPets);
 router.get('/id/:id', petController.getPetByID);
 router.post('/createPet', verifyToken, petController.createPet);
 router.put('/updatePet/:id', verifyToken, petController.updatePet);
-router.delete('/deletePet/:id', verifyToken, petController.deletePet);
+router.delete('/deletePet/:id', petController.deletePet);
 router.put('/uploadPetImageID/:petID', petController.uploadPetImageIDC);
 router.get('/retrievePetImageID/:petID', petController.retrievePetImageIDC)
 

@@ -10,7 +10,7 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
   const toast = useToast();
   const [isAdmin, setIsAdmin] = useState(false); // State to check admin status
   const sessionID = Cookie.get('userID');
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   console.log(sessionID)
   console.log(trainingPackage.train_id)

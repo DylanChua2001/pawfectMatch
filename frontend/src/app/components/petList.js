@@ -126,7 +126,7 @@ const PetList = () => {
       setScrollingEnabled(true);
     }
   }, [searchTerm, filteredPets, petsData]);
-  
+
   useEffect(() => {
     const handleScroll = (event) => {
       if (containerRef.current) {
@@ -136,10 +136,10 @@ const PetList = () => {
         event.preventDefault();
       }
     };
-  
+
     // Attach event listener to the window object
     window.addEventListener('wheel', handleScroll, { passive: false });
-  
+
     return () => {
       // Clean up event listener
       window.removeEventListener('wheel', handleScroll);
@@ -183,7 +183,20 @@ const PetList = () => {
             Favorites
           </Button>
         </Flex>
-        <Box paddingBottom="10px" className="infinite-scroll-wrapper">
+        <Box
+          paddingBottom="10px"
+          display="flex"
+          overflowX="auto"
+          sx={{
+            overflowX: 'hidden', // Hide horizontal scrollbar
+            '&::-webkit-scrollbar': {
+              display: 'none',  // Hide scrollbar for Chrome, Safari, and Edge
+            },
+            '-ms-overflow-style': 'none',  // Hide scrollbar for Internet Explorer and Edge
+            'scrollbar-width': 'none',     // Hide scrollbar for Firefox
+            'overflow-x': 'auto',
+          }}
+        >
           <Box
             paddingBottom="10px"
             className={`infinite-scroll-content ${scrollingEnabled ? '' : 'no-scroll'}`}

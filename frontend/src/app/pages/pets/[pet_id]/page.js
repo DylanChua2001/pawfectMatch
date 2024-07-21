@@ -17,8 +17,8 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
     const userID = Cookie.get('userID');
     const toast = useToast();
     const router = useRouter();
-
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isUserMatched, setIsUserMatched] = useState(false);
 
     useEffect(() => {
         const adminStatus = Cookie.get('isAdmin') === 'true';
@@ -71,7 +71,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
             try {
                 if (!pet_id) return;
 
-                const response = await fetch(`https://pawfect-match-backend-six.vercel.app/api/pets/id/${pet_id}`);
+                const response = await fetch(https://pawfect-match-backend-six.vercel.app/api/pets/id/${pet_id}`);
                 const data = await response.json();
                 setPet(data);
             } catch (error) {
@@ -132,6 +132,22 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
         }
     };
 
+    useEffect(() => {
+        const checkUserMatch = async () => {
+          try {
+            const response = await axios.get(`https://pawfect-match-backend-six.vercel.app/api/match/checkUserMatch/${userID}`);
+            const { matchedPetId } = response.data;
+            setIsUserMatched(!!matchedPetId && matchedPetId !== pet_id);
+          } catch (error) {
+            console.error('Error checking user match:', error);
+          }
+        };
+    
+        if (userID) {
+          checkUserMatch();
+        }
+      }, [userID, pet_id]);
+
     const handleModalOpen = async () => {
         if (isUserMatched) {
             alert('You are already matched with another pet.');
@@ -150,11 +166,11 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
     const handleModalClose = () => {
         setIsModalOpen(false);
     };
-
+    
     const handleDelete = async () => {
         try {
             await axios.delete(`https://pawfect-match-backend-six.vercel.app/api/pets/deletePet/${pet.pet_id}`, {
-                withCredentials: true
+                isAdmin: true
             });
             toast({
                 title: "Success",

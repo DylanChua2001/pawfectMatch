@@ -18,6 +18,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
     const toast = useToast();
     const router = useRouter();
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isUserMatched, setIsUserMatched] = useState(false);
 
     useEffect(() => {
         const adminStatus = Cookie.get('isAdmin') === 'true';
@@ -130,6 +131,22 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
             console.error('Error updating like status:', error);
         }
     };
+
+    useEffect(() => {
+        const checkUserMatch = async () => {
+          try {
+            const response = await axios.get(`http://localhost:3001/api/match/checkUserMatch/${userID}`);
+            const { matchedPetId } = response.data;
+            setIsUserMatched(!!matchedPetId && matchedPetId !== pet_id);
+          } catch (error) {
+            console.error('Error checking user match:', error);
+          }
+        };
+    
+        if (userID) {
+          checkUserMatch();
+        }
+      }, [userID, pet_id]);
 
     const handleModalOpen = async () => {
         if (isUserMatched) {

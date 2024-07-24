@@ -1,31 +1,17 @@
+/* trainingPackage.css */
 
-  .infinite-scroll-content {
-    display: flex;
-    flex-wrap: nowrap;
-    animation: scroll 200s linear infinite;
-  }
-  
-  .infinite-scroll-content::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for WebKit browsers */
-  }
-  
-  .infinite-scroll-content {
-    -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
-    scrollbar-width: none; /* Hide scrollbar for Firefox */
-  }
-  
-  .no-scroll {
-    display: flex;
-    flex-wrap: nowrap;
-    animation: scroll 0s linear infinite;
-  }
-  
-  @keyframes scroll {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-100%);
-    }
-  }
-  
+.horizontal-scroll-wrapper {
+  max-width: 100%;
+  overflow-x: auto;
+  display: flex;
+}
+
+.horizontal-scroll-content {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+.horizontal-scroll-content::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}

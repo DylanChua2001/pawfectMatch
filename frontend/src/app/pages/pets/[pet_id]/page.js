@@ -19,6 +19,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
     const router = useRouter();
 
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isUserMatched, setIsUserMatched] = useState(false);
 
     useEffect(() => {
         const adminStatus = Cookie.get('isAdmin') === 'true';
@@ -132,6 +133,22 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
         }
     };
 
+    useEffect(() => {
+        const checkUserMatch = async () => {
+          try {
+            const response = await axios.get(`http://localhost:3001/api/match/checkUserMatch/${userID}`);
+            const { matchedPetId } = response.data;
+            setIsUserMatched(!!matchedPetId && matchedPetId !== pet_id);
+          } catch (error) {
+            console.error('Error checking user match:', error);
+          }
+        };
+    
+        if (userID) {
+          checkUserMatch();
+        }
+      }, [userID, pet_id]);
+
     const handleModalOpen = async () => {
         if (isUserMatched) {
             alert('You are already matched with another pet.');
@@ -150,7 +167,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
     const handleModalClose = () => {
         setIsModalOpen(false);
     };
-
+    
     const handleDelete = async () => {
         try {
             await axios.delete(`https://pawfect-match-backend-six.vercel.app/api/pets/deletePet/${pet.pet_id}`, {

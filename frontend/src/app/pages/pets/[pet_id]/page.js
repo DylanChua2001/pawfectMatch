@@ -22,7 +22,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
     const [isUserMatched, setIsUserMatched] = useState(false);
 
     useEffect(() => {
-        const adminStatus = Cookie.get('isAdmin') === 'true';
+        const adminStatus = Cookie.get('userID');
         if (!adminStatus) {
         toast({
             title: 'Access Denied',

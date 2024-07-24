@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from "react";
 import {
   HStack,
   Avatar,
@@ -12,23 +12,22 @@ import {
   MenuItem,
   Button,
   Box,
-} from '@chakra-ui/react';
-import { useRouter } from 'next/navigation'; // Import useRouter hook from Next.js
-import Cookies from 'js-cookie';
-import axios from 'axios';
+} from "@chakra-ui/react";
+import { useRouter } from "next/navigation"; // Import useRouter hook from Next.js
+import Cookies from "js-cookie";
+import axios from "axios";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Add loading state
   const [userID, setUserID] = useState(null); // Add userID state
-  const [imageSrcUrl, setImageSrcUrl] = useState(''); // State for profile image URL
+  const [imageSrcUrl, setImageSrcUrl] = useState("profileicon.png"); // State for profile image URL
   const [isFavoritesOpen, setIsFavoritesOpen] = useState(false); // State for Favorites menu
   const [isAddOpen, setIsAddOpen] = useState(false); // State for Adding of pets and training menu
   const [isPawAIOpen, setIsPawAIOpen] = useState(false); // State for PAW AI
   const router = useRouter(); // Initialize useRouter hook
-  const id = Cookies.get('userID'); // Assuming 'userID' is the cookie key storing the ID
-  const isAdmin = Cookies.get('isAdmin');
-
+  const id = Cookies.get("userID"); // Assuming 'userID' is the cookie key storing the ID
+  const isAdmin = Cookies.get("isAdmin");
 
   const handleMenuToggle = () => {
     setIsOpen(!isOpen);
@@ -62,7 +61,7 @@ const Header = () => {
 
   useEffect(() => {
     fetchProfile(); // Fetch profile data when component mounts
-  }, []);
+  }, [id]);
 
   const fetchProfile = async () => {
     try {
@@ -75,22 +74,24 @@ const Header = () => {
       const fetchedImageSrcUrl = photoresponsedata.userImage[0].photo_url;
       setImageSrcUrl(fetchedImageSrcUrl); // Set the fetched image URL to state
     } catch (error) {
-      console.error('Error fetching profile:', error);
-    } finally {
-      setIsLoading(false); // Set loading state to false regardless of success or failure
+      console.error("Error fetching profile:", error);
     }
   };
-
-  if (isLoading) {
-    return null; // Return null or a loading spinner while loading
-  }
 
   return (
     <>
       <HStack position="fixed" top="2%" left="3px" zIndex="1">
-        <Button bg={'transparent'} _hover={{ bg: 'transparent' }} onClick={() => router.push("/")}>
-          <Image src='/pawprints.png' alt="Image" width={50} height={50} />
-          <Heading fontSize="240%" fontFamily="Kaushan Script" fontStyle="italic">
+        <Button
+          bg={"transparent"}
+          _hover={{ bg: "transparent" }}
+          onClick={() => router.push("/")}
+        >
+          <Image src="/pawprints.png" alt="Image" width={50} height={50} />
+          <Heading
+            fontSize="240%"
+            fontFamily="Kaushan Script"
+            fontStyle="italic"
+          >
             PawfectMatch
           </Heading>
         </Button>
@@ -103,25 +104,43 @@ const Header = () => {
             variant="link"
             onClick={() => setIsOpen(!isOpen)}
           >
-            <Avatar
-              borderRadius="full"
-              borderColor="black"
-              src={imageSrcUrl || "profileicon.png"}
-              width="50"
-              height="50"
-            />
+            <Suspense fallback={<Avatar size="sm" />}>
+              <Avatar
+                borderRadius="full"
+                borderColor="black"
+                src={imageSrcUrl}
+                width="50"
+                height="50"
+              />
+            </Suspense>
           </MenuButton>
           <MenuList>
-            {userID && <MenuItem onClick={() => navigateTo('/pages/profile')}>Edit Profile</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/pets')}>Pets</MenuItem>}
-            {userID && <MenuItem onClick={() => navigateTo('/pages/training')}>Training Packages</MenuItem>}
+            {userID && (
+              <MenuItem onClick={() => navigateTo("/pages/profile")}>
+                Edit Profile
+              </MenuItem>
+            )}
+            {userID && (
+              <MenuItem onClick={() => navigateTo("/pages/pets")}>
+                Pets
+              </MenuItem>
+            )}
+            {userID && (
+              <MenuItem onClick={() => navigateTo("/pages/training")}>
+                Training Packages
+              </MenuItem>
+            )}
             {userID && (
               <>
                 <MenuItem onClick={toggleFavoritesMenu}>Favorites</MenuItem>
                 {isFavoritesOpen && (
                   <Box ml="6">
-                    <MenuItem onClick={() => navigateTo('/pages/favpets')}>Favorite Pets</MenuItem>
-                    <MenuItem onClick={() => navigateTo('/pages/favtraining')}>Favorite Training</MenuItem>
+                    <MenuItem onClick={() => navigateTo("/pages/favpets")}>
+                      Favorite Pets
+                    </MenuItem>
+                    <MenuItem onClick={() => navigateTo("/pages/favtraining")}>
+                      Favorite Training
+                    </MenuItem>
                   </Box>
                 )}
               </>
@@ -131,19 +150,29 @@ const Header = () => {
                 <MenuItem onClick={togglePawAIMenu}>PawAI</MenuItem>
                 {isPawAIOpen && (
                   <Box ml="6">
-                    <MenuItem onClick={() => navigateTo('/pages/chat')}>Chat</MenuItem>
-                    <MenuItem onClick={() => navigateTo('/pages/createUserProfile')}>Knowing you better</MenuItem>
+                    <MenuItem onClick={() => navigateTo("/pages/chat")}>
+                      Chat
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => navigateTo("/pages/createUserProfile")}
+                    >
+                      Knowing you better
+                    </MenuItem>
                   </Box>
                 )}
               </>
             )}
-            {userID && (isAdmin === 'true') && (
+            {userID && isAdmin === "true" && (
               <>
                 <MenuItem onClick={toggleAddMenu}>Add</MenuItem>
                 {isAddOpen && (
                   <Box ml="6">
-                    <MenuItem onClick={() => navigateTo('/pages/addPets')}>Add Pets</MenuItem>
-                    <MenuItem onClick={() => navigateTo('/pages/addTraining')}>Add Training</MenuItem>
+                    <MenuItem onClick={() => navigateTo("/pages/addPets")}>
+                      Add Pets
+                    </MenuItem>
+                    <MenuItem onClick={() => navigateTo("/pages/addTraining")}>
+                      Add Training
+                    </MenuItem>
                   </Box>
                 )}
               </>

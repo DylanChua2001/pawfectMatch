@@ -179,6 +179,22 @@ const TrainingPackagesList = () => {
     };
   }, []);
 
+  const handleArrowNavigation = (event) => {
+    if (containerRef.current) {
+      if (event.key === 'ArrowRight') {
+        containerRef.current.scrollBy({ left: 100, behavior: 'smooth' });
+      } else if (event.key === 'ArrowLeft') {
+        containerRef.current.scrollBy({ left: -100, behavior: 'smooth' });
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleArrowNavigation);
+    return () => {
+      window.removeEventListener('keydown', handleArrowNavigation);
+    };
+  }, []);
   return (
     <>
       <Box
@@ -227,9 +243,9 @@ const TrainingPackagesList = () => {
                 onClick={navigateToFavorites}
                 bg="rgba(253, 222, 176, 1)"
                 fontSize={["0.70rem", "0.80rem", "0.95rem", "1rem"]}
-                mx= "10px"
+                mx="10px"
               >
-              Favorites
+                Favorites
               </Button>
               <Button
                 onClick={navigateToCart}
@@ -240,21 +256,11 @@ const TrainingPackagesList = () => {
             </Flex>
             <Box
               paddingBottom="10px"
-              display="flex"
-              overflowX="auto"
-              sx={{
-                overflowX: 'hidden', // Hide horizontal scrollbar
-                '&::-webkit-scrollbar': {
-                  display: 'none',  // Hide scrollbar for Chrome, Safari, and Edge
-                },
-                '-ms-overflow-style': 'none',  // Hide scrollbar for Internet Explorer and Edge
-                'scrollbar-width': 'none',     // Hide scrollbar for Firefox
-                'overflow-x': 'auto',
-              }}
+              className="horizontal-scroll-wrapper"
             >
               <Box
                 paddingBottom="10px"
-                className={`infinite-scroll-content ${scrollingEnabled ? '' : 'no-scroll'}`}
+                className="horizontal-scroll-content"
                 ref={containerRef}
               >
                 {filteredTrainingPackages.map((trainingPackage) => (

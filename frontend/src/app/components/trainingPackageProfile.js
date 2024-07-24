@@ -9,10 +9,7 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
   const [liked, setLiked] = useState(false); //liked is a boolean, while setLiked sets the value of liked
   const toast = useToast();
   const [isAdmin, setIsAdmin] = useState(false); // State to check admin status
-  const sessionID = Cookie.get('userID');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
+  const sessionID = Cookie.get('userID'); 
   console.log(sessionID)
   console.log(trainingPackage.train_id)
 

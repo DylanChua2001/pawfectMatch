@@ -160,24 +160,9 @@ const TrainingPackagesList = () => {
     }
   }, [searchTerm, filteredTrainingPackages, trainingPackages]);
 
-  useEffect(() => {
-    const handleScroll = (event) => {
-      if (containerRef.current) {
-        // Apply horizontal scroll to the container
-        containerRef.current.scrollLeft += event.deltaY;
-        // Prevent the default scroll behavior for horizontal scrolling
-        event.preventDefault();
-      }
-    };
-
-    // Attach event listener to the window object
-    window.addEventListener('wheel', handleScroll, { passive: false });
-
-    return () => {
-      // Clean up event listener
-      window.removeEventListener('wheel', handleScroll);
-    };
-  }, []);
+  const handleContainerClick = () => {
+    setScrollingEnabled(false); // Disable auto-scrolling when clicking anywhere in the container
+  };
 
   const handleArrowNavigation = (event) => {
     if (containerRef.current) {

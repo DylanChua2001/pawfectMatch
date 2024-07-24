@@ -116,7 +116,6 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
     console.log('Delete button clicked');
   };
 
-
   return (
     <Box
       maxW="100vw" 
@@ -154,6 +153,17 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
           </Button>
         </VStack>
       </HStack>
+      {isAdmin && (
+        <Button
+          colorScheme="red"
+          onClick={handleDeleteButtonClick}
+          position="absolute"
+          bottom={4}
+          right={4}
+        >
+          Delete Training Package
+        </Button>
+      )}
     </Box>
   );
 };

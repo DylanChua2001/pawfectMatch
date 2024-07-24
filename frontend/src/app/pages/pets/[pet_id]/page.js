@@ -17,7 +17,6 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
     const userID = Cookie.get('userID');
     const toast = useToast();
     const router = useRouter();
-
     const [isAdmin, setIsAdmin] = useState(false);
     const [isUserMatched, setIsUserMatched] = useState(false);
 
@@ -136,7 +135,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
     useEffect(() => {
         const checkUserMatch = async () => {
           try {
-            const response = await axios.get(`http://localhost:3001/api/match/checkUserMatch/${userID}`);
+            const response = await axios.get(`https://pawfect-match-backend-six.vercel.app/api/match/checkUserMatch/${userID}`);
             const { matchedPetId } = response.data;
             setIsUserMatched(!!matchedPetId && matchedPetId !== pet_id);
           } catch (error) {
@@ -171,7 +170,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
     const handleDelete = async () => {
         try {
             await axios.delete(`https://pawfect-match-backend-six.vercel.app/api/pets/deletePet/${pet.pet_id}`, {
-                withCredentials: true
+                isAdmin: true
             });
             toast({
                 title: "Success",

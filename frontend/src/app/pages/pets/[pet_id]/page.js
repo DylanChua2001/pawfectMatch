@@ -192,6 +192,10 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
         }
     };
 
+    const handleBackToPets = () => {
+        router.push('/pages/pets');
+    };
+
     if (!pet_id) {
         return <><div>Loading...</div></>;
     }
@@ -217,8 +221,17 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
                 borderRadius="15px"
                 pl="20px"
                 pt="40px"
-                pr='20px'
+                pr="20px"
             >
+                <Button
+                    position="absolute"
+                    top="10px"
+                    right="10px"
+                    colorScheme="blue"
+                    onClick={handleBackToPets}
+                >
+                    Back to Pets
+                </Button>
                 <HStack>
                     <Image
                         src={photo || pet.imageUrl}
@@ -260,13 +273,45 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
                                     ml={2}
                                 />
                             </HStack>
-                            <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.1rem"]}>
+                            <Text fontSize={["0.85rem", "0.9rem", "1rem", "1.05rem"]} textAlign="left" whiteSpace="normal">
                                 {pet.pet_description}
                             </Text>
                         </VStack>
                     )}
+                    {showNameAndPhotoOnly && (
+                        <VStack
+                            align="start"
+                            maxW="100%"
+                            maxH="210px"
+                            overflowY="auto"
+                            overflowX="hidden"
+                            sx={{
+                                '&::-webkit-scrollbar': {
+                                    display: 'none',
+                                },
+                                '-ms-overflow-style': 'none',
+                                'scrollbar-width': 'none',
+                                overflowY: 'auto',
+                            }}
+                        >
+                            <HStack>
+                                <Text fontSize={["1.2rem", "1.5rem", "1.7rem", "2rem"]} fontWeight="bold">
+                                    {pet.pet_name}
+                                </Text>
+                                <IconButton
+                                    icon={liked ? <AiFillHeart /> : <AiOutlineHeart />}
+                                    onClick={handleLikeButtonClick}
+                                    variant="ghost"
+                                    colorScheme="red"
+                                    aria-label="Like button"
+                                    fontSize={["3xl", "3xl", "4xl", "4xl"]}
+                                    ml={2}
+                                />
+                            </HStack>
+                        </VStack>
+                    )}
                 </HStack>
-                <Flex mt={4} justifyContent="center">
+                <Flex mt={4} justifyContent="space-between">
                     <Button
                         colorScheme="blue"
                         onClick={handleModalOpen}
@@ -276,32 +321,38 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
                     >
                         Match
                     </Button>
-                    {isAdmin && (
-                        <Button
-                            colorScheme="red"
-                            onClick={handleDelete}
-                            ml={2}
-                        >
-                            Delete
-                        </Button>
-                    )}
+                    <Button
+                        colorScheme="red"
+                        onClick={handleDelete}
+                        disabled={!isAdmin}
+                        _hover={{ backgroundColor: isAdmin ? "red.500" : "gray.300" }}
+                        cursor={isAdmin ? "pointer" : "not-allowed"}
+                    >
+                        Delete Pet
+                    </Button>
                 </Flex>
-                <Modal isOpen={isModalOpen} onClose={handleModalClose}>
-                    <ModalOverlay />
-                    <ModalContent>
-                        <ModalHeader>Pet Adoption Application Submitted</ModalHeader>
-                        <ModalCloseButton />
-                        <ModalBody>
-                            <Text>Your pet adoption application has been successfully submitted. We will review your application and get in touch with you soon.</Text>
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button colorScheme="blue" onClick={handleModalClose}>
-                                Close
-                            </Button>
-                        </ModalFooter>
-                    </ModalContent>
-                </Modal>
             </Box>
+
+            <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Match Confirmation</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <Text>
+                            Are you sure you want to match with {pet.pet_name}? This action cannot be undone.
+                        </Text>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button variant="ghost" onClick={handleModalClose}>
+                            Cancel
+                        </Button>
+                        <Button colorScheme="blue" ml={3} onClick={handleModalClose}>
+                            Confirm
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </>
     );
 };

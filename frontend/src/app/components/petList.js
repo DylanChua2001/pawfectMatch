@@ -11,8 +11,6 @@ const PetList = () => {
   const [filteredPets, setFilteredPets] = useState([]);
   const [petsData, setPetsData] = useState([]);
   const [favoritePets, setFavoritePets] = useState([]);
-  const [scrollingEnabled, setScrollingEnabled] = useState(true);
-  const [page, setPage] = useState(1);
   const router = useRouter();
   const containerRef = useRef(null);
 
@@ -40,51 +38,11 @@ const PetList = () => {
     localStorage.setItem('favoritePets', JSON.stringify(favoritePets));
   }, [favoritePets]);
 
-  useEffect(() => {
-    if (scrollingEnabled && containerRef.current) {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setPage(prevPage => prevPage + 1);
-          }
-        },
-        { threshold: 1.0 }
-      );
-
-      if (containerRef.current) {
-        observer.observe(containerRef.current);
-      }
-
-      return () => {
-        if (containerRef.current) {
-          observer.unobserve(containerRef.current);
-        }
-      };
-    }
-  }, [scrollingEnabled]);
-
-  useEffect(() => {
-    const fetchMorePets = async () => {
-      try {
-        const response = await fetch(`http://localhost:3001/api/pets/getPetsByPage?page=${page}`);
-        const data = await response.json();
-        setFilteredPets(prevPets => [...prevPets, ...data]);
-      } catch (error) {
-        console.error('Error fetching more pets:', error);
-      }
-    };
-
-    if (page > 1) {
-      fetchMorePets();
-    }
-  }, [page]);
-
   const handlePetCardClick = (pet) => {
     router.push(`/pages/pets/${pet.pet_id}`);
   };
 
   const handleSearch = () => {
-    setScrollingEnabled(false);
     const lowercasedFilter = searchTerm.toLowerCase();
     const filteredData = petsData.filter(pet =>
       pet.pet_name.toLowerCase().includes(lowercasedFilter) ||
@@ -96,7 +54,6 @@ const PetList = () => {
   const handleClearFilter = () => {
     setSearchTerm('');
     setFilteredPets(petsData);
-    setScrollingEnabled(true);
   };
 
   const handleLikePet = (pet) => {
@@ -118,14 +75,24 @@ const PetList = () => {
   const applyFilters = (petIDs) => {
     const filteredData = petsData.filter(pet => petIDs.includes(pet.pet_id));
     setFilteredPets(filteredData);
-    setScrollingEnabled(false);
+  };
+
+  const handleArrowNavigation = (event) => {
+    if (containerRef.current) {
+      if (event.key === 'ArrowRight') {
+        containerRef.current.scrollBy({ left: 100, behavior: 'smooth' });
+      } else if (event.key === 'ArrowLeft') {
+        containerRef.current.scrollBy({ left: -100, behavior: 'smooth' });
+      }
+    }
   };
 
   useEffect(() => {
-    if (!searchTerm && filteredPets.length === petsData.length) {
-      setScrollingEnabled(true);
-    }
-  }, [searchTerm, filteredPets, petsData]);
+    window.addEventListener('keydown', handleArrowNavigation);
+    return () => {
+      window.removeEventListener('keydown', handleArrowNavigation);
+    };
+  }, []);
 
   return (
     <>
@@ -164,10 +131,10 @@ const PetList = () => {
             Favorites
           </Button>
         </Flex>
-        <Box paddingBottom="10px" className="infinite-scroll-wrapper">
+        <Box paddingBottom="10px" className="horizontal-scroll-wrapper">
           <Box
             paddingBottom="10px"
-            className={`infinite-scroll-content ${scrollingEnabled ? '' : 'no-scroll'}`}
+            className="horizontal-scroll-content"
             ref={containerRef}
           >
             {filteredPets.map((pet) => (

@@ -32,6 +32,7 @@ const CreateUserProfile = () => {
 
       } catch (error) {
         console.error('Error fetching image:', error)
+
       }
     }
 
@@ -68,6 +69,7 @@ const CreateUserProfile = () => {
       </>
     );
   }
+
 
   // Function to fetch messages from backend
   const fetchMessages = async () => {

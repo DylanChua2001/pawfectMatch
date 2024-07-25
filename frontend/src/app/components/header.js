@@ -60,14 +60,14 @@ const Header = () => {
   };
 
   useEffect(() => {
+    setUserID(id); // Set userID state
     fetchProfile(); // Fetch profile data when component mounts
   }, [id]);
 
   const fetchProfile = async () => {
     try {
-      // setUserID(id); // Set userID state
       const photoresponse = await fetch(
-        'http://localhost:3001/api/image/retrieveImage/${id}',
+        `http://localhost:3001/api/image/retrieveUserImageID/${id}`,
         {
           method: "GET",
         }
@@ -105,7 +105,7 @@ const Header = () => {
             as={Button}
             rounded="full"
             variant="link"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={handleMenuToggle}
           >
             <Suspense fallback={<Avatar size="sm" />}>
               <Avatar

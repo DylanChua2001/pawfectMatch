@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { Spinner, Box, Image, Text, VStack, HStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useToast, Flex} from '@chakra-ui/react';
+import { Spinner, Box, Image, Text, VStack, HStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useToast, Flex } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
@@ -22,19 +22,8 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
 
     useEffect(() => {
         const adminStatus = Cookie.get('isAdmin') === 'true';
-        if (!adminStatus) {
-            toast({
-                title: 'Access Denied',
-                description: 'You do not have permission to view this page',
-                status: 'error',
-                duration: 5000,
-                isClosable: true,
-                onCloseComplete: () => router.push('/'), // Redirect to login or another appropriate page
-            });
-        } else {
-            setIsAdmin(true);
-        }
-    }, [router, toast]);
+        setIsAdmin(adminStatus);
+    }, []);
 
     useEffect(() => {
         if (!userID) {
@@ -52,16 +41,16 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
     if (!userID) {
         return (
             <>
-                <Box
-                    minHeight="100vh"
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    <Spinner size="xl" />
-                    <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>
-                </Box>
+            <Box
+                minHeight="100vh"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+            >
+                <Spinner size="xl" />
+                <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>
+            </Box>
             </>
         );
     }
@@ -278,81 +267,38 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
                             </Text>
                         </VStack>
                     )}
-                    {showNameAndPhotoOnly && (
-                        <VStack
-                            align="start"
-                            maxW="100%"
-                            maxH="210px"
-                            overflowY="auto"
-                            overflowX="hidden"
-                            sx={{
-                                '&::-webkit-scrollbar': {
-                                    display: 'none',
-                                },
-                                '-ms-overflow-style': 'none',
-                                'scrollbar-width': 'none',
-                                overflowY: 'auto',
-                            }}
-                        >
-                            <HStack>
-                                <Text fontSize={["1.2rem", "1.5rem", "1.7rem", "2rem"]} fontWeight="bold">
-                                    {pet.pet_name}
-                                </Text>
-                                <IconButton
-                                    icon={liked ? <AiFillHeart /> : <AiOutlineHeart />}
-                                    onClick={handleLikeButtonClick}
-                                    variant="ghost"
-                                    colorScheme="red"
-                                    aria-label="Like button"
-                                    fontSize={["3xl", "3xl", "4xl", "4xl"]}
-                                    ml={2}
-                                />
-                            </HStack>
-                        </VStack>
-                    )}
                 </HStack>
-                <Flex mt={4} justifyContent="space-between">
+                <Button
+                    mt={4}
+                    colorScheme="blue"
+                    onClick={handleModalOpen}
+                    isDisabled={isUserMatched}
+                >
+                    I'm Interested
+                </Button>
+                {isAdmin && (
                     <Button
-                        colorScheme="blue"
-                        onClick={handleModalOpen}
-                        disabled={isAdmin}
-                        _hover={{ backgroundColor: isAdmin ? "gray.300" : "blue.500" }}
-                        cursor={isAdmin ? "not-allowed" : "pointer"}
-                    >
-                        Match
-                    </Button>
-                    <Button
+                        mt={4}
                         colorScheme="red"
                         onClick={handleDelete}
-                        disabled={!isAdmin}
-                        _hover={{ backgroundColor: isAdmin ? "red.500" : "gray.300" }}
-                        cursor={isAdmin ? "pointer" : "not-allowed"}
                     >
-                        Delete Pet
+                        Delete
                     </Button>
-                </Flex>
+                )}
+                <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+                    <ModalOverlay />
+                    <ModalContent>
+                        <ModalHeader>Interest Confirmed</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <Text>You have expressed interest in {pet.pet_name}!</Text>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button colorScheme="blue" onClick={handleModalClose}>Close</Button>
+                        </ModalFooter>
+                    </ModalContent>
+                </Modal>
             </Box>
-
-            <Modal isOpen={isModalOpen} onClose={handleModalClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Match Confirmation</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <Text>
-                            Are you sure you want to match with {pet.pet_name}? This action cannot be undone.
-                        </Text>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button variant="ghost" onClick={handleModalClose}>
-                            Cancel
-                        </Button>
-                        <Button colorScheme="blue" ml={3} onClick={handleModalClose}>
-                            Confirm
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
         </>
     );
 };

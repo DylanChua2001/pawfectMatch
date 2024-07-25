@@ -63,15 +63,28 @@ async function reccomendPet(req, res) {
             },
         });
 
-        const response = await chainWithHistory.invoke(
+        res.setHeader('Content-Type', 'text/plain');
+        res.setHeader('Transfer-Encoding', 'chunked');
+
+        // Use LangChain's built-in streaming API
+        const stream = await chainWithHistory.stream(
             {
                 input: req.body.question,
             },
-            { configurable: { sessionId: userID } }
+            {
+                configurable: { sessionId: userID },
+            }
         );
-        console.log(response);
+        
+        // Send chunks to the client as they are received
+        for await (const chunk of stream) {
+            console.log(chunk);
+            res.write(chunk);
+        }
+
+        // End the response when streaming is complete
+        res.end();
         await pool.end();
-        res.json({ response });
 
     } catch (error) {
         console.error(error);
@@ -141,7 +154,6 @@ async function createUserProfile(req, res) {
         const JWT_SECRET = process.env.jwt;
         const db = await getDatabase();
         const llm = new ChatOpenAI({ model: "gpt-4", temperature: 0 });
-        const executeQuery = new QuerySqlTool(db);
         const pool = await createDatabasePool();
         const userID = req.cookies.token ? jwt.verify(req.cookies.token, JWT_SECRET).userID : null;
         const sessionID = userID + 'user';
@@ -176,16 +188,28 @@ async function createUserProfile(req, res) {
             },
         });
 
-        const response = await chainWithHistory.invoke(
+        res.setHeader('Content-Type', 'text/plain');
+        res.setHeader('Transfer-Encoding', 'chunked');
+
+        // Use LangChain's built-in streaming API
+        const stream = await chainWithHistory.stream(
             {
                 input: req.body.question,
             },
-            { configurable: { sessionId: sessionID } }
+            {
+                configurable: { sessionId: sessionID },
+            }
         );
-        console.log(response);
-        await pool.end();
-        res.json({ response });
+        
+        // Send chunks to the client as they are received
+        for await (const chunk of stream) {
+            console.log(chunk);
+            res.write(chunk);
+        }
 
+        // End the response when streaming is complete
+        res.end();
+        await pool.end();
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal Server Error" });
@@ -198,10 +222,8 @@ async function saveUserProfile(req, res) {
         const db = await getDatabase();
         const llm = new ChatOpenAI({ model: "gpt-4", temperature: 0 });
         const executeQuery = new QuerySqlTool(db);
-        const pool = await createDatabasePool();
         const userID = req.cookies.token ? jwt.verify(req.cookies.token, JWT_SECRET).userID : null;
         const parser = new StringOutputParser();
-        const sessionID = userID + 'user';
 
         if (!userID) {
             return res.status(401).json({ error: "Unauthorized" });

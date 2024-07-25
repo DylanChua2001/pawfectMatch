@@ -81,8 +81,8 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly, isAdmin }) => {
 
     const handleLikeButtonClick = async () => {
         const url = liked
-            ? `http://localhost:3001/api/favourites/deleteFavPet/${sessionID}/delete/${pet.pet_id}`
-            : `http://localhost:3001/api/favourites/addFavPet/${sessionID}/add/${pet.pet_id}`;
+            ? `http://localhost:3001/api/favourites/deleteFavPet/${userID}/delete/${pet.pet_id}`
+            : `http://localhost:3001/api/favourites/addFavPet/${userID}/add/${pet.pet_id}`;
 
         try {
             await axios.put(url, { liked: !liked });

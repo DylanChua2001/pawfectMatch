@@ -8,6 +8,10 @@ import axios from 'axios';
 
 const FavPetsPage = () => {
   const [favoritePets, setFavoritePets] = useState([]);
+  const [petDetails, setPetDetails] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [petImages, setPetImages] = useState({});
   const userID = Cookie.get('userID');
   const toast = useToast();
   const router = useRouter();
@@ -100,12 +104,9 @@ const FavPetsPage = () => {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        backgroundImage="url('/background.png')"
-        backgroundSize="cover"
-        backgroundPosition="center"
       >
         <Spinner size="xl" />
-        <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>
+        <Text fontSize="xl" color="black" mt={4}>Loading...</Text>
       </Box>
       </>
     );
@@ -120,9 +121,6 @@ const FavPetsPage = () => {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        backgroundImage="url('/background.png')"
-        backgroundSize="cover"
-        backgroundPosition="center"
       >
         <Text fontSize="xl" color="red.500">{error}</Text>
       </Box>
@@ -138,14 +136,42 @@ const FavPetsPage = () => {
       </Box>
       <Flex justifyContent="center">
         <Box
+          borderRadius= "15px"
+          backgroundColor="rgba(255, 255, 255, 0.7)"
+          position="fixed"
+          p={4}
+          top={["100px", "100px", "100px"]} // Adjust the top position as needed for different screen sizes
+          left="0"
+          right="0"
+          margin="auto"
           maxW={["90%", "92%", "97%"]}
           w="100%"
-          maxHeight={["calc(100vh - 200px)", "calc(100vh - 150px)", "calc(100vh - 180px)"]}
-        >
+          h={["calc(100vh - 120px)", "calc(100vh - 130px)", "calc(100vh - 140px)"]}
+          overflowY="auto" 
+            sx={{
+            overflowY: 'hidden', // Hide horizontal scrollbar
+            '&::-webkit-scrollbar': {
+              display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
+            },
+            '-ms-overflow-style': 'none', // Hide scrollbar for Internet Explorer and Edge
+            'scrollbar-width': 'none', // Hide scrollbar for Firefox
+            'overflow-y': 'auto',
+          }}>
           <Text fontSize="2xl" fontWeight="bold" mb={4}>
             Favorite Pets
           </Text>
-          <Box display="flex" overflowX="auto">
+          <Box 
+            display="flex" 
+            overflowX="auto"
+            sx={{
+              overflowX: 'hidden', // Hide horizontal scrollbar
+              '&::-webkit-scrollbar': {
+                display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
+              },
+              '-ms-overflow-style': 'none', // Hide scrollbar for Internet Explorer and Edge
+              'scrollbar-width': 'none', // Hide scrollbar for Firefox
+              'overflow-x': 'auto',
+            }}>
             {favoritePets.length > 0 ? (
               favoritePets.map(petId => {
                 const pet = petDetails[petId];
@@ -154,6 +180,8 @@ const FavPetsPage = () => {
                 return (
                   <Box key={petId} flex="0 0 auto" maxW="sm" p={2}>
                     <Box
+                      maxW="250px"
+                      h="100%"
                       bg="gray.100"
                       borderRadius="lg"
                       overflow="hidden"

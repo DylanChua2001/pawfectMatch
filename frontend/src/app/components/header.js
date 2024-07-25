@@ -60,6 +60,7 @@ const Header = () => {
   };
 
   useEffect(() => {
+    setUserID(id); // Set userID state
     fetchProfile(); // Fetch profile data when component mounts
   }, [id]);
 
@@ -102,7 +103,7 @@ const Header = () => {
             as={Button}
             rounded="full"
             variant="link"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={handleMenuToggle}
           >
             <Suspense fallback={<Avatar size="sm" />}>
               <Avatar

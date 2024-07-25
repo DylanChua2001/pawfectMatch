@@ -96,6 +96,26 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
     }
   };
 
+  // Function to handle delete button click
+  const handleDeleteButtonClick = async () => {
+    toast({
+      title: `Deleting ${trainingPackage.train_name} is irreversible.`,
+      description: (
+        <Box textAlign="center">
+          <Button bg="transparet" mr={3} onClick={handleDelete}>
+            Confirm Deletion
+          </Button>
+        </Box>
+      ),
+      status: 'warning',
+      isClosable: true,
+      duration: null, // Keeps the toast open until manually closed
+      position: 'bottom-left',
+      duration: 5000,
+    });
+    console.log('Delete button clicked');
+  };
+
   return (
     <Box
       maxW="100vw"
@@ -165,27 +185,17 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
           </Button>
         </VStack>
       </HStack>
-      {/* <Modal isOpen={isModalOpen} onClose={handleModalClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Match</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text fontSize="lg" fontWeight="bold" color="black">{pet.pet_name} has been successfully matched with you!</Text>
-          </ModalBody>
-          <ModalFooter>
-            <Button onClick={handleModalClose}>Close</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-
       {isAdmin && (
-        <Button onClick={handleDelete} colorScheme="red" position="absolute" bottom={4} right={4}>
-          Delete
+        <Button
+          colorScheme="red"
+          onClick={handleDeleteButtonClick}
+          position="absolute"
+          bottom={4}
+          right={4}
+        >
+          Delete Training Package
         </Button>
-      )} */}
-
-
+      )}
     </Box>
   );
 };

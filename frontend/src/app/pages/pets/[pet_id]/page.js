@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { Spinner, Box, Image, Text, VStack, HStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useToast, Flex} from '@chakra-ui/react';
+import { Spinner, Box, Image, Text, VStack, HStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useToast, Flex } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
@@ -8,7 +8,7 @@ import Header from '../../../components/header';
 import Cookie from 'js-cookie';
 import { useRouter } from 'next/navigation';
 
-const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
+const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
     const [liked, setLiked] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const pet_id = useParams().pet_id;
@@ -21,49 +21,38 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
     const [isUserMatched, setIsUserMatched] = useState(false);
 
     useEffect(() => {
-        const adminStatus = Cookie.get('userID');
-        if (!adminStatus) {
-        toast({
-            title: 'Access Denied',
-            description: 'You do not have permission to view this page',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-            onCloseComplete: () => router.push('/'), // Redirect to login or another appropriate page
-        });
-        } else {
-        setIsAdmin(true);
-        }
-    }, [router, toast]);
+        const adminStatus = Cookie.get('isAdmin') === 'true';
+        setIsAdmin(adminStatus);
+    }, []);
 
     useEffect(() => {
-      if (!userID) {
-        toast({
-          title: 'Please login to view this page',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-          onCloseComplete: () => router.push('/pages/login'), // Replace with your actual login page route
-        });
-        return;
-      }
+        if (!userID) {
+            toast({
+                title: 'Please login to view this page',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                onCloseComplete: () => router.push('/pages/login'), // Replace with your actual login page route
+            });
+            return;
+        }
     }, [userID, router, toast]);
 
     if (!userID) {
-      return (
-        <>
-        <Box
-          minHeight="100vh"
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Spinner size="xl" />
-          <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>
-        </Box>
-        </>
-      );
+        return (
+            <>
+            <Box
+                minHeight="100vh"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+            >
+                <Spinner size="xl" />
+                <Text fontSize="xl" color="black" mt={4}>Redirecting to the login page...</Text>
+            </Box>
+            </>
+        );
     }
 
     useEffect(() => {
@@ -134,6 +123,38 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
 
     useEffect(() => {
         const checkUserMatch = async () => {
+            try {
+                const response = await axios.get(`https://pawfect-match-backend-six.vercel.app/api/match/checkUserMatch/${userID}`);
+                const { matchedPetId } = response.data;
+                setIsUserMatched(!!matchedPetId && matchedPetId !== pet_id);
+            } catch (error) {
+                console.error('Error checking user match:', error);
+            }
+        };
+
+        if (userID) {
+            checkUserMatch();
+        }
+    }, [userID, pet_id]);
+
+    useEffect(() => {
+        const checkUserMatch = async () => {
+            try {
+                const response = await axios.get(`http://localhost:3001/api/match/checkUserMatch/${userID}`);
+                const { matchedPetId } = response.data;
+                setIsUserMatched(!!matchedPetId && matchedPetId !== pet_id);
+            } catch (error) {
+                console.error('Error checking user match:', error);
+            }
+        };
+
+        if (userID) {
+            checkUserMatch();
+        }
+    }, [userID, pet_id]);
+
+    useEffect(() => {
+        const checkUserMatch = async () => {
           try {
             const response = await axios.get(`https://pawfect-match-backend-six.vercel.app/api/match/checkUserMatch/${userID}`);
             const { matchedPetId } = response.data;
@@ -192,6 +213,10 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
         }
     };
 
+    const handleBackToPets = () => {
+        router.push('/pages/pets');
+    };
+
     if (!pet_id) {
         return <><div>Loading...</div></>;
     }
@@ -214,11 +239,20 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
                 h={["calc(100vh - 200px)", "calc(100vh - 180px)", "calc(100vh - 150px)"]}
                 overflowY="auto"
                 bg="rgba(255, 250, 245, 0.7)"
-                borderRadius= "15px"
-                pl= "20px"
-                pt= "40px"
-                pr= '20px'
+                borderRadius="15px"
+                pl="20px"
+                pt="40px"
+                pr="20px"
             >
+                <Button
+                    position="absolute"
+                    top="10px"
+                    right="10px"
+                    colorScheme="blue"
+                    onClick={handleBackToPets}
+                >
+                    Back to Pets
+                </Button>
                 <HStack>
                     <Image
                         src={photo || pet.imageUrl}
@@ -227,25 +261,25 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
                         height={["40vh", "40vh", "50vh"]}
                         width={["40vh", "40vh", "50vh"]}
                         objectFit="contain"
-                        mr= {["20px", "30px", "50px" ]}
-                        ml= {["20px", "30px", "40px" ]}
+                        mr={["20px", "30px", "50px"]}
+                        ml={["20px", "30px", "40px"]}
                     />
                     {!showNameAndPhotoOnly && (
-                        <VStack 
-                            align="start" 
+                        <VStack
+                            align="start"
                             maxW="100%" // Adjust based on your design
                             maxH="210px" // Adjust height to control how much of the content is visible
                             overflowY="auto" // Enable vertical scrolling
                             overflowX="hidden" // Prevent horizontal scrolling
                             sx={{
                                 '&::-webkit-scrollbar': {
-                                display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
+                                    display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
                                 },
                                 '-ms-overflow-style': 'none', // Hide scrollbar for Internet Explorer and Edge
                                 'scrollbar-width': 'none', // Hide scrollbar for Firefox
                                 overflowY: 'auto', // Allow vertical scrolling
                             }}
-                        > 
+                        >
                             <HStack>
                                 <Text fontSize={["1.2rem", "1.5rem", "1.7rem", "2rem"]} fontWeight="bold">
                                     {pet.pet_name}
@@ -260,33 +294,42 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly}) => {
                                     ml={2}
                                 />
                             </HStack>
-                            <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Breed: {pet.pet_breed}</Text>
-                            <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Age: {pet.pet_age} years</Text>
-                            <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}  whiteSpace="normal" wordBreak="break-word">Description: {pet.pet_description || "No description available"}</Text>
-                            <Button bg="rgba(253, 222, 176, 1)" onClick={handleModalOpen} color='black'  position="absolute" bottom={4} left={4}>Match</Button>
+                            <Text fontSize={["0.85rem", "0.9rem", "1rem", "1.05rem"]} textAlign="left" whiteSpace="normal">
+                                {pet.pet_description}
+                            </Text>
                         </VStack>
                     )}
                 </HStack>
-
-                <Modal isOpen={isModalOpen} onClose={handleModalClose}>
-                    <ModalOverlay />
-                    <ModalContent>
-                        <ModalHeader>Match</ModalHeader>
-                        <ModalCloseButton />
-                        <ModalBody>
-                            <Text fontSize="lg" fontWeight="bold" color="black">{pet.pet_name} has been successfully matched with you!</Text>
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button onClick={handleModalClose}>Close</Button>
-                        </ModalFooter>
-                    </ModalContent>
-                </Modal>
-
+                <Button
+                    mt={4}
+                    colorScheme="blue"
+                    onClick={handleModalOpen}
+                    isDisabled={isUserMatched}
+                >
+                    I'm Interested
+                </Button>
                 {isAdmin && (
-                    <Button onClick={handleDelete} colorScheme="red" position="absolute" bottom={4} right={4}>
+                    <Button
+                        mt={4}
+                        colorScheme="red"
+                        onClick={handleDelete}
+                    >
                         Delete
                     </Button>
                 )}
+                <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+                    <ModalOverlay />
+                    <ModalContent>
+                        <ModalHeader>Interest Confirmed</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <Text>You have expressed interest in {pet.pet_name}!</Text>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button colorScheme="blue" onClick={handleModalClose}>Close</Button>
+                        </ModalFooter>
+                    </ModalContent>
+                </Modal>
             </Box>
         </>
     );

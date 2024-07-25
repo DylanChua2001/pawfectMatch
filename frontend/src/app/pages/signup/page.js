@@ -10,6 +10,7 @@ import {
   Heading,
   Text,
   useToast,
+  HStack
 } from '@chakra-ui/react'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -112,118 +113,143 @@ export default function RegisterCard() {
 
   return (
     <>
-      <Header />
-      <Flex
-        height="100vh"
-        alignItems="center"
-        justifyContent="center"
-        direction="column"
-      >
-        <Stack
-          align={'center'}
-          spacing={6}
-          mx={'auto'}
-          maxW={'xl'}
-          mt={40}
-        >
-          <Box
-            borderRadius="10px"
-            paddingTop="3%"
-            paddingBottom="3%"
-            paddingLeft="10%"
-            paddingRight="10%"
-            bg="rgba(255, 250, 245, 0.7)"
-            width={['90%', '70%', '50vw']}
-            minHeight={['70vh', '85vh', '85vh']}
+      {/* <Header /> */}
+      <Flex direction="column" height="100vh">
+        <Box marginBottom= "100px">
+          <Header />
+        </Box>
+        <Box 
+          position="fixed"
+          top="60px"
+          left="0"
+          right="0"
+          margin="auto"
+          maxW={["90%", "92%", "97%"]}
+          w="100%"
+          h={["calc(100vh - 60px)", "calc(100vh - 70px)", "calc(100vh - 80px)"]}
+          overflowY="auto"
+          sx={{
+          '&::-webkit-scrollbar': {
+            display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
+          },
+          '-ms-overflow-style': 'none', // Hide scrollbar for Internet Explorer and Edge
+          'scrollbar-width': 'none', // Hide scrollbar for Firefox 
+        }}
           >
-            <Heading
-              fontSize="180%"
-              fontFamily="'Lilita One', cursive"
-              fontWeight="bold"
-              textAlign="center"
-              mb={10}
+          <Stack
+            align={'center'}
+            mx={'auto'}
+            maxW={'xl'}
+          >
+            <Box
+              borderRadius="10px"
+              paddingTop="3%"
+              paddingBottom="3%"
+              paddingLeft="10%"
+              paddingRight="10%"
+              bg="rgba(255, 250, 245, 0.7)"
+              width={['90vw', '70vw', '50vw']}
+              minHeight={['70vh', '85vh', '85vh']}
             >
-              Sign Up
-            </Heading>
-
-            <Stack spacing={4}>
-              <FormControl id="email_add">
-                <Input
-                  onChange={handleChange}
-                  type="email"
-                  placeholder='Email Address'
-                  size="lg"
-                  borderRadius="5px"
-                  borderColor="#D9D9D9"
-                  _focus={{ bg: "white", borderColor: "blue.400" }}
-                />
-              </FormControl>
-              <FormControl id="user_name">
-                <Input
-                  onChange={handleChange}
-                  type="text"
-                  placeholder='Username'
-                  size="lg"
-                  borderRadius="5px"
-                  borderColor="#D9D9D9"
-                  _focus={{ bg: "white", borderColor: "blue.400" }}
-                />
-              </FormControl>
-              <FormControl id="user_password">
-                <Input
-                  onChange={handleChange}
-                  type="password"
-                  placeholder='Password'
-                  size="lg"
-                  borderRadius="5px"
-                  borderColor="#D9D9D9"
-                  _focus={{ bg: "white", borderColor: "blue.400" }}
-                />
-              </FormControl>
-              <FormControl id="confirm_password">
-                <Input
-                  onChange={handleChange}
-                  type="password"
-                  placeholder='Confirm Password'
-                  size="lg"
-                  borderRadius="5px"
-                  borderColor="#D9D9D9"
-                  _focus={{ bg: "white", borderColor: "blue.400" }}
-                />
-              </FormControl>
-              <FormControl id="user_age">
-                <Input
-                  onChange={handleChange}
-                  type="number"
-                  placeholder='Age'
-                  size="lg"
-                  borderRadius="5px"
-                  borderColor="#D9D9D9"
-                  _focus={{ bg: "white", borderColor: "blue.400" }}
-                />
-              </FormControl>
-              <Button
-                onClick={handleSignUp}
-                _hover={{ cursor: 'pointer' }}
-                width="100%"
-                padding="10"
-                borderRadius="5px"
-                backgroundColor="#F8D3A7"
-                textColor='black'
+              <Heading
+                fontSize="180%"
+                fontFamily="'Lilita One', cursive"
+                fontWeight="bold"
+                textAlign="center"
+                mb="10px"
               >
-                Register
-              </Button>
-              <Stack alignItems='center' mt="5">
-                <Text fontFamily="sans-serif" fontSize="13">
-                  Already have an account? {" "}
-                  <Link href="/pages/login" passHref>
-                    <button style={{ color: 'blue', background: 'none', border: 'none', cursor: 'pointer' }}>Login</button>
-                  </Link>
-                </Text>
+                Sign Up
+              </Heading>
+
+              <Stack spacing={4}>
+                <FormControl id="email_add">
+                  <Input
+                    onChange={handleChange}
+                    type="email"
+                    placeholder='Email'
+                    width="100%"
+                    padding="10px"
+                    size="md"
+                    borderRadius="5px"
+                    borderColor="#D9D9D9"
+                    _focus={{ bg: "white", borderColor: "blue.400" }}
+                  />
+                </FormControl>
+                <FormControl id="user_name">
+                  <Input
+                    onChange={handleChange}
+                    type="text"
+                    placeholder='Username'
+                    width="100%"
+                    padding="10px"
+                    size="md"
+                    borderRadius="5px"
+                    borderColor="#D9D9D9"
+                    _focus={{ bg: "white", borderColor: "blue.400" }}
+                  />
+                </FormControl>
+                <FormControl id="user_password">
+                  <Input
+                    onChange={handleChange}
+                    type="password"
+                    placeholder='Password'
+                    width="100%"
+                    padding="10px"
+                    size="md"
+                    borderRadius="5px"
+                    borderColor="#D9D9D9"
+                    _focus={{ bg: "white", borderColor: "blue.400" }}
+                  />
+                </FormControl>
+                <FormControl id="confirm_password">
+                  <Input
+                    onChange={handleChange}
+                    type="password"
+                    placeholder='Confirm Password'
+                    width="100%"
+                    padding="10px"
+                    size="md"
+                    borderRadius="5px"
+                    borderColor="#D9D9D9"
+                    _focus={{ bg: "white", borderColor: "blue.400" }}
+                  />
+                </FormControl>
+                <FormControl id="user_age">
+                  <Input
+                    onChange={handleChange}
+                    type="number"
+                    placeholder='Age'
+                    width="100%"
+                    padding="10px"
+                    size="md"
+                    borderRadius="5px"
+                    borderColor="#D9D9D9"
+                    _focus={{ bg: "white", borderColor: "blue.400" }}
+                  />
+                </FormControl>
+                <Button
+                  onClick={handleSignUp}
+                  _hover={{ cursor: 'pointer' }}
+                  width="100%"
+                  padding="30px"
+                  borderRadius="5px"
+                  backgroundColor="#F8D3A7"
+                  textColor='black'
+                >
+                  Register
+                </Button>
+                <Stack alignItems='center' mt="2">
+                  <Text fontFamily="sans-serif" fontSize="13">
+                    Already have an account? {" "}
+                    <Link href="/pages/login" passHref>
+                      <button style={{ color: 'blue', background: 'none', border: 'none', cursor: 'pointer' }}>Login</button>
+                    </Link>
+                  </Text>
+                </Stack>
               </Stack>
-            </Stack>
-          </Box>
-        </Stack>
+            </Box>
+          </Stack>
+        </Box>
       </Flex>
     </>
   );

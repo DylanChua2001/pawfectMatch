@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Box, Flex, useToast, Spinner, Text, Image } from "@chakra-ui/react";
 import Header from "../../components/header";
 import Cookie from 'js-cookie';
@@ -14,6 +14,8 @@ const FavTrainingPackagesPage = () => {
   const userID = Cookie.get('userID');
   const toast = useToast();
   const router = useRouter();
+  const scrollContainerRef = useRef(null);
+  console.log(favoritePackages)
 
   useEffect(() => {
     if (!userID) {
@@ -78,6 +80,23 @@ const FavTrainingPackagesPage = () => {
     }
   }, [favoritePackages]);
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (!scrollContainerRef.current) return;
+
+      if (event.key === 'ArrowRight') {
+        scrollContainerRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+      } else if (event.key === 'ArrowLeft') {
+        scrollContainerRef.current.scrollBy({ left: -200, behavior: 'smooth' });
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   if (loading) {
     return (
       <>
@@ -123,11 +142,11 @@ const FavTrainingPackagesPage = () => {
       </Box>
       <Flex justifyContent="center">
         <Box
-          borderRadius= "15px"
+          borderRadius="15px"
           backgroundColor="rgba(255, 255, 255, 0.7)"
           position="fixed"
           p={4}
-          top={["100px", "100px", "100px"]} // Adjust the top position as needed for different screen sizes
+          top={["100px", "100px", "100px"]}
           left="0"
           right="0"
           margin="auto"
@@ -136,12 +155,12 @@ const FavTrainingPackagesPage = () => {
           h={["calc(100vh - 120px)", "calc(100vh - 130px)", "calc(100vh - 140px)"]}
           overflowY="auto" 
             sx={{
-            overflowY: 'hidden', // Hide horizontal scrollbar
+            overflowY: 'hidden',
             '&::-webkit-scrollbar': {
-              display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
+              display: 'none',
             },
-            '-ms-overflow-style': 'none', // Hide scrollbar for Internet Explorer and Edge
-            'scrollbar-width': 'none', // Hide scrollbar for Firefox
+            '-ms-overflow-style': 'none',
+            'scrollbar-width': 'none',
             'overflow-y': 'auto',
           }}>
         
@@ -151,13 +170,14 @@ const FavTrainingPackagesPage = () => {
           <Box 
             display="flex" 
             overflowX="auto" 
+            ref={scrollContainerRef} // Attach ref here
             sx={{
-            overflowX: 'hidden', // Hide horizontal scrollbar
+            overflowX: 'hidden',
             '&::-webkit-scrollbar': {
-              display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
+              display: 'none',
             },
-            '-ms-overflow-style': 'none', // Hide scrollbar for Internet Explorer and Edge
-            'scrollbar-width': 'none', // Hide scrollbar for Firefox
+            '-ms-overflow-style': 'none',
+            'scrollbar-width': 'none',
             'overflow-x': 'auto',
           }}>
             {favoritePackages.length > 0 ? (

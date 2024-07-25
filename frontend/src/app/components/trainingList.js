@@ -164,6 +164,22 @@ const TrainingPackagesList = () => {
     setScrollingEnabled(false); // Disable auto-scrolling when clicking anywhere in the container
   };
 
+  const handleArrowNavigation = (event) => {
+    if (containerRef.current) {
+      if (event.key === 'ArrowRight') {
+        containerRef.current.scrollBy({ left: 100, behavior: 'smooth' });
+      } else if (event.key === 'ArrowLeft') {
+        containerRef.current.scrollBy({ left: -100, behavior: 'smooth' });
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleArrowNavigation);
+    return () => {
+      window.removeEventListener('keydown', handleArrowNavigation);
+    };
+  }, []);
   return (
     <>
       <Box
@@ -172,7 +188,6 @@ const TrainingPackagesList = () => {
         backgroundColor="rgba(255, 255, 255, 0.7)"
         overflowX="auto"
         px="20px"
-        onClick={handleContainerClick} // Add click handler to the container
       >
         {selectedTrainingPackage ? (
           <Box>
@@ -213,9 +228,9 @@ const TrainingPackagesList = () => {
                 onClick={navigateToFavorites}
                 bg="rgba(253, 222, 176, 1)"
                 fontSize={["0.70rem", "0.80rem", "0.95rem", "1rem"]}
-                mx= "10px"
+                mx="10px"
               >
-              Favorites
+                Favorites
               </Button>
               <Button
                 onClick={navigateToCart}
@@ -226,11 +241,11 @@ const TrainingPackagesList = () => {
             </Flex>
             <Box
               paddingBottom="10px"
-              className="infinite-scroll-wrapper"
+              className="horizontal-scroll-wrapper"
             >
               <Box
                 paddingBottom="10px"
-                className={`infinite-scroll-content ${scrollingEnabled ? '' : 'no-scroll'}`}
+                className="horizontal-scroll-content"
                 ref={containerRef}
               >
                 {filteredTrainingPackages.map((trainingPackage) => (

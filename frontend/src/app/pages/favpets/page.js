@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Box, Flex, useToast, Spinner, Text, Image } from "@chakra-ui/react";
 import Header from "../../components/header"; // Replace with your header component
 import Cookie from 'js-cookie';
@@ -15,6 +15,7 @@ const FavPetsPage = () => {
   const userID = Cookie.get('userID');
   const toast = useToast();
   const router = useRouter();
+  const containerRef = useRef(null);
 
   useEffect(() => {
     if (!userID) {
@@ -31,7 +32,7 @@ const FavPetsPage = () => {
     const fetchFavoritePetIds = async () => {
       try {
         const response = await axios.get(`http://localhost:3001/api/favourites/getAllFavPets/${userID}`);
-        const petIds = response.data.userFavPets.user_pet_fav;
+        const petIds = response.data.userFavPets.user_pet_fav || [];
         setFavoritePets(petIds);
       } catch (error) {
         setError('Failed to load favorite pets.');
@@ -92,12 +93,34 @@ const FavPetsPage = () => {
   }, [favoritePets]);
 
   const handlePetCardClick = (petId) => {
-    router.push(`pets/${petId}`)
+    router.push(`pets/${petId}`);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (!containerRef.current) return;
+
+      switch (event.key) {
+        case 'ArrowRight':
+          containerRef.current.scrollBy({ left: 200, behavior: 'smooth' }); // Adjust scroll amount as needed
+          break;
+        case 'ArrowLeft':
+          containerRef.current.scrollBy({ left: -200, behavior: 'smooth' }); // Adjust scroll amount as needed
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   if (loading) {
     return (
-      <>
       <Box
         minHeight="100vh"
         display="flex"
@@ -108,13 +131,11 @@ const FavPetsPage = () => {
         <Spinner size="xl" />
         <Text fontSize="xl" color="black" mt={4}>Loading...</Text>
       </Box>
-      </>
     );
   }
 
   if (error) {
     return (
-      <>
       <Box
         minHeight="100vh"
         display="flex"
@@ -124,19 +145,17 @@ const FavPetsPage = () => {
       >
         <Text fontSize="xl" color="red.500">{error}</Text>
       </Box>
-      </>
     );
   }
 
   return (
-    <>
     <Flex direction="column" height="100vh">
       <Box mt="60px">
         <Header />
       </Box>
       <Flex justifyContent="center">
         <Box
-          borderRadius= "15px"
+          borderRadius="15px"
           backgroundColor="rgba(255, 255, 255, 0.7)"
           position="fixed"
           p={4}
@@ -147,31 +166,33 @@ const FavPetsPage = () => {
           maxW={["90%", "92%", "97%"]}
           w="100%"
           h={["calc(100vh - 120px)", "calc(100vh - 130px)", "calc(100vh - 140px)"]}
-          overflowY="auto" 
-            sx={{
-            overflowY: 'hidden', // Hide horizontal scrollbar
+          overflowY="auto"
+          sx={{
+            overflowY: 'hidden', // Hide vertical scrollbar
             '&::-webkit-scrollbar': {
               display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
             },
             '-ms-overflow-style': 'none', // Hide scrollbar for Internet Explorer and Edge
             'scrollbar-width': 'none', // Hide scrollbar for Firefox
             'overflow-y': 'auto',
-          }}>
+          }}
+        >
           <Text fontSize="2xl" fontWeight="bold" mb={4}>
             Favorite Pets
           </Text>
           <Box 
+            ref={containerRef} // Add ref here
             display="flex" 
             overflowX="auto"
+            whiteSpace="nowrap" // Prevents wrapping of the flex items
             sx={{
-              overflowX: 'hidden', // Hide horizontal scrollbar
               '&::-webkit-scrollbar': {
                 display: 'none', // Hide scrollbar for Chrome, Safari, and Edge
               },
               '-ms-overflow-style': 'none', // Hide scrollbar for Internet Explorer and Edge
               'scrollbar-width': 'none', // Hide scrollbar for Firefox
-              'overflow-x': 'auto',
-            }}>
+            }}
+          >
             {favoritePets.length > 0 ? (
               favoritePets.map(petId => {
                 const pet = petDetails[petId];
@@ -227,7 +248,6 @@ const FavPetsPage = () => {
         </Box>
       </Flex>
     </Flex>
-    </>
   );
 };
 

@@ -128,7 +128,7 @@ const Chatbot = () => {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        const chunkText = decoder.decode(value);
+        const chunkText = decoder.decode(value, { stream: true });
         receivedText += chunkText;
 
         setMessages(prevMessages => [

@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { Spinner, Box, Image, Text, VStack, HStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useToast, Flex } from '@chakra-ui/react';
+import { Spinner, Box, Image, Text, VStack, HStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useToast, Flex, Spacer } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
@@ -294,43 +294,49 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
                                     ml={2}
                                 />
                             </HStack>
-                            <Text fontSize={["0.85rem", "0.9rem", "1rem", "1.05rem"]} textAlign="left" whiteSpace="normal">
-                                {pet.pet_description}
-                            </Text>
+                            <Text>ID: {parseInt(pet.pet_id, 10)}</Text>
+                            <Text>Type: {pet.pet_type}</Text>
+                            <Text>Breed: {pet.pet_breed}</Text>
+                            <Text>Age: {pet.pet_age}</Text>
+                            <Text>Description: {pet.pet_description}</Text>
+                            <Text>Price: ${pet.pet_price}</Text>
                         </VStack>
                     )}
                 </HStack>
-                <Button
-                    mt={4}
-                    colorScheme="blue"
-                    onClick={handleModalOpen}
-                    isDisabled={isUserMatched}
-                >
-                    I'm Interested
-                </Button>
-                {isAdmin && (
+                <HStack mt={4} width="100%">
                     <Button
-                        mt={4}
-                        colorScheme="red"
-                        onClick={handleDelete}
+                        colorScheme="blue"
+                        onClick={handleModalOpen}
+                        isDisabled={isUserMatched}
                     >
-                        Delete
+                        Match
                     </Button>
-                )}
-                <Modal isOpen={isModalOpen} onClose={handleModalClose}>
-                    <ModalOverlay />
-                    <ModalContent>
-                        <ModalHeader>Interest Confirmed</ModalHeader>
-                        <ModalCloseButton />
-                        <ModalBody>
-                            <Text>You have expressed interest in {pet.pet_name}!</Text>
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button colorScheme="blue" onClick={handleModalClose}>Close</Button>
-                        </ModalFooter>
-                    </ModalContent>
-                </Modal>
+                    <Spacer />
+                    {isAdmin && (
+                        <Button
+                            colorScheme="red"
+                            onClick={handleDelete}
+                        >
+                            Delete
+                        </Button>
+                    )}
+                </HStack>
             </Box>
+            <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Match</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <Text>You've successfully matched with {pet.pet_name}!</Text>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={handleModalClose}>
+                            Close
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </>
     );
 };

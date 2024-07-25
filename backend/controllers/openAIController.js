@@ -10,6 +10,10 @@ const { StringOutputParser } = require("@langchain/core/output_parsers");
 const { RunnablePassthrough, RunnableSequence, RunnableWithMessageHistory } = require("@langchain/core/runnables");
 const { PostgresChatMessageHistory } = require("@langchain/community/stores/message/postgres");
 
+export const config = {
+    runtime: "edge",
+  };
+
 require('dotenv').config();
 
 async function reccomendPet(req, res) {

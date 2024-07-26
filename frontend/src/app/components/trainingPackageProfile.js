@@ -12,7 +12,6 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
   const sessionID = Cookie.get('userID'); 
   console.log(sessionID)
   console.log(trainingPackage.train_id)
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
     const checkAdminStatus = async () => {

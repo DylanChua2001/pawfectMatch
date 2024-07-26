@@ -304,6 +304,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
                     )}
                 </HStack>
                 <HStack mt={4} width="100%">
+                                        {!isAdmin && (
                     <Button
                         colorScheme="blue"
                         onClick={handleModalOpen}
@@ -311,6 +312,7 @@ const PetProfile = ({ onLike, showNameAndPhotoOnly }) => {
                     >
                         Match
                     </Button>
+                                                )}
                     <Spacer />
                     {isAdmin && (
                         <Button

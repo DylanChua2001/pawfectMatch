@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { Box, Text, VStack, HStack, IconButton, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useToast, useDisclosure } from '@chakra-ui/react';
+import { Box, Text, VStack, HStack, IconButton, Button, useToast } from '@chakra-ui/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import axios from 'axios';
 import Cookie from 'js-cookie';
@@ -12,6 +12,7 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
   const sessionID = Cookie.get('userID'); 
   console.log(sessionID)
   console.log(trainingPackage.train_id)
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
     const checkAdminStatus = async () => {
@@ -37,7 +38,7 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
         } else {
           setLiked(user_train_fav.includes(trainingPackage.train_id));
         }
-
+        
         // console.log(liked);
       } catch (error) {
         console.error('Error fetching user favorite training packages:', error);
@@ -72,7 +73,7 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
     onAddToCart(trainingPackage);
     console.log(`Added ${trainingPackage.train_name} to cart`);
   };
-
+  
   const handleDelete = async () => {
     try {
       console.log('hi', trainingPackage.train_id)
@@ -118,45 +119,13 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
 
   return (
     <Box
-      maxW="100vw"
-      mx="auto"
-      borderRadius="15px"
+      maxW="100vw" 
+      mx="auto" 
+      borderRadius="15px" 
       position="relative"
-      pb="90px"
-      pt="100px"
+      pb= "90px"
+      pt= "100px"
     >
-      {isAdmin && (
-        <>
-          <Button
-            position="absolute"
-            bottom={4}
-            right={2}
-            colorScheme="red"
-            aria-label="Delete button"
-            onClick={onOpen}
-          >
-            Delete Training Package
-          </Button>
-
-          <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent bg="rgba(254,245,231,255)">
-              <ModalHeader>Confirm deletion?</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <Text>Deleting the package is irreversible and permanent</Text>
-              </ModalBody>
-
-              <ModalFooter>
-                <Button colorScheme='yellow' mr={3} onClick={onClose}>
-                  Cancel
-                </Button>
-                <Button onClick={handleDelete} colorScheme='red'>Delete</Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
-        </>
-      )}
       <HStack spacing={5} align="start" pl='10px'>
         <VStack align="start" justify="center" spacing={3}>
           <Text fontSize="4xl" fontWeight="bold">
@@ -173,8 +142,8 @@ const TrainingPackageProfile = ({ trainingPackage, onAddToCart }) => {
           <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Price: ${trainingPackage.train_price}</Text>
           <Text fontSize={["0.90rem", "0.95rem", "1rem", "1.2rem"]}>Description: {trainingPackage.train_desc}</Text>
           <Button
-            bg="rgba(253, 222, 176, 1)"
-            color='black'
+            bg="rgba(253, 222, 176, 1)" 
+            color='black' 
             onClick={handleAddToCart}
             mt={4}
             position="absolute"
